@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>过渡</title>
+<style>
+ /**************************************************注意**********************************
+ 1，(区分过渡和动画)：过渡由事件触发。
+ 2，(事件之后样式自动去除之后）事件不存在(hover样式自动去除，hover结束)，返回原来样式
+ ********/
+    
+  /*0，要过渡的样式：all 和不写默认全部*/
+  /*要添加多个样式的变换效果，添加的属性由逗号分隔：*/
+.box0{width:100px;height:100px;background:red;opacity:0.1; transition:height 5s, width ,5s;}
+.box0:hover{ background:blue;width:200px;opacity:1;height:300px;}
+  
+  /*1，过渡时间*/
+.box1{width:100px;height:100px;background:red; transition:500ms;}
+.box1:hover{ background:blue;width:200px;height:200px;}
+  
+  /*2，延时时间：3s后过渡 */
+.box2{width:100px;height:100px;background:red; transition:width 2s 1s;}
+.box2:hover{ background:blue;width:200px;height:200px;}
+  /*3，运动形式 
+  ease：（逐渐变慢）默认值
+  linear：（匀速）
+  ease-in：(加速)
+  ease-out：（减速）
+  ease-in-out：（先加速后减速）
+  cubic-bezier 贝塞尔曲线（ x1, y1, x2, y2 ） 
+  http://matthewlein.com/ceaser/
+  */
+.box3{width:100px;height:100px;background:red; transition:width 5s 1s ease-out;}
+.box3:hover{ background:blue;width:500px;height:200px;}
+  /*4，贝塞尔曲线可以设置过渡的过程中，超出最终值，最后还是到最终值*/
+.box4{width:100px;height:100px;background:red; transition:width 5s .2s cubic-bezier(0.000, 1.650, 0.625, 1.650);}
+.box4:hover{ background:blue;width:500px;height:200px;}
+ /*********************************其他事件触发过渡（js控制）**********************************************/
+  
+  
+  
+.box5{width:100px;height:100px;background:red; transition:all 2s .1s ease-in;}
+.box5:hover{ background:blue;width:200px;height:200px;}
+  /*click触发:注意和css伪类hover区别，触发了就过渡到改变之后的样式，不像hover那样返回原来*/
+ .box6{width:100px;height:100px;background:red; transition:all 2s .1s ease-in;}
+ .box6click{background:blue;width:200px;height:200px;}/* transition:all 2s .1s ease-in;*/
+ /*.box6click2{width:100px;height:100px;background:red;}*/
+  
+ /*添加过渡完事件
+  Webkit内核： obj.addEventListener('webkitTransitionEnd',function(){},false);
+  firefox: obj.addEventListener('transitionend',function(){},false);
+  */
+  /*移除过渡完事件
+  Webkit内核： obj.removeEventListener('webkitTransitionEnd',function(){},false);
+  firefox: obj.removeEventListener('transitionend',function(){},false);
+  */
+  #box7{width:100px;height:100px;background:red; transition:all 2s .1s ease-in;}
+  #box8{width:100px;height:100px;background:red; transition:all 2s .1s ease-in;}
+  #box9,#box10{width:100px;height:100px;background:green;}
+
+</style>
+  <script>   
+   
+    
+      window.onload=function(){//onload 小写~
+       //封装不同浏览器添加 过渡结束事件
+        function addTranEndEvt(obj,fn){
+          obj.addEventListener('webkitTransitionEnd',fn,false);
+          obj.addEventListener('transitionend',fn,false);
+        }
+        //封装不同浏览器移除 过渡结束事件
+         function removeTranEndEvt(obj,fn){
+          obj.removeEventListener('webkitTransitionEnd',fn,false);
+          obj.removeEventListener('transitionend',fn,false);
+        }
+
+/***************触发次数*************************/
+        var div7=document.getElementById("box7");
+        addTranEndEvt(div7,function(){
+          alert('1个属性过渡好');//过渡完（每改变一个样式属性，就会触发一次end事件）
+        })
+        div7.onclick=function(){//结果注意：连续点下，会不断的在最后过渡结果基础上再过渡
+          //每改变一个样式属性，就会触发一次end事件
+          this.style.width=this.offsetWidth+100+'px';
+           this.style.height=this.offsetHeight+100+'px';
+        }
+
+/*******addEventListener注册和removeEventListener移除必须为同一个事件（多一层封装）*************/
+         var div8=document.getElementById("box8");
+         /* addTranEndEvt(div8,function (){
+           this.style.width=this.offsetWidth+200+'px';
+           //这种移除监听方法不行：
+           //因为括号内的addTranEndEvt和外面的addTranEndEvt不是同一个
+           //要想实现同一个，我们必须封装addWidth做为addTranEndEvt的参数，
+           //也可以做为removeTranEndEvt的参数
+          removeTranEndEvt(this,addTranEndEvt);
+        });*/
+        function addWidth(){
+           this.style.width=this.offsetWidth+200+'px';
+           removeTranEndEvt(this,addWidth);
+        }
+       addTranEndEvt(div8,addWidth);
+          div8.onclick=function(){
+            this.style.width=this.offsetWidth+100+'px';
+        }
+        
+  /**** addEventListener注册和removeEventListener移除必须为同一个事件（多一层封装）*********/
+           var div9=document.getElementById("box9");
+        div9.addEventListener('click',function(){
+          alert(1)
+        })
+         div9.removeEventListener('click',function(){
+          alert(1)//无效，不能能移除
+        })
+        var div10=document.getElementById("box10");
+
+         function dosth(){ alert(2)}
+          var div10=document.getElementById("box9");
+        div10.addEventListener('click',dosth)
+         div10.removeEventListener('click',dosth)//可以移除
+    }
+    
+    
+   $(function(){  
+      $('.box6').click(function(){
+        $(this).addClass("box6click");  
+      })
+      
+      /* var i=0;
+      $('.box6').click(function(){
+        ++i; 
+        console.log(i);
+        if(i%2==1){
+        $(this).addClass("box6click");  
+          }
+        else if(i%2==0){
+          $(this).addClass("box6click2");  
+          $(this).removeClass("box6click2");  
+         }
+      })*/
+    })
+    
+  </script>
+</head>
+<body>
+  <div class="box0">0</div>
+    <hr/>
+<div class="box1">1</div>
+  <hr/>
+  <div class="box2">2</div>
+    <hr/>
+  <div class="box3">3</div>
+   <hr/>
+  <div class="box4">4</div>
+
+<hr/>
+  <div class="box5">5</div>
+  <hr/>
+  <div class="box6">6</div>
+    <hr/>
+  <div id="box7">7</div>
+    <hr/>
+  <div id="box8">8</div>
+      <hr/>
+  <div id="box9">9</div>
+  <hr/>
+  <div id="box10">10</div>
+
+</body>
+</html>
