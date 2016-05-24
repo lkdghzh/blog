@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ZH-CN">
+<head></head>
+<script type="text/javascript">
+	function Person(name, age) {
+	            this.name = name;
+	            this.age = age;
+	            this.aler = function () {
+	                alert(1);
+	            }
+	}
+        //因为prototype是对象，可以写成无序键值对
+        Person.prototype = {
+            sayHi: function () { alert('sayhi'); },
+            sayHello: function () { alert('sayhello'); }
+        }
+
+        function student(sname, sage) {//
+            //Person.call(this, sname, sage);//we
+        }
+       //当改变student.prototype时候，原来的会被覆盖，达不到子类继承父类，或者子类原型可以增加方法不影响到父类原型
+       //此时就需要将两者的方法合并。
+       student.prototype = Person.prototype;
+         student.prototype ={
+            saystu: function () { alert('saystu'); }
+        }
+       // student.prototype = new Person();
+        //student.prototype.constructor = student;
+        var stu1 = new student(" zg",18);
+
+       var p1 = new Person(" ls",20);
+        stu1.aler();
+        stu1.sayHi();
+        stu1.sayHello();
+        stu1.saystu();
+</script>
+<body>
+</body>
+</html>

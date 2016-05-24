@@ -1,0 +1,33 @@
+<html>
+<head>
+	<title></title>
+</head>
+<script type="text/javascript">
+//原型链：a1对象（实例对象）还让A.prototype对象（原型对象）之间的连接，叫做原型链
+//2个对象。之间有一个链接 _proto_
+
+//a1下是没有num1（A中没有this.num1=20），会继续通过a1._proto_找num1。
+//a1下有num1（A中没有this.num1=20），不再会继续通过a1._proto_找num1，
+//即使A.prototype.num1 = 10; alert(a1.num1);依然是20
+
+//....
+//原型链最外层：Object.prototype
+function A(){
+	//this.num1=20
+
+}
+//A.prototype.num1 = 10;
+		/*Function.prototype.num1 = 30;*/
+Object.prototype.num1 = 40;
+/*A.prototype.num1 = 60*/
+A.prototype.fun = function() {
+	alert(this.num1)
+};
+var a1=new A();
+a1.fun();
+alert(a1.num1);
+</script>
+<body>
+
+</body>
+</html>
