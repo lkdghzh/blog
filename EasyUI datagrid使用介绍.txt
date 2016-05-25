@@ -1,0 +1,153 @@
+JQuery EasyUI的datagrid的使用方式总结
+第一步：添加样式和js脚本在前台添加展示数据表格的table元素
+	例如：
+	<div>
+    <table id="tt" style="width: 700px;" title="标题，可以使用代码进行初始化，也可以使用这种属性的方式" iconcls="icon-edit">
+    </table>
+	</div>
+	注：表格的属性可以在table中设置（Unobtrusive），也可以直接使用js脚本进行控制。建议使用js脚本控制
+   
+	
+	属性的定义：
+	请参见Jquery easyui API
+	
+第二步：在doucment.ready中初始化表格的属性以及数据获取的方式。
+    例如：
+	 $('#tt').datagrid({
+				url: '/UserInfo/GetAllUserInfos',
+				title: '演示表格使用',
+				width: 700,
+				height: 400,
+				fitColumns: true,
+				idField: 'ID',
+				loadMsg: '正在加载用户的信息...',
+				pagination: true,
+				singleSelect: false,
+				pageSize:10,
+				pageNumber:1,
+				pageList: [10, 20, 30],
+				queryParams: {},
+				columns: [[
+						{ field: 'ck', checkbox: true, align: 'left', width: 50 },
+						{ field: 'ID', title: '主键', width: 80 },
+						{ field: 'UserName', title: '用户名', width: 120 },
+						{ field: 'SubTime', title: '提交时间', width: 80, align: 'right',
+							formatter:function(value,row,index){
+								return (eval(value.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"))).pattern("yyyy-M-d h:m:s.S");
+							}
+						 }，
+						 {field:'showprice',title:'商品价格',width:80,align:'right',
+						            styler:function(value,row,index){
+							            if (value < 20){
+								            return 'background-color:#ffee00;color:red;';
+							            }
+						            },
+                                    formatter:function(value,row,index){
+                                       return "<a href='#' onclick='editGoodsPrice("+row.goodsid+");return false;'>"+value+"</a>";
+                                    }
+					    }
+					]],
+				 toolbar: [{
+							id: 'btnDownShelf',
+							text: '上架',
+							iconCls: 'icon-add',
+							handler: function () {
+								var rows = $('#goodGrid').datagrid('getSelections');
+								if (!rows || rows.length == 0) {
+									//alert("请选择要修改的商品！");
+									$.messager.alert("选择商品提醒", "请选择要修改的商品!", "error");
+									return;
+								}
+								$.messager.confirm("上架提醒", "您是否要真的要将此商品上架？", function (r) {
+									if (r) {
+										updateGoodsNewHot(rows, "onshelf");
+									}
+								});
+							}
+				}],
+				onHeaderContextMenu: function (e, field) {
+
+				}
+	});
+	
+	
+第三步：后台设置加载的数据：
+
+    注意：表格Post或者get回来的请求中
+	page：3 代表page为key，然后选择的当前页码为3
+	rows：10 代表一页的大小为10
+	后台返回的数据的格式为：{total：''，rows：[{},{}]}  
+	只要包含了总数tatol字段，rows是具体的行数
+	例如：
+	Asp.Net MVC 例子：
+	    public JsonResult GetAllUserInfos()
+        {
+            int pageSize = 5;
+            int pageIndex = 1;
+            int.TryParse(this.Request["page"], out pageIndex);
+            int.TryParse(this.Request["rows"], out pageSize);
+
+            pageSize = pageSize <= 0 ? 5 : pageSize;
+            pageIndex = pageIndex < 1 ? 1 : pageIndex;
+
+            var temp = db.UserInfo
+                .OrderBy(u=>u.Sort)
+                .Skip<UserInfo>((pageIndex-1)*pageSize)
+                .Take<UserInfo>(pageSize)
+                .ToList<UserInfo>();
+            Hashtable ht = new Hashtable();
+            ht["total"] = db.UserInfo.Count();
+            ht["rows"] = temp;
+            return Json(ht);
+        }
+		
+	Asp.Net WebForm 例子：
+	    public void ProcessRequest(HttpContext context)
+        {
+            context.Response.ContentType = "text/plain";
+            var strWebName = context.Request["WebName"] ?? string.Empty;
+            var  GoodsNo = context.Request["GoodsNo"] ?? string.Empty;
+            int categoryId = 0;
+
+            int pageIndex = 1;
+            int pageSize = 10;
+
+            int.TryParse(context.Request["rows"], out pageSize);
+            int.TryParse(context.Request["page"], out pageIndex);
+
+            decimal priceLeft = 0;
+            decimal priceRight = 1000000;
+            int goodsStatus = 0;
+            decimal.TryParse(context.Request["PriceLeft"], out priceLeft);
+            decimal.TryParse(context.Request["PriceRight"], out priceRight);
+            int.TryParse(context.Request["CategoryId"], out categoryId);
+            int.TryParse(context.Request["GoodsStatus"], out goodsStatus);
+            var goodsQueryParamter = new GoodsQueryParamter();
+            
+           
+            goodsQueryParamter.GoodsStatus = (Model.GoodsModel.GoodsStatusEnum)goodsStatus;
+
+            var ds = goodsService.GetGoodsList(goodsQueryParamter);
+            string json = string.Empty;           
+
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                System.Text.StringBuilder rowJson = new System.Text.StringBuilder();
+                int colLen = ds.Tables[0].Columns.Count;
+                DataColumnCollection col = ds.Tables[0].Columns;
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    System.Text.StringBuilder colJson = new System.Text.StringBuilder();
+                    rowJson.Append("{");
+                    for (int i = 0; i < colLen; i++)
+                    {
+                        colJson.Append("\"" + col[i].ColumnName + "\":\"" + row[i].ToString() + "\",");
+                    }
+                    rowJson.Append(colJson.ToString().TrimEnd(','));
+                    rowJson.Append("},");
+                }
+                json = "{\"total\":" + ds.Tables[0].Rows[0]["sumGoods"] + ",\"rows\":[" + rowJson.ToString().TrimEnd(',') + "]}";
+            }
+            context.Response.Write(json);
+        }
+	
