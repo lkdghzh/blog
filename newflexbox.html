@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+
+  <style>
+    .flex-container{
+      padding:0;margin:0;list-style:none;
+      display:-webkit-flex;
+      display:flex;
+      width:700px;
+      height:245px;
+      /*主轴不一定是水平，纵轴不一定垂直，4个方向都有可能*/ 
+      /*下面flex-direction:colomn确定的主轴的方向是垂直向下的。*/
+      /*下面flex-wrap:wrap包裹，溢出自动在主轴平行的方向换“行（这里是换列）”*/
+      -webkit-flex-flow:column wrap;
+      
+      /*主轴方向（这里垂直向下）*/
+      /*主轴方向（这里垂直向下），也许溢出导致多行或者多列，每行或者每列主轴方向（水平、垂直）居中 上下左右~等*/
+     justify-content:center;
+     /*  justify-content:flex-start;*/
+     /* justify-content:flex-end;*/
+      
+      /*纵轴方向（这里水平向右）*/
+      /*纵轴方向（这里水平向右），也许溢出导致多行或者多列(这里)，每行或者每列(这里)的项目在这行或者列中的侧轴方向（水平（这里向右）、垂直）上居中 上下左右，等*/
+      /*align-items:stretch;*/ /*纵轴方向（这里水平向右），把项目的width去掉，如果是垂直，去掉高度，默认strecth*/
+      /*坑！！，剩余空间：延伸项目延伸：延伸到这列（这里）或者行最大的项目的宽（这里）或者高*/
+      align-items:baseline;/*坑！！主轴为垂直，一列的项目不可能按基准线对齐，设置这个之后，这是时候是默认到flex-start;*/
+      /*align-items:flex-end;*/
+     /*align-items:center; */
+      /*align-items:flex-start;*/
+
+       /*（多纵轴方向） 各行或者各列（这里）之间有空隙*/
+      
+      /*溢出主轴，空隙。--》在侧轴方向的各行或者各列之间（这里是多列）的对齐。或者多列的弹性盒模型容器*/
+      /*注意这里说的是行或者列之间的布局，就相当于把溢出的的行或者列当成一个元素~*/
+      /*多行或者多列*/
+      /*0，行和列（这里）的剩余空间的计算*/
+       /*stretch的理解，多行或者多列的“剩余空间”先平均分配，
+	   1，设置了项目的宽度（这里）或者高度，每一行或者列（这里）的留的富裕空间一样。
+       2，和每一列（这里）或者行的宽（这里）高没关系。
+       */
+       /*align-content:stretch;*/
+       align-content:space-around;
+       /* align-content:space-between ;*/
+       /* align-content:flex-start;*/
+      /*align-content:center;  */ 
+      /* align-content:flex-end;*/
+      background:yellowgreen;
+    }
+    .flex-item{
+      box-sizing:border-box;
+      background:tomato;
+      width:200px;
+      height:50px;
+      border:1px solid green;
+      color:white;
+    }
+    .flex-item:nth-of-type(1){
+      width:250px;
+    }
+    .flex-item:nth-of-type(2){
+      width:30px;
+    }
+    .flex-item:nth-of-type(3){
+      width:320px;
+      order:-1;/*调整位置，默认为0，越小越靠前。*/
+    }
+    /* .flex-item:nth-of-type(5){
+      width:410px;
+    }*/
+    .flex-item:nth-of-type(6){
+      width:150px;
+     align-self: center;/*单独地调节一个项目的纵轴方向在这行或者列（这里）的位置*/
+    }
+  </style>
+</head>
+<body>
+  <ul class="flex-container">
+  <li class="flex-item">1</li>
+  <li class="flex-item">2</li>
+  <li class="flex-item">3</li>
+  <li class="flex-item">4</li>
+  <li class="flex-item">5</li>
+  <li class="flex-item">6</li>
+</ul>
+</body>
+</html>
