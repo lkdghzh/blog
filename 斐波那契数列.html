@@ -1,0 +1,58 @@
+<!DOCTYPE html >
+<html>
+<head>
+
+<script type="text/javascript">
+//1，1，2，3，5，8，13，21这个数列 斐波那契 数列（肥波哪弃）
+//得到第9项是几？
+/*******************************111111111递归的思想***********************************/
+function digui(index){
+	//index-2=0 index的最小值是3  
+	if (index<0) { //负数为0 我自己写的
+		return 0;
+	}
+	if (index<=2) {//第一项 第二项都为1,直接范围内 都返回1  终止条件 这是第二步！！！
+		return 1;
+	}
+	return digui(index-1)+digui(index-2);//先看后面的 几项，当前项=前一项+前二项 这是第一步！！！！
+}
+console.log(digui(-1));//0
+console.log(digui(7));//13
+console.log(digui(8));//21
+/*******************************2222222迭代（循环）的思想***********************************/
+/*
+反正不好理解，记住就好了。
+1 1 2 三个数的话，前2个数 ，1和1，需要循环1次 得到2
+1 1 2 3 四个数的话，前3个数 ，1和1和2，需要循环2次（在上次循环次数+再和第三个数循环一次）  得到结果3
+....    n个数需要循环n-2次
+
+3个值的故事，加上 循环次数 的搞鬼
+
+//索引必须从3开始最好了（包含），因为已经设置 1 2了
+//index为1 2，是不对的 因为循环没走 我还是返回的thirdnumResult=0；
+*/
+function forloop(index){   //刚
+	var firstnum=1; //第一个值
+	var secondnum=1;//第二个值
+	var thirdnumResult=0;//结果  第三个值
+	for (var i = 0; i < index-2; i++) {  //循环1次，得到第三个数  2次得到第四个数    index-2次得到第index个数
+		thirdnumResult=firstnum+secondnum;  
+
+		firstnum=secondnum;       //现在的3个值的第一个，已经变成了原来三个中的第二个
+		secondnum=thirdnumResult;//现在的3个值的第二个，已经变成了来三个中的第三个，结果
+	}
+   return thirdnumResult;
+}
+console.log(forloop(-1));//0
+console.log(forloop(1));//0
+console.log(forloop(2));//0
+console.log(forloop(3));//2
+console.log(forloop(8));//21
+//必须从3开始最好了，因为已经设置 1 2了
+//index为1 2，是不对的 因为循环没走 我还是返回的thirdnumResult=0；
+</script>
+</head>
+
+<body>
+</body>
+</html>
