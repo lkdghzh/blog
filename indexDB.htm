@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />  
+<script type="text/javascript">
+    //打开数据库
+    function openDB(name,version){
+        var version = version || 1;
+        var request = window.indexedDB.open(name,version);
+        request.onerror = function(e){
+            console.log(e.currentTarget.error.message);    
+        };
+        request.onsuccess = function(e){
+            myDB.db = e.target.result;    
+            console.log("success");   
+        };
+        request.onupgradeneeded = function(e){
+            var db=e.target.result;
+            if(!db.objectStoreNames.contains('students')){
+                //db.createObjectStore('students',{keyPath:"id"});//以id为键存储数据 类似关联数组
+                //db.createObjectStore('students',{autoIncrement: true});//以自增数值为键 类似索引数组
+                
+                //创建索引
+                var store=db.createObjectStore('students',{keyPath: 'id'});
+                store.createIndex('nameIndex','name',{unique:true}); 
+                store.createIndex('ageIndex','age',{unique:false});
+            }
+            console.log('DB version changed to ' + version);
+        };
+    }
+    //插入数据
+    function addData(db,storeName){
+        var transaction=db.transaction(storeName,'readwrite'); 
+        var store=transaction.objectStore(storeName); 
+
+        for(var i=0;i<students.length;i++){
+            store.add(students[i]);
+        }
+    }
+    //查找数据
+    function getDataByKey(db,storeName,value){
+        var transaction=db.transaction(storeName,'readwrite'); 
+        var store=transaction.objectStore(storeName); 
+        var request=store.get(value); 
+        request.onsuccess=function(e){ 
+            var student=e.target.result; 
+            console.log(student.name); 
+        };
+    }
+    //利用索引查找数据
+    function getDataByIndex(db,storeName){
+        var transaction=db.transaction(storeName);
+        var store=transaction.objectStore(storeName);
+        var index = store.index("nameIndex");
+        index.get('Byron').onsuccess=function(e){
+            var student=e.target.result;
+            console.log(student.id);
+        }
+    }
+    //更新数据
+    function updateDataByKey(db,storeName,value){
+        var transaction=db.transaction(storeName,'readwrite'); 
+        var store=transaction.objectStore(storeName); 
+        var request=store.get(value); 
+        request.onsuccess=function(e){ 
+            var student=e.target.result; 
+            student.age=35;
+            store.put(student); 
+        };
+    }
+    //删除数据
+    function deleteDataByKey(db,storeName,value){
+        var transaction=db.transaction(storeName,'readwrite'); 
+        var store=transaction.objectStore(storeName); 
+        store.delete(value); 
+    }
+    //清空object store数据(student)
+    function clearObjectStore(db,storeName){
+        var transaction=db.transaction(storeName,'readwrite'); 
+        var store=transaction.objectStore(storeName); 
+        store.clear();
+    }
+    //关闭数据库
+    function closeDB(db){
+        db.close();
+    }
+    //删除数据库
+    function deleteDB(name){
+        indexedDB.deleteDatabase(name);
+    }
+    //配置数据库
+    var myDB={
+        name:'test2',
+        version:3,
+        db:null
+    };
+    
+    var students=[
+        { 
+            id:1001, 
+            name:"Byron", 
+            age:24 
+        },
+        { 
+            id:1002, 
+            name:"Frank", 
+            age:30 
+        },
+        { 
+            id:1003, 
+            name:"Aaron", 
+            age:26 
+        }
+    ];
+    openDB(myDB.name,myDB.version);//打开数据库
+    setTimeout(function(){
+        addData(myDB.db,'students');
+    },1000);
+    //closeDB(myDB.db);//关闭数据库 打开和关闭数据库不能同时存在？？？
+    //deleteDB(myDB.name);//删除数据库
+</script>
+</head>
+
+<body>
+       <button id="add"  > 增加</button>
+       <button id="delete"  >删除 </button>
+       <button id="motify"  >修改 </button><br/>
+       <input  type="text" id="txt"  />
+       <button id="search" >查询</button>
+
+
+</body>
+</html>
