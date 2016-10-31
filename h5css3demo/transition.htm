@@ -1,171 +1,268 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>¹ý¶É</title>
-<style>
- /**************************************************×¢Òâ**********************************
- 1£¬(Çø·Ö¹ý¶ÉºÍ¶¯»­)£º¹ý¶ÉÓÉÊÂ¼þ´¥·¢¡£
- 2£¬(ÊÂ¼þÖ®ºóÑùÊ½×Ô¶¯È¥³ýÖ®ºó£©ÊÂ¼þ²»´æÔÚ(hoverÑùÊ½×Ô¶¯È¥³ý£¬hover½áÊø)£¬·µ»ØÔ­À´ÑùÊ½
- ********/
-    
-  /*0£¬Òª¹ý¶ÉµÄÑùÊ½£ºall ºÍ²»Ð´Ä¬ÈÏÈ«²¿*/
-  /*ÒªÌí¼Ó¶à¸öÑùÊ½µÄ±ä»»Ð§¹û£¬Ìí¼ÓµÄÊôÐÔÓÉ¶ººÅ·Ö¸ô£º*/
-.box0{width:100px;height:100px;background:red;opacity:0.1; transition:height 5s, width ,5s;}
-.box0:hover{ background:blue;width:200px;opacity:1;height:300px;}
-  
-  /*1£¬¹ý¶ÉÊ±¼ä*/
-.box1{width:100px;height:100px;background:red; transition:500ms;}
-.box1:hover{ background:blue;width:200px;height:200px;}
-  
-  /*2£¬ÑÓÊ±Ê±¼ä£º3sºó¹ý¶É */
-.box2{width:100px;height:100px;background:red; transition:width 2s 1s;}
-.box2:hover{ background:blue;width:200px;height:200px;}
-  /*3£¬ÔË¶¯ÐÎÊ½ 
-  ease£º£¨Öð½¥±äÂý£©Ä¬ÈÏÖµ
-  linear£º£¨ÔÈËÙ£©
-  ease-in£º(¼ÓËÙ)
-  ease-out£º£¨¼õËÙ£©
-  ease-in-out£º£¨ÏÈ¼ÓËÙºó¼õËÙ£©
-  cubic-bezier ±´Èû¶ûÇúÏß£¨ x1, y1, x2, y2 £© 
-  http://matthewlein.com/ceaser/
-  */
-.box3{width:100px;height:100px;background:red; transition:width 5s 1s ease-out;}
-.box3:hover{ background:blue;width:500px;height:200px;}
-  /*4£¬±´Èû¶ûÇúÏß¿ÉÒÔÉèÖÃ¹ý¶ÉµÄ¹ý³ÌÖÐ£¬³¬³ö×îÖÕÖµ£¬×îºó»¹ÊÇµ½×îÖÕÖµ*/
-.box4{width:100px;height:100px;background:red; transition:width 5s .2s cubic-bezier(0.000, 1.650, 0.625, 1.650);}
-.box4:hover{ background:blue;width:500px;height:200px;}
- /*********************************ÆäËûÊÂ¼þ´¥·¢¹ý¶É£¨js¿ØÖÆ£©**********************************************/
-  
-  
-  
-.box5{width:100px;height:100px;background:red; transition:all 2s .1s ease-in;}
-.box5:hover{ background:blue;width:200px;height:200px;}
-  /*click´¥·¢:×¢ÒâºÍcssÎ±ÀàhoverÇø±ð£¬´¥·¢ÁË¾Í¹ý¶Éµ½¸Ä±äÖ®ºóµÄÑùÊ½£¬²»ÏñhoverÄÇÑù·µ»ØÔ­À´*/
- .box6{width:100px;height:100px;background:red; transition:all 2s .1s ease-in;}
- .box6click{background:blue;width:200px;height:200px;}/* transition:all 2s .1s ease-in;*/
- /*.box6click2{width:100px;height:100px;background:red;}*/
-  
- /*Ìí¼Ó¹ý¶ÉÍêÊÂ¼þ
-  WebkitÄÚºË£º obj.addEventListener('webkitTransitionEnd',function(){},false);
-  firefox: obj.addEventListener('transitionend',function(){},false);
-  */
-  /*ÒÆ³ý¹ý¶ÉÍêÊÂ¼þ
-  WebkitÄÚºË£º obj.removeEventListener('webkitTransitionEnd',function(){},false);
-  firefox: obj.removeEventListener('transitionend',function(){},false);
-  */
-  #box7{width:100px;height:100px;background:red; transition:all 2s .1s ease-in;}
-  #box8{width:100px;height:100px;background:red; transition:all 2s .1s ease-in;}
-  #box9,#box10{width:100px;height:100px;background:green;}
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>ï¿½ï¿½ï¿½ï¿½</title>
+    <style>
+        /**************************************************×¢ï¿½ï¿½**********************************
+        1ï¿½ï¿½(ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ÉºÍ¶ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        2ï¿½ï¿½(ï¿½Â¼ï¿½Ö®ï¿½ï¿½ï¿½ï¿½Ê½ï¿½Ô¶ï¿½È¥ï¿½ï¿½Ö®ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(hoverï¿½ï¿½Ê½ï¿½Ô¶ï¿½È¥ï¿½ï¿½ï¿½ï¿½hoverï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½Ê½
+        ********/
 
-</style>
-  <script>   
-   
-    
-      window.onload=function(){//onload Ð¡Ð´~
-       //·â×°²»Í¬ä¯ÀÀÆ÷Ìí¼Ó ¹ý¶É½áÊøÊÂ¼þ
-        function addTranEndEvt(obj,fn){
-          obj.addEventListener('webkitTransitionEnd',fn,false);
-          obj.addEventListener('transitionend',fn,false);
-        }
-        //·â×°²»Í¬ä¯ÀÀÆ÷ÒÆ³ý ¹ý¶É½áÊøÊÂ¼þ
-         function removeTranEndEvt(obj,fn){
-          obj.removeEventListener('webkitTransitionEnd',fn,false);
-          obj.removeEventListener('transitionend',fn,false);
+        /*0ï¿½ï¿½Òªï¿½ï¿½ï¿½Éµï¿½ï¿½ï¿½Ê½ï¿½ï¿½all ï¿½Í²ï¿½Ð´Ä¬ï¿½ï¿½È«ï¿½ï¿½*/
+        /*Òªï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½Ê½ï¿½Ä±ä»»Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¶ï¿½ï¿½Å·Ö¸ï¿½ï¿½ï¿½*/
+        .box0 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            opacity: 0.1;
+            transition: height 5s, width, 5s;
         }
 
-/***************´¥·¢´ÎÊý*************************/
-        var div7=document.getElementById("box7");
-        addTranEndEvt(div7,function(){
-          alert('1¸öÊôÐÔ¹ý¶ÉºÃ');//¹ý¶ÉÍê£¨Ã¿¸Ä±äÒ»¸öÑùÊ½ÊôÐÔ£¬¾Í»á´¥·¢Ò»´ÎendÊÂ¼þ£©
+        .box0:hover {
+            background: blue;
+            width: 200px;
+            opacity: 1;
+            height: 300px;
+        }
+
+        /*1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½*/
+        .box1 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            transition: 500ms;
+        }
+
+        .box1:hover {
+            background: blue;
+            width: 200px;
+            height: 200px;
+        }
+
+        /*2ï¿½ï¿½ï¿½ï¿½Ê±Ê±ï¿½ä£º3sï¿½ï¿½ï¿½ï¿½ï¿½ */
+        .box2 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            transition: width 2s 1s;
+        }
+
+        .box2:hover {
+            background: blue;
+            width: 200px;
+            height: 200px;
+        }
+
+        /*3ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½Ê½
+        easeï¿½ï¿½ï¿½ï¿½ï¿½ð½¥±ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Öµ
+        linearï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù£ï¿½
+        ease-inï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)
+        ease-outï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù£ï¿½
+        ease-in-outï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½ï¿½Ùºï¿½ï¿½ï¿½Ù£ï¿½
+        cubic-bezier ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½ x1, y1, x2, y2 ï¿½ï¿½
+        http://matthewlein.com/ceaser/
+        */
+        .box3 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            transition: width 5s 1s ease-out;
+        }
+
+        .box3:hover {
+            background: blue;
+            width: 500px;
+            height: 200px;
+        }
+
+        /*4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¹ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½Öµ*/
+        .box4 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            transition: width 5s .2s cubic-bezier(0.000, 1.650, 0.625, 1.650);
+        }
+
+        .box4:hover {
+            background: blue;
+            width: 500px;
+            height: 200px;
+        }
+
+        /*********************************ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½jsï¿½ï¿½ï¿½Æ£ï¿½**********************************************/
+
+        .box5 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            transition: all 2s .1s ease-in;
+        }
+
+        .box5:hover {
+            background: blue;
+            width: 200px;
+            height: 200px;
+        }
+
+        /*clickï¿½ï¿½ï¿½ï¿½:×¢ï¿½ï¿½ï¿½cssÎ±ï¿½ï¿½hoverï¿½ï¿½ï¿½ð£¬´ï¿½ï¿½ï¿½ï¿½Ë¾Í¹ï¿½ï¿½Éµï¿½ï¿½Ä±ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½hoverï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½*/
+        .box6 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            transition: all 2s .1s ease-in;
+        }
+
+        .box6click {
+            background: blue;
+            width: 200px;
+            height: 200px;
+        }
+
+        /* transition:all 2s .1s ease-in;*/
+        /*.box6click2{width:100px;height:100px;background:red;}*/
+
+        /*ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+         Webkitï¿½ÚºË£ï¿½ obj.addEventListener('webkitTransitionEnd',function(){},false);
+         firefox: obj.addEventListener('transitionend',function(){},false);
+         */
+        /*ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+        Webkitï¿½ÚºË£ï¿½ obj.removeEventListener('webkitTransitionEnd',function(){},false);
+        firefox: obj.removeEventListener('transitionend',function(){},false);
+        */
+        #box7 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            transition: all 2s .1s ease-in;
+        }
+
+        #box8 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            transition: all 2s .1s ease-in;
+        }
+
+        #box9, #box10 {
+            width: 100px;
+            height: 100px;
+            background: green;
+        }
+
+    </style>
+    <script>
+
+
+        window.onload = function () {//onload Ð¡Ð´~
+            //ï¿½ï¿½×°ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+            function addTranEndEvt(obj, fn) {
+                obj.addEventListener('webkitTransitionEnd', fn, false);
+                obj.addEventListener('transitionend', fn, false);
+            }
+
+            //ï¿½ï¿½×°ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+            function removeTranEndEvt(obj, fn) {
+                obj.removeEventListener('webkitTransitionEnd', fn, false);
+                obj.removeEventListener('transitionend', fn, false);
+            }
+
+            /***************ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*************************/
+            var div7 = document.getElementById("box7");
+            addTranEndEvt(div7, function () {
+                alert('1ï¿½ï¿½ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½Éºï¿½');//ï¿½ï¿½ï¿½ï¿½ï¿½ê£¨Ã¿ï¿½Ä±ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½Ô£ï¿½ï¿½Í»á´¥ï¿½ï¿½Ò»ï¿½ï¿½endï¿½Â¼ï¿½ï¿½ï¿½
+            })
+            div7.onclick = function () {//ï¿½ï¿½ï¿½×¢ï¿½â£ºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½ï¿½á²»ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¹ï¿½ï¿½ï¿½
+                //Ã¿ï¿½Ä±ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½Ô£ï¿½ï¿½Í»á´¥ï¿½ï¿½Ò»ï¿½ï¿½endï¿½Â¼ï¿½
+                this.style.width = this.offsetWidth + 100 + 'px';
+                this.style.height = this.offsetHeight + 100 + 'px';
+            }
+
+            /*******addEventListener×¢ï¿½ï¿½ï¿½removeEventListenerï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÍ¬Ò»ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½×°ï¿½ï¿½*************/
+            var div8 = document.getElementById("box8");
+            /* addTranEndEvt(div8,function (){
+             this.style.width=this.offsetWidth+200+'px';
+             //ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½
+             //ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½addTranEndEvtï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½addTranEndEvtï¿½ï¿½ï¿½ï¿½Í¬Ò»ï¿½ï¿½
+             //Òªï¿½ï¿½Êµï¿½ï¿½Í¬Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç±ï¿½ï¿½ï¿½ï¿½×°addWidthï¿½ï¿½ÎªaddTranEndEvtï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½
+             //Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªremoveTranEndEvtï¿½Ä²ï¿½ï¿½ï¿½
+             removeTranEndEvt(this,addTranEndEvt);
+             });*/
+            function addWidth() {
+                this.style.width = this.offsetWidth + 200 + 'px';
+                removeTranEndEvt(this, addWidth);
+            }
+
+            addTranEndEvt(div8, addWidth);
+            div8.onclick = function () {
+                this.style.width = this.offsetWidth + 100 + 'px';
+            }
+
+            /**** addEventListener×¢ï¿½ï¿½ï¿½removeEventListenerï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÍ¬Ò»ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½×°ï¿½ï¿½*********/
+            var div9 = document.getElementById("box9");
+            div9.addEventListener('click', function () {
+                alert(1)
+            })
+            div9.removeEventListener('click', function () {
+                alert(1)//ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½
+            })
+            var div10 = document.getElementById("box10");
+
+            function dosth() {
+                alert(2)
+            }
+
+            var div10 = document.getElementById("box9");
+            div10.addEventListener('click', dosth)
+            div10.removeEventListener('click', dosth)//ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½
+        }
+
+
+        $(function () {
+            $('.box6').click(function () {
+                $(this).addClass("box6click");
+            })
+
+            /* var i=0;
+             $('.box6').click(function(){
+             ++i;
+             console.log(i);
+             if(i%2==1){
+             $(this).addClass("box6click");
+             }
+             else if(i%2==0){
+             $(this).addClass("box6click2");
+             $(this).removeClass("box6click2");
+             }
+             })*/
         })
-        div7.onclick=function(){//½á¹û×¢Òâ£ºÁ¬ÐøµãÏÂ£¬»á²»¶ÏµÄÔÚ×îºó¹ý¶É½á¹û»ù´¡ÉÏÔÙ¹ý¶É
-          //Ã¿¸Ä±äÒ»¸öÑùÊ½ÊôÐÔ£¬¾Í»á´¥·¢Ò»´ÎendÊÂ¼þ
-          this.style.width=this.offsetWidth+100+'px';
-           this.style.height=this.offsetHeight+100+'px';
-        }
 
-/*******addEventListener×¢²áºÍremoveEventListenerÒÆ³ý±ØÐëÎªÍ¬Ò»¸öÊÂ¼þ£¨¶àÒ»²ã·â×°£©*************/
-         var div8=document.getElementById("box8");
-         /* addTranEndEvt(div8,function (){
-           this.style.width=this.offsetWidth+200+'px';
-           //ÕâÖÖÒÆ³ý¼àÌý·½·¨²»ÐÐ£º
-           //ÒòÎªÀ¨ºÅÄÚµÄaddTranEndEvtºÍÍâÃæµÄaddTranEndEvt²»ÊÇÍ¬Ò»¸ö
-           //ÒªÏëÊµÏÖÍ¬Ò»¸ö£¬ÎÒÃÇ±ØÐë·â×°addWidth×öÎªaddTranEndEvtµÄ²ÎÊý£¬
-           //Ò²¿ÉÒÔ×öÎªremoveTranEndEvtµÄ²ÎÊý
-          removeTranEndEvt(this,addTranEndEvt);
-        });*/
-        function addWidth(){
-           this.style.width=this.offsetWidth+200+'px';
-           removeTranEndEvt(this,addWidth);
-        }
-       addTranEndEvt(div8,addWidth);
-          div8.onclick=function(){
-            this.style.width=this.offsetWidth+100+'px';
-        }
-        
-  /**** addEventListener×¢²áºÍremoveEventListenerÒÆ³ý±ØÐëÎªÍ¬Ò»¸öÊÂ¼þ£¨¶àÒ»²ã·â×°£©*********/
-           var div9=document.getElementById("box9");
-        div9.addEventListener('click',function(){
-          alert(1)
-        })
-         div9.removeEventListener('click',function(){
-          alert(1)//ÎÞÐ§£¬²»ÄÜÄÜÒÆ³ý
-        })
-        var div10=document.getElementById("box10");
-
-         function dosth(){ alert(2)}
-          var div10=document.getElementById("box9");
-        div10.addEventListener('click',dosth)
-         div10.removeEventListener('click',dosth)//¿ÉÒÔÒÆ³ý
-    }
-    
-    
-   $(function(){  
-      $('.box6').click(function(){
-        $(this).addClass("box6click");  
-      })
-      
-      /* var i=0;
-      $('.box6').click(function(){
-        ++i; 
-        console.log(i);
-        if(i%2==1){
-        $(this).addClass("box6click");  
-          }
-        else if(i%2==0){
-          $(this).addClass("box6click2");  
-          $(this).removeClass("box6click2");  
-         }
-      })*/
-    })
-    
-  </script>
+    </script>
 </head>
 <body>
-  <div class="box0">0</div>
-    <hr/>
+<div class="box0">0</div>
+<hr/>
 <div class="box1">1</div>
-  <hr/>
-  <div class="box2">2</div>
-    <hr/>
-  <div class="box3">3</div>
-   <hr/>
-  <div class="box4">4</div>
+<hr/>
+<div class="box2">2</div>
+<hr/>
+<div class="box3">3</div>
+<hr/>
+<div class="box4">4</div>
 
 <hr/>
-  <div class="box5">5</div>
-  <hr/>
-  <div class="box6">6</div>
-    <hr/>
-  <div id="box7">7</div>
-    <hr/>
-  <div id="box8">8</div>
-      <hr/>
-  <div id="box9">9</div>
-  <hr/>
-  <div id="box10">10</div>
+<div class="box5">5</div>
+<hr/>
+<div class="box6">6</div>
+<hr/>
+<div id="box7">7</div>
+<hr/>
+<div id="box8">8</div>
+<hr/>
+<div id="box9">9</div>
+<hr/>
+<div id="box10">10</div>
 
 </body>
 </html>

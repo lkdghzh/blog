@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="jquery-1.12.3.js"></script>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>JS Bin</title>
-  <style> 
-    .div1{
-      width:100px;
-      height:100px;
-      background:green;
-      border:1px solid red;
-      position:absolute;/*绝对定位*/
-  }
-  </style>
-  <script>
-    $(function(){
-   var startPositionX=0,startPositionY=0;
-      $(".div1").mousedown(function(ev){ 
-        //ev,$对象不需要做兼容
-        //$中pageX（在document）和js中cleintX(可视区域)
-        //js中cleintX+scrollleft+scrollright的两边=$中pageX
-        startPositionX=ev.pageX-$(this).offset().left;//
-        startPositionY=ev.pageY-$(this).offset().top;
-        //document注册，不管如何移动，不会脱离鼠标。.div1会冒泡到。一直在触发，里面的函数一直在走。
-         $(document).mousemove(function(ev){
-            $(".div1").css('left',ev.pageX-startPositionX).css('top',ev.pageY-startPositionY);
-         })
-         $(document).mouseup(function(ev){
-           $(document).off();
-         })
-         return false；//最好阻止.div1的mousedown冒泡和默认。
-      })
-    })
-  </script>
+    <script src="jquery-1.12.3.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+    <style>
+        .div1 {
+            width: 100px;
+            height: 100px;
+            background: green;
+            border: 1px solid red;
+            position: absolute; /*绝对定位*/
+        }
+    </style>
+    <script>
+        $(function () {
+            var startPositionX = 0, startPositionY = 0;
+            $(".div1").mousedown(function (ev) {
+                //ev,$对象不需要做兼容
+                //$中pageX（在document）和js中cleintX(可视区域)
+                //js中cleintX+scrollleft+scrollright的两边=$中pageX
+                startPositionX = ev.pageX - $(this).offset().left;//
+                startPositionY = ev.pageY - $(this).offset().top;
+                //document注册，不管如何移动，不会脱离鼠标。.div1会冒泡到。一直在触发，里面的函数一直在走。
+                $(document).mousemove(function (ev) {
+                    $(".div1").css('left', ev.pageX - startPositionX).css('top', ev.pageY - startPositionY);
+                })
+                $(document).mouseup(function (ev) {
+                    $(document).off();
+                })
+                return false；//最好阻止.div1的mousedown冒泡和默认。
+            })
+        })
+    </script>
 </head>
 <body>
-  <div class="div1"></div>
+<div class="div1"></div>
 </body>
 </html>

@@ -1,44 +1,44 @@
-/**     
- * ¶ÔDateµÄÀ©Õ¹£¬½« Date ×ª»¯ÎªÖ¸¶¨¸ñÊ½µÄString     
- * ÔÂ(M)¡¢ÈÕ(d)¡¢12Ð¡Ê±(h)¡¢24Ð¡Ê±(H)¡¢·Ö(m)¡¢Ãë(s)¡¢ÖÜ(E)¡¢¼¾¶È(q) ¿ÉÒÔÓÃ 1-2 ¸öÕ¼Î»·û     
- * Äê(y)¿ÉÒÔÓÃ 1-4 ¸öÕ¼Î»·û£¬ºÁÃë(S)Ö»ÄÜÓÃ 1 ¸öÕ¼Î»·û(ÊÇ 1-3 Î»µÄÊý×Ö)     
- * eg:     
- * (new Date()).pattern("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423     
- * (new Date()).pattern("yyyy-MM-dd E HH:mm:ss") ==> 2009-03-10 ¶þ 20:09:04     
- * (new Date()).pattern("yyyy-MM-dd EE hh:mm:ss") ==> 2009-03-10 ÖÜ¶þ 08:09:04     
- * (new Date()).pattern("yyyy-MM-dd EEE hh:mm:ss") ==> 2009-03-10 ÐÇÆÚ¶þ 08:09:04     
- * (new Date()).pattern("yyyy-M-d h:m:s.S") ==> 2006-7-2 8:9:4.18     
- */       
-Date.prototype.pattern=function(fmt) {        
-    var o = {        
-    "M+" : this.getMonth()+1, //ÔÂ·Ý        
-    "d+" : this.getDate(), //ÈÕ        
-    "h+" : this.getHours()%12 == 0 ? 12 : this.getHours()%12, //Ð¡Ê±        
-    "H+" : this.getHours(), //Ð¡Ê±        
-    "m+" : this.getMinutes(), //·Ö        
-    "s+" : this.getSeconds(), //Ãë        
-    "q+" : Math.floor((this.getMonth()+3)/3), //¼¾¶È        
-    "S" : this.getMilliseconds() //ºÁÃë        
-    };        
-    var week = {        
-    "0" : "/u65e5",        
-    "1" : "/u4e00",        
-    "2" : "/u4e8c",        
-    "3" : "/u4e09",        
-    "4" : "/u56db",        
-    "5" : "/u4e94",        
-    "6" : "/u516d"       
-    };        
-    if(/(y+)/.test(fmt)){        
-        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));        
-    }        
-    if(/(E+)/.test(fmt)){        
-        fmt=fmt.replace(RegExp.$1, ((RegExp.$1.length>1) ? (RegExp.$1.length>2 ? "/u661f/u671f" : "/u5468") : "")+week[this.getDay()+""]);        
-    }        
-    for(var k in o){        
-        if(new RegExp("("+ k +")").test(fmt)){        
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));        
-        }        
-    }        
-    return fmt;        
+/**
+ * ï¿½ï¿½Dateï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½ Date ×ªï¿½ï¿½ÎªÖ¸ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½String
+ * ï¿½ï¿½(M)ï¿½ï¿½ï¿½ï¿½(d)ï¿½ï¿½12Ð¡Ê±(h)ï¿½ï¿½24Ð¡Ê±(H)ï¿½ï¿½ï¿½ï¿½(m)ï¿½ï¿½ï¿½ï¿½(s)ï¿½ï¿½ï¿½ï¿½(E)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(q) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 1-2 ï¿½ï¿½Õ¼Î»ï¿½ï¿½
+ * ï¿½ï¿½(y)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 1-4 ï¿½ï¿½Õ¼Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(S)Ö»ï¿½ï¿½ï¿½ï¿½ 1 ï¿½ï¿½Õ¼Î»ï¿½ï¿½(ï¿½ï¿½ 1-3 Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+ * eg:
+ * (new Date()).pattern("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
+ * (new Date()).pattern("yyyy-MM-dd E HH:mm:ss") ==> 2009-03-10 ï¿½ï¿½ 20:09:04
+ * (new Date()).pattern("yyyy-MM-dd EE hh:mm:ss") ==> 2009-03-10 ï¿½Ü¶ï¿½ 08:09:04
+ * (new Date()).pattern("yyyy-MM-dd EEE hh:mm:ss") ==> 2009-03-10 ï¿½ï¿½ï¿½Ú¶ï¿½ 08:09:04
+ * (new Date()).pattern("yyyy-M-d h:m:s.S") ==> 2006-7-2 8:9:4.18
+ */
+Date.prototype.pattern = function (fmt) {
+    var o = {
+        "M+": this.getMonth() + 1, //ï¿½Â·ï¿½        
+        "d+": this.getDate(), //ï¿½ï¿½        
+        "h+": this.getHours() % 12 == 0 ? 12 : this.getHours() % 12, //Ð¡Ê±        
+        "H+": this.getHours(), //Ð¡Ê±        
+        "m+": this.getMinutes(), //ï¿½ï¿½        
+        "s+": this.getSeconds(), //ï¿½ï¿½        
+        "q+": Math.floor((this.getMonth() + 3) / 3), //ï¿½ï¿½ï¿½ï¿½        
+        "S": this.getMilliseconds() //ï¿½ï¿½ï¿½ï¿½        
+    };
+    var week = {
+        "0": "/u65e5",
+        "1": "/u4e00",
+        "2": "/u4e8c",
+        "3": "/u4e09",
+        "4": "/u56db",
+        "5": "/u4e94",
+        "6": "/u516d"
+    };
+    if (/(y+)/.test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    if (/(E+)/.test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? "/u661f/u671f" : "/u5468") : "") + week[this.getDay() + ""]);
+    }
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        }
+    }
+    return fmt;
 }  

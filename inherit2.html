@@ -1,40 +1,46 @@
 <!DOCTYPE html>
 <html lang="ZH-CN">
 <head></head>
-    <script type="text/javascript">
-function copy(newObj,obj) {
-            for (var key in obj) {
-                newObj[key] = obj[key]
-            }
-            return newObj;
+<script type="text/javascript">
+    function copy(newObj, obj) {
+        for (var key in obj) {
+            newObj[key] = obj[key]
+        }
+        return newObj;
 
-        }
+    }
 
-function Person(name, age) {
-            this.name = name;
-            this.age = age;
-            this.aler = function () {
-                alert(1);
-            }
+    function Person(name, age) {
+        this.name = name;
+        this.age = age;
+        this.aler = function () {
+            alert(1);
         }
-        Person.prototype = {//因为prototype是对象，可以写成无序键值对
-            sayHi: function () { alert('sayhi'); },
-            sayHello: function () { alert('sayhello'); }
+    }
+    Person.prototype = {//因为prototype是对象，可以写成无序键值对
+        sayHi: function () {
+            alert('sayhi');
+        },
+        sayHello: function () {
+            alert('sayhello');
         }
-        function student(sname, sage) {//
-            Person.call(this, sname, sage);//we
+    }
+    function student(sname, sage) {//
+        Person.call(this, sname, sage);//we
+    }
+    student.prototype = {
+        saystu: function () {
+            alert('saystu');
         }
-        student.prototype={
-        saystu: function () { alert('saystu'); }
-        }
-        copy(student.prototype,Person.prototype);
+    }
+    copy(student.prototype, Person.prototype);
 
-       var p1 = new Person();
-        var stu1 = new student();
-        stu1.aler();
-        stu1.sayHi();
-        stu1.sayHello();
-         stu1.saystu();
+    var p1 = new Person();
+    var stu1 = new student();
+    stu1.aler();
+    stu1.sayHi();
+    stu1.sayHello();
+    stu1.saystu();
 </script>
 <body></body>
 </html>

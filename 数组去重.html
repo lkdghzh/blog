@@ -2,48 +2,48 @@
 <html>
 <head>
 
-<script type="text/javascript">
-/*******************************111111111***********************************/
-/*1,最好数组去重方法，利用json的键的唯一性*/
-function removeRepeator(oldArr){
-   var newArr=[];//放结果的空数组
-   var tempJson={};//中间临时json对象
-   for (var i = 0; i < oldArr.length; i++) {//循环老数组
-	   	if (!tempJson[oldArr[i]]) {//oldArr[i],老数组的值，做json的"键""~
-			newArr.push(oldArr[i]);//新数组push不重复的值
-			tempJson[oldArr[i]]='sth'; //给json增加键和随便的一个值。方便下次循环检测有没有"键""
-	   	}
-   }
- return newArr;
-}
-var oldArr=[5,7,9,6,5,1,8,5,4,9]
-var newArray=removeRepeator(oldArr);
-console.log(newArray);//[5, 7, 9, 6, 1, 8, 4]
-/**********************2222222**************************/
-/*1，增加一个新数组，将老数组的项目一个一个添加进去，
-2，每一次添加的时候，循环新数组，看看新数组有没有这个值，有的话就不添加，没有就添加*/
-/*for 嵌套if 嵌套for*/
-function removeRepeator2(oldArr){
-	var newArr=[];
- for (var i = 0; i < oldArr.length; i++) {
- 	if (!isHasThisVal(newArr,oldArr[i])) {
-		newArr.push(oldArr[i]);
- 	}
- }
- return newArr;
-}
-function isHasThisVal(newArr,val){
-	for (var i = 0; i < newArr.length; i++) {
-		if (newArr[i]==val) {
-			return true;
-		}
-	}
-	return false;
-}
-var oldArr=[5,7,9,6,5,1,8,5,4,9]
-var newArray=removeRepeator2(oldArr);
-console.log(newArray);//[5, 7, 9, 6, 1, 8, 4]
-</script>
+    <script type="text/javascript">
+        /*******************************111111111***********************************/
+        /*1,最好数组去重方法，利用json的键的唯一性*/
+        function removeRepeator(oldArr) {
+            var newArr = [];//放结果的空数组
+            var tempJson = {};//中间临时json对象
+            for (var i = 0; i < oldArr.length; i++) {//循环老数组
+                if (!tempJson[oldArr[i]]) {//oldArr[i],老数组的值，做json的"键""~
+                    newArr.push(oldArr[i]);//新数组push不重复的值
+                    tempJson[oldArr[i]] = 'sth'; //给json增加键和随便的一个值。方便下次循环检测有没有"键""
+                }
+            }
+            return newArr;
+        }
+        var oldArr = [5, 7, 9, 6, 5, 1, 8, 5, 4, 9]
+        var newArray = removeRepeator(oldArr);
+        console.log(newArray);//[5, 7, 9, 6, 1, 8, 4]
+        /**********************2222222**************************/
+        /*1，增加一个新数组，将老数组的项目一个一个添加进去，
+         2，每一次添加的时候，循环新数组，看看新数组有没有这个值，有的话就不添加，没有就添加*/
+        /*for 嵌套if 嵌套for*/
+        function removeRepeator2(oldArr) {
+            var newArr = [];
+            for (var i = 0; i < oldArr.length; i++) {
+                if (!isHasThisVal(newArr, oldArr[i])) {
+                    newArr.push(oldArr[i]);
+                }
+            }
+            return newArr;
+        }
+        function isHasThisVal(newArr, val) {
+            for (var i = 0; i < newArr.length; i++) {
+                if (newArr[i] == val) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        var oldArr = [5, 7, 9, 6, 5, 1, 8, 5, 4, 9]
+        var newArray = removeRepeator2(oldArr);
+        console.log(newArray);//[5, 7, 9, 6, 1, 8, 4]
+    </script>
 </head>
 
 <body>

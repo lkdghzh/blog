@@ -1,0 +1,16 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="http://cdn.bootcss.com/knockout/3.4.0/knockout-min.js"></script>
+</head>
+<body>
+	<select name="" id="" data-bind="options:  array_all, value: select_obj, optionsText: 'text'"></select>
+<script>
+    ko.applyBindings({
+        select_obj: ko.observable(""),        // Initially blank
+        array_all: ko.observableArray([{ value: 1, text: "下拉框" }, { value: 2, text: "单选列表" }, { value: 40, text: "颜色块" }])  // Prepopulate
+    });
+</script>
+</body>
+</html>

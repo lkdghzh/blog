@@ -1,70 +1,73 @@
 <!DOCTYPE html>
 <html lang="ZH-CN">
 <head></head>
-  <script type="text/javascript">
+<script type="text/javascript">
 
 
-  /*引用类型的  修改和重新赋值（改变）的区别*/
-  var arr1=[1,2,3];
-  var arr2=arr1;
-  arr2.push('a','b','c');
-  console.log(arr1);//[1,2,3,'a','b','c']
-  console.log(arr2);//[1,2,3,'a','b','c']
+    /*引用类型的  修改和重新赋值（改变）的区别*/
+    var arr1 = [1, 2, 3];
+    var arr2 = arr1;
+    arr2.push('a', 'b', 'c');
+    console.log(arr1);//[1,2,3,'a','b','c']
+    console.log(arr2);//[1,2,3,'a','b','c']
 
-  var arr3=[4,5,6];
-  var arr4=arr3;
-  arr4.push('e','d','f');
-  arr3=[4,5,6];
-  console.log(arr3);//[4,5,6]
-  console.log(arr4);//[4,5,6,'e','d','f']
-  
-
-//坑1：排序后，影响本身(而非生成新数组) 
-//坑2：默认情况下sort方法是按ascii字母顺序排序的，而非我们认为是按数字大小排序
-  var arr5=[100,19,52,502];
-  arr5.sort();                 
-  console.log(arr5);     //arr5:[100, 19, 502, 52]  
-
-//用法3：改变默认比较数字大小来排序    加入function(a,b){return a-b}
-
-//疑问4：a,b   代表.. arguments[0]和arguments[1]//
-function compare2Val(a,b){return a-b}
-var arr6=[100,19,52,502];
-arr6.sort(compare2Val); //调用 不需要传参，
- console.log(arr6); //arr6: [19, 52, 100, 502]
-
-//调用 不需要传参的本质
- function compare2Argument(){return arguments[0]-arguments[1]}
- var arr7=[100,19,52,502];
-arr7.sort(compare2Argument); //[19, 52, 100, 502]
- console.log(arr7); //arr6: [19, 52, 100, 502]
+    var arr3 = [4, 5, 6];
+    var arr4 = arr3;
+    arr4.push('e', 'd', 'f');
+    arr3 = [4, 5, 6];
+    console.log(arr3);//[4,5,6]
+    console.log(arr4);//[4,5,6,'e','d','f']
 
 
+    //坑1：排序后，影响本身(而非生成新数组)
+    //坑2：默认情况下sort方法是按ascii字母顺序排序的，而非我们认为是按数字大小排序
+    var arr5 = [100, 19, 52, 502];
+    arr5.sort();
+    console.log(arr5);     //arr5:[100, 19, 502, 52]
 
-/*************总比较次数结论**************/
-//疑问5 总比较次数：n(n-1)/2  n为数组长度
+    //用法3：改变默认比较数字大小来排序    加入function(a,b){return a-b}
 
-//答：1：各轮比较次数 的和 
-//答：2： （数组长度-1+数组长度-2+数组长度-3......+1）  
+    //疑问4：a,b   代表.. arguments[0]和arguments[1]//
+    function compare2Val(a, b) {
+        return a - b
+    }
+    var arr6 = [100, 19, 52, 502];
+    arr6.sort(compare2Val); //调用 不需要传参，
+    console.log(arr6); //arr6: [19, 52, 100, 502]
 
-/*
-例数组长度6  比较次数：5+4+3+2+1=15    
-例数组长度5   比较次数：4+3+2+1=10    
-例数组长度4   比较次数：3+2+1=6    
+    //调用 不需要传参的本质
+    function compare2Argument() {
+        return arguments[0] - arguments[1]
+    }
+    var arr7 = [100, 19, 52, 502];
+    arr7.sort(compare2Argument); //[19, 52, 100, 502]
+    console.log(arr7); //arr6: [19, 52, 100, 502]
 
-//高中学的1+2+3+.....+n=?
-答案：
-设S=1+2+…+(n-1)+n,
-则S=n+(n-1)+…+2+1
-∴2S=(1+n)+[2+(n-1)]+…+[(n-1)+2]+(n+1)
-=n(n+1)
-∴S= n(n+1)/2，
-即1+2+…+(n-1)+n= n(n+1)/2.
-*/
 
-//比较轮数：数组长度-1     每轮比较产生一个最大值放在数组最右，这个最大值不参与下轮比较
-//当前轮比较次数：数组长度-当前轮数  
-/*************结论**************/
+    /*************总比较次数结论**************/
+    //疑问5 总比较次数：n(n-1)/2  n为数组长度
+
+    //答：1：各轮比较次数 的和
+    //答：2： （数组长度-1+数组长度-2+数组长度-3......+1）
+
+    /*
+     例数组长度6  比较次数：5+4+3+2+1=15
+     例数组长度5   比较次数：4+3+2+1=10
+     例数组长度4   比较次数：3+2+1=6
+
+     //高中学的1+2+3+.....+n=?
+     答案：
+     设S=1+2+…+(n-1)+n,
+     则S=n+(n-1)+…+2+1
+     ∴2S=(1+n)+[2+(n-1)]+…+[(n-1)+2]+(n+1)
+     =n(n+1)
+     ∴S= n(n+1)/2，
+     即1+2+…+(n-1)+n= n(n+1)/2.
+     */
+
+    //比较轮数：数组长度-1     每轮比较产生一个最大值放在数组最右，这个最大值不参与下轮比较
+    //当前轮比较次数：数组长度-当前轮数
+    /*************结论**************/
 
 //轮数4（）-1  3轮
 //第一轮：4-1比较3次    [19,100,52,502]; [19,52,100,502];  [19,52,100,502];  做3次比较
@@ -72,25 +75,23 @@ arr7.sort(compare2Argument); //[19, 52, 100, 502]
 //第三轮：4-3 比较1次   抛弃100，502--->[19,52,100,502];  只做19 52  的1次比较
 
 
-
-
-//5，开发中常用方式  
+//5，开发中常用方式
 //例：根据人的年龄排序
-function person(name,age){
-	this.Name=name;
-	this.Age=age
-}
-var  personArray=[];
-personArray.push(new person("LiKe",18));
-personArray.push(new person("Tom",58));
-personArray.push(new person("Lucy",22));
-personArray.push(new person("Haimei",16));
+    function person(name, age) {
+        this.Name = name;
+        this.Age = age
+    }
+    var personArray = [];
+    personArray.push(new person("LiKe", 18));
+    personArray.push(new person("Tom", 58));
+    personArray.push(new person("Lucy", 22));
+    personArray.push(new person("Haimei", 16));
 
-function compareAge(a,b){
-	return a.Age-b.Age;
-}
-personArray.sort(compareAge);
-console.log(personArray);//Haimei  LiKe  Lucy Tom  
+    function compareAge(a, b) {
+        return a.Age - b.Age;
+    }
+    personArray.sort(compareAge);
+    console.log(personArray);//Haimei  LiKe  Lucy Tom
 </script>
 <body></body>
 </html>

@@ -1,0 +1,26 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://cdn.bootcss.com/knockout/3.4.0/knockout-min.js"></script>
+</head>
+<body>
+<select  data-bind="options:  array_all_01, value: select_obj_01, optionsValue:'val',optionsText: 'txt',event:{change:chane_select}"></select>
+<select  data-bind="options:  array_all_02, value: select_obj_02, optionsValue:'0', optionsText: '1'"></select>
+
+<script>
+    ko.applyBindings({
+        select_obj_01: ko.observable(""),
+        select_obj_02: ko.observable(""),
+        array_all_01: ko.observableArray([{val: 1, txt: "下拉框"}, {val: 2, txt: "单选列表"}, {val: 40, txt: "颜色块"}]),
+        array_all_02: ko.observableArray([['0','ccc'],['1','bbb']]),
+        chane_select:function (obj) {
+            debugger
+            console.log(arguments);
+            console.log(obj.select_obj_01());
+            console.log(obj.select_obj_02());
+        }
+    });
+</script>
+</body>
+</html>
