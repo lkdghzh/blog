@@ -1,139 +1,143 @@
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
-<!-- <script src="http://cdn.bootcss.com/vue/1.0.28/vue.js"></script> -->
-<script src="http://cdn.bootcss.com/vue/2.0.3/vue.js"></script>
-<div id="app">
-    1，起步：
-    {{ message }}
-    <br/>
-    2，双向绑定：
-    <input v-model="message">
-    <br/>
-    3，列表：
-    <ul>
-        <li v-for="item in objs_arr">
-            {{ item.val }}
-        </li>
-    </ul>
-    4,处理用户输入(输入后按enter)，v-for,
-    <br/>
-    1.x版本有$index.2.x版本不存在$index
-    <br/>
-    <!--
-    <input v-model="user_input" v-on:keyup.enter="add_ul_lis">
-    <ul>
-      <li v-for="li_item in lis">
-        <span>{{ li_item.val }}--{{li_item.$index}}</span>
-        <button v-on:click="remove_li($index)">X</button>
-      </li>
-    </ul>
-    -->
-    <br/>
-    4.1 v-for循环数组 <br/>
-    2.x版本只能使用v-for="(item,index) in array"
-    <br/>
-    <input v-model="user_input" v-on:keyup.enter="add_ul_lis">
-    <ul>
-        <li v-for="item in lis">
-            <span>{{ item.val }}</span>
-            <button v-on:click="click_item(index)">1.X版本</button>
-        </li>
-    </ul>
-    <hr/>
-    <ul>
-        <li v-for="(item,index) in lis">
-            <span>{{ item.val }}--{{index}}</span>
-            <button v-on:click="remove_li(index)">X</button>
-        </li>
-    </ul>
-    4.2 v-for循环对象 <br/>
-    <ul>
-        <li v-for="(value, key, index) in for_obj">
-            {{ index }}-{{ key }} -{{ value }}
-        </li>
-    </ul>
-    4.3 v-for循环整数 <br/>
-    <div>
-        <span v-for="n in 10">{{ n }}</span>
+<!-- 弹框组件 -->
+<!-- <template>
+    <div class="modal" v-show="showAddPanel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div slot="modal-header" class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">添加考试</h4>
+                </div>
+                <div class="modal-body" slot="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="exam-id" class="control-label col-sm-2">考试id：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mt60 text-center">
+                            <button class="btn btn-primary" @click="addExam">确定</button>
+                            <button class="btn btn-default ml20" @click="showAddPanel=false">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</template> -->
 
-5用组件构建（应用）
-<br/>
+<template>
+    <div class="modal" v-show="show" transition="fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!--头部-->
+                <div class="modal-header">
+                    <slot name="header">
+                        <p class="title">{{modal.title}}</p>
+                    </slot>
+                    <a @click="close(0)" class="close" href="javascript:void(0)"></a>
+                </div>
+                <!--内容区域-->
+                <div class="modal-body">
+                    <slot name="body">
+                        <p class="notice">{{modal.text}}</p>
+                    </slot>
+                </div>
+                <!--尾部,操作按钮-->
+                <div class="modal-footer">
+                    <slot name="button">
+                        <a v-if="modal.showCancelButton" href="javascript:void(0)"
+                           class="button {{modal.cancelButtonClass}}" @click="close(1)">{{modal.cancelButtonText}}</a>
+                        <a v-if="modal.showConfirmButton" href="javascript:void(0)"
+                           class="button {{modal.confirmButtonClass}}" @click="submit">{{modal.confirmButtonText}}</a>
+                    </slot>
+                </div>
+            </div>
+        </div>
+    </div>
+  <!--   <div v-show="show" class="modal-backup" transition="fade"></div> -->
+</template>
 
-<ul>
-    <self-compoment-detective v-for="",v-bind:myprop="main_data_prop"></self-compoment-detective>
-</ul>
-
-<div id="app-02">
-    <p>{{ message }}</p>
-    <button v-on:click="reverseMessage">颠倒一下</button>
-</div>
 <script>
-    new Vue({
-        el: '#app',
-        data: {
-            message: 'Hello Vue.js!',
-            objs_arr: [{val: 'aaa'}, {val: 'bbb'}, {val: 'ccc'}],
-            user_input: '',
-            lis: [],
-            for_obj: {
-                FirstName: 'foo',
-                LastName: 'bar',
-                Age: 26
-            },
-            main_data_prop:[
-                {val:"页面网组件传的值,组件已经使用v-bind:属性="},
-                {val:"页面网组件传的值,组件已经使用v-bind:属性="},
-                {val:"页面网组件传的值,组件已经使用v-bind:属性="}
-            ]
+    export default {
+        // data(){
+        //  return {
+        //      show: false
+        //  }
+        // },
+        // props: ['showModal'],
+        // methods(){
+
+        // }
+        data() {
+            return {
+                show: false,   // 是否显示模态框
+                resolve: '',
+                reject: '',
+                promise: '',  // 保存promise对象
+            };
         },
         methods: {
-            add_ul_lis: function () {
-                // debugger
-                // console.log(arguments);
-                // console.log(this);
-                var text = this.user_input;
-                //!!text?this.lis.push({val:text}):"";
-                if (text) {
-                    this.lis.push({val: text});
-                    this.user_input = "";
+            /**
+             * 确定,将promise断定为完成态
+             */
+            submit() {
+                this.resolve('submit');
+            },
+            /**
+             * 关闭,将promise断定为reject状态
+             * @param type {number} 关闭的方式 0表示关闭按钮关闭,1表示取消按钮关闭
+             */
+            close(type) {
+                this.show = false;
+                this.reject(type);
+            },
+            /**
+             * 显示confirm弹出,并创建promise对象
+             * @returns {Promise}
+             */
+            confirm() {
+                this.show = true;
+                this.promise = new Promise((resolve, reject) => {
+                    this.resolve = resolve;
+                    this.reject = reject;
+                });
+                return this.promise;   //返回promise对象,给父级组件调用
+            },
+        },
+
+        /**
+         * modal 模态接口参数
+         * @param {string} modal.title 模态框标题
+         * @param {string} modal.text 模态框内容
+         * @param {boolean} modal.showCancelButton 是否显示取消按钮
+         * @param {string} modal.cancelButtonClass 取消按钮样式
+         * @param {string} modal.cancelButtonText 取消按钮文字
+         * @param {string} modal.showConfirmButton 是否显示确定按钮
+         * @param {string} modal.confirmButtonClass 确定按钮样式
+         * @param {string} modal.confirmButtonText 确定按钮标文字
+         */
+        props: ['modalOptions'],
+        computed: {
+            /**
+             * 格式化props进来的参数,对参数赋予默认值
+             */
+            modal: {
+                get() {
+                    let modal = this.modalOptions;
+                    modal = {
+                        title: modal.title || '提示',
+                        text: modal.text,
+                        showCancelButton: typeof modal.showCancelButton === 'undefined' ? true : modal.showCancelButton,
+                        cancelButtonClass: modal.cancelButtonClass ? modal.showCancelButton : 'btn-default',
+                        cancelButtonText: modal.cancelButtonText ? modal.cancelButtonText : '取消',
+                        showConfirmButton: typeof modal.showConfirmButton === 'undefined' ? true : modal.cancelButtonClass,
+                        confirmButtonClass: modal.confirmButtonClass ? modal.confirmButtonClass : 'btn-active',
+                        confirmButtonText: modal.confirmButtonText ? modal.confirmButtonText : '确定',
+                    };
+                    return modal;
                 }
-            },
-            click_item(){
-                alert("g根据我的实验，2.x版本不存在$index,使用(item，index)in array")
-            },
-            remove_li: function (index) {
-                //1.x版本有$index.2.x版本不存在$index
-                this.lis.splice(index, 1);
             }
         }
-    })
-
-    // Define a new component called todo-item
-
-    Vue.component('self-compoment-detective', {
-      props: ['myprop'],
-      template: '<li>{{ myprop.val }}</li>'
-    })
-
-    var app2 = new Vue({
-        el: '#app-02',
-        data: {
-            message: 'Hello Vue.js!'
-        },
-        methods: {
-            reverseMessage: function () {
-                this.message = this.message.split('').reverse().join('')
-            }
-        }
-    })
+    }
 </script>
-</body>
-</html>
-
-
