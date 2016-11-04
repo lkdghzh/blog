@@ -10,41 +10,44 @@
 <script src="http://cdn.bootcss.com/vue/2.0.3/vue.js"></script>
 <div id="app">
     2.x版本的过渡
-    <transition name="expand">
-        <div v-if="show" >hello</div>
+    <transition name="expand"
+                v-on:before-enter="beforeEnter"
+                v-on:enter="enter"
+                v-on:after-enter="afterEnter"
+                v-on:enter-cancelled="enterCancelled"
+                v-on:before-leave="beforeLeave"
+                v-on:leave="leave"
+                v-on:after-leave="afterLeave"
+                v-on:leave-cancelled="leaveCancelled"
+    >
+        <div v-show="show" >hello</div>
     </transition>
     <button @click="showme">点击我</button>
 
 </div>
 
 <style>
-    /*.expand-enter-active {*/
-        /*transition: all .3s ease;*/
-    /*}*/
-    /*.expand-leave-active {*/
-        /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/
-    /*}*/
-    /*.expand-enter, .expand-leave-active {*/
-        /*padding-left: 10px;*/
-        /*opacity: 0;*/
-    /*}*/
+
 
     .expand-enter {
-        /*transition: all 3s linear;*/
-        background-color: green;
+    background-color: red;
+    font-size: 80px;
     }
 
     .expand-leave {
-        /*transition: all 3s linear;*/
-        background-color: blue;
+        background-color: red;
+        font-size: 80px;
     }
 
     .expand-leave-active {
         transition: all 3s 2s linear;
         background-color: red;
+        font-size: 80px;
     }
     .expand-enter-active{
-        transition: all 6s linear;
+        transition: all 6s 1s linear;
+        padding:100px;
+        font-size: 200px;
     }
 
 </style>
@@ -56,12 +59,44 @@
             show: true,
         },
         methods: {
-            showme: function () {
-                if (this.show) {
-                    this.show = false;
-                } else {
-                    this.show = true;
-                }
+            showme(){ this.show=!this.show;
+            },
+            beforeEnter: function (el) {
+                // ...
+            },
+            // 此回调函数是可选项的设置
+            // 与 CSS 结合时使用
+            enter: function (el, done) {
+                // ...
+                done()
+            },
+            afterEnter: function (el) {
+                // ...
+            },
+            enterCancelled: function (el) {
+                // ...
+            },
+            // --------
+            // 离开时
+            // --------
+            beforeLeave: function (el) {
+                // ...
+            },
+            // 此回调函数是可选项的设置
+            // 与 CSS 结合时使用
+            leave: function (el, done) {
+                // ...
+                debugger
+                //done()
+                return false;
+            },
+            afterLeave: function (el) {
+                debugger
+                // ...
+            },
+            // leaveCancelled 只用于 v-show 中
+            leaveCancelled: function (el) {
+                // ...
             }
         }
     })
