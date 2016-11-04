@@ -1,0 +1,60 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<script src="http://cdn.bootcss.com/vue/1.0.28/vue.js"></script>
+
+<!--<script src="http://cdn.bootcss.com/vue/2.0.3/vue.js"></script>-->
+<div id="app">
+    1.x版本的过渡
+    <div v-if="show" :transition="'expand'">hello</div>
+    <button @click="showme">点击我</button>
+</div>
+
+<style>
+
+.expand-transition {
+    transition: all 10s .1s linear;
+    height: 30px;
+    padding: 10px;
+    background-color: mediumvioletred;
+    overflow: hidden;
+}
+
+/* .expand-enter 定义进入的开始状态 */
+/* .expand-leave 定义离开的结束状态 */
+
+.expand-enter,
+.expand-leave {
+    height: 0;
+    padding: 0 10px;
+    opacity: 0;
+}
+</style>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            show: true,
+        },
+        methods: {
+            showme: function () {
+                if (this.show) {
+                    debugger
+                    this.show = false;
+                } else {
+                    debugger
+                    this.show = true;
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>
+
+

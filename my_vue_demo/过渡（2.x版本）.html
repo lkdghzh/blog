@@ -1,0 +1,72 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<!--<script src="http://cdn.bootcss.com/vue/1.0.28/vue.js"></script>-->
+
+<script src="http://cdn.bootcss.com/vue/2.0.3/vue.js"></script>
+<div id="app">
+    2.x版本的过渡
+    <transition name="expand">
+        <div v-if="show" >hello</div>
+    </transition>
+    <button @click="showme">点击我</button>
+
+</div>
+
+<style>
+    /*.expand-enter-active {*/
+        /*transition: all .3s ease;*/
+    /*}*/
+    /*.expand-leave-active {*/
+        /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/
+    /*}*/
+    /*.expand-enter, .expand-leave-active {*/
+        /*padding-left: 10px;*/
+        /*opacity: 0;*/
+    /*}*/
+
+    .expand-enter {
+        /*transition: all 3s linear;*/
+        background-color: green;
+    }
+
+    .expand-leave {
+        /*transition: all 3s linear;*/
+        background-color: blue;
+    }
+
+    .expand-leave-active {
+        transition: all 3s 2s linear;
+        background-color: red;
+    }
+    .expand-enter-active{
+        transition: all 6s linear;
+    }
+
+</style>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            show: true,
+        },
+        methods: {
+            showme: function () {
+                if (this.show) {
+                    this.show = false;
+                } else {
+                    this.show = true;
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>
+
+
