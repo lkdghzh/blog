@@ -20,7 +20,7 @@
                 v-on:after-leave="afterLeave"
                 v-on:leave-cancelled="leaveCancelled"
     >
-        <div v-show="show" >hello</div>
+        <div v-show="show">hello</div>
     </transition>
     <button @click="showme">点击我</button>
 
@@ -29,27 +29,23 @@
 <style>
 
 
-    .expand-enter {
-    background-color: red;
-    font-size: 80px;
+    .expand-leave-active {
+        transition: all 3s .2s linear;
     }
 
     .expand-leave {
-        background-color: red;
+        background-color: blue;
         font-size: 80px;
     }
 
-    .expand-leave-active {
-        transition: all 3s 2s linear;
-        background-color: red;
-        font-size: 80px;
-    }
-    .expand-enter-active{
-        transition: all 6s 1s linear;
-        padding:100px;
-        font-size: 200px;
+    .expand-enter-active {
+        transition: all 4s .1s linear;
     }
 
+    .expand-enter {
+        background-color: yellow;
+        font-size: 80px;
+    }
 </style>
 
 <script>
@@ -59,45 +55,55 @@
             show: true,
         },
         methods: {
-            showme(){ this.show=!this.show;
-            },
-            beforeEnter: function (el) {
-                // ...
-            },
-            // 此回调函数是可选项的设置
-            // 与 CSS 结合时使用
-            enter: function (el, done) {
-                // ...
-                done()
-            },
-            afterEnter: function (el) {
-                // ...
-            },
-            enterCancelled: function (el) {
-                // ...
+            showme(){
+                this.show = !this.show;
             },
             // --------
-            // 离开时
+            // 离开时,当开始动画（show=true的时候）
             // --------
             beforeLeave: function (el) {
+                debugger
                 // ...
             },
             // 此回调函数是可选项的设置
             // 与 CSS 结合时使用
-            leave: function (el, done) {
-                // ...
+            leave: function (el, done) {//el = div.expand-leave.expand-leave-active
                 debugger
-                //done()
-                return false;
+                //done()// done函数会触发afterLeave，如果注释掉done，afterLeave便不会触发
             },
-            afterLeave: function (el) {
+            afterLeave: function (el) {//el = div.expand-leave
                 debugger
-                // ...
+                //el.style.display="block";
             },
             // leaveCancelled 只用于 v-show 中
             leaveCancelled: function (el) {
+                debugger
+                // ...
+            },
+            // --------
+            // 进入时,当回溯动画（show=false的时候）
+            // --------
+            beforeEnter: function (el) {//el = div
+                debugger
+                // ...
+            },
+            // 此回调函数是可选项的设置
+            // 与 CSS 结合时使用
+            enter: function (el, done) {//el = div.expand-enter.expand-enter-active
+                debugger
+                // ...
+                done()
+                //return false;
+            },
+            afterEnter: function (el) {
+                debugger
+                // ...
+            },
+            enterCancelled: function (el) {
+                debugger
                 // ...
             }
+
         }
     })
 </script>
