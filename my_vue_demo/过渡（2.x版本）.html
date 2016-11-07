@@ -10,6 +10,8 @@
 <script src="http://cdn.bootcss.com/vue/2.0.3/vue.js"></script>
 <div id="app">
     2.x版本的过渡
+    css3的过渡：由事件触发，当事件移除时，会按照发生过渡的要求恢复原状。
+    比如：hover（一直处于hover，会过渡完一次），但click点击就是一瞬间的事，一般看不出来
     <transition name="expand"
                 v-on:before-enter="beforeEnter"
                 v-on:enter="enter"
