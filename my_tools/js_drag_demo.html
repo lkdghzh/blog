@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="jquery.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>JS Bin</title>
@@ -11,91 +10,90 @@
             height: 100px;
             background: green;
             border: 1px solid red;
-            position: absolute; /*绝对定位*/
+            position: fixed; /*绝对定位*/
             left:1000px;
         }
     </style>
-    <script>
-        $(function () {
-            //获取样式
-            var getCss = function(o,key){
-                    return o.currentStyle? o.currentStyle[key] : document.defaultView.getComputedStyle(o,false)[key];   
-            };
-
-            //节点逐层递归向上来相加offsetTop来获得绝对偏移 元素相对于整个页面的偏移
-            var getOffset=function (Node, offset) {
-                if (!offset) {
-                    offset = {};
-                    offset.top = 0;
-                    offset.left = 0;
-                }
-                if (Node == document.body) {//当该节点为body节点时，结束递归
-                    return offset;
-                }
-                offset.top += Node.offsetTop;
-                offset.left += Node.offsetLeft;
-                return getOffset(Node.parentNode, offset);//向上累加offset里的值
+  
+</head>
+<body style="width:3000px;height:1000px;position:absolute;">
+<div class="div1"></div>
+  <script>
+       
+            function getCSS(o, key) {
+                return o.currentStyle ? o.currentStyle[key] : document.defaultView.getComputedStyle(o, false)[key];
             }
-
-
-            //封装添加事件
-            var addEvt= function (obj, ev, handler){ 
-                if(window.attachEvent){ 
-                    obj.attachEvent("on" + ev, handler); 
-                }else if(window.addEventListener){ 
-                    obj.addEventListener(ev, handler, false); 
-                } 
-            } 
-            //封装解绑事件
-            var removeEvt = function(elem, type, handler) { 
-                 if (window.removeEventListener) {
-                    // 标准浏览器 
-                    elem.removeEventListener(type, handler, false);                  
-                 } 
-                 else if (window.detachEvent) {
-                    // IE浏览器 
-                    elem.detachEvent("on" + type, handler);               
-                }        
-            };
-
-            //鼠标点下
+            function getOffset(curEle) {
+                var totalLeft = null, totalTop = null, par = curEle.offsetParent;
+                totalLeft += curEle.offsetLeft;
+                totalTop += curEle.offsetTop;
+                while (par) {
+                    if (navigator.userAgent.indexOf("MSIE 8.0") === -1) {
+                        totalLeft += par.clientLeft;
+                        totalTop += par.clientTop;
+                    }
+                    totalLeft += par.offsetLeft;
+                    totalTop += par.offsetTop;
+                    par = par.offsetParent;
+                }
+                return {left: totalLeft, top: totalTop};
+            }
+            function addEvt(obj, ev, handler) {
+                if (window.attachEvent) {
+                    obj.attachEvent("on" + ev, handler);
+                } else if (window.addEventListener) {
+                    obj.addEventListener(ev, handler, false);
+                }
+            }
+            function removeEvt(elem, type, handler) {
+                if (window.removeEventListener) {
+                    elem.removeEventListener(type, handler, false);
+                }
+                else if (window.detachEvent) {
+                    elem.detachEvent("on" + type, handler);
+                }
+            }
+            
             var targetMouseDown=function (ev) {
 
                 var doc = document.documentElement,
-                    body = document.body;
+                    body = document.body,
+                     target = document.querySelector(".div1");
 
-                var pageX=ev.clientX + ( doc && doc.scrollLeft || body && body.scrollLeft || 0 ) - ( doc && doc.clientLeft || body && body.clientLeft || 0 );
-                var pageY = ev.clientY + ( doc && doc.scrollTop  || body && body.scrollTop  || 0 ) - ( doc && doc.clientTop  || body && body.clientTop  || 0 );
-
-                //ev,$对象不需要做兼容
-                //$中pageX（在document）和js中cleintX(可视区域)
-                //js中cleintX+scrollleft+scrollright的两边=$中pageX
-                startPositionX = pageX - getOffset(target).left;
-                startPositionY = pageY - getOffset(target).top;
+                    var popInnerLeft = ev.clientX - getOffset(target).left;
+                    var popInnerTop = ev.clientY - getOffset(target).top;
 
                 //向document注册，不管如何移动，不会脱离鼠标。.div1会冒泡到。一直在触发，里面的函数一直在走。
-                var mouseMove=function (ev) {
-                    target.style.left =  ev.pageX - startPositionX+'px';
-                    target.style.top =  ev.pageY - startPositionY+'px';
+                var mouseMove=function (e) {
+                    debugger
+                    //向右
+                    if (e.clientX - popInnerLeft + parseInt(getCSS(target,'width')) < document.documentElement.clientWidth) {
+                        target.style.left = e.clientX - popInnerLeft + 'px';
+                    }
+                    //向左
+                    if (e.clientX - popInnerLeft <= 0) {
+                            target.style.left = '0px';
+                    }
+                    //向下
+                    if (e.clientY - popInnerTop + parseInt(getCSS(target, 'height')) < document.documentElement.clientHeight) {
+                        target.style.top = e.clientY - popInnerTop + 'px';
+                    }
+                    //向上
+                    if (e.clientY - popInnerTop <= 0) {
+                        target.style.top = '0px';
+                    }
                 }
                 var mouseUp=function (ev) {
                      removeEvt(document,'mousemove',mouseMove);
                 }
                 addEvt(document,'mousemove',mouseMove)
                 
-                //thisdocument.onmousemove=mouseMove;
                 addEvt(document,'mouseup',mouseUp)
                 return false;//最好阻止.div1的mousedown冒泡和默认。
             }
+            addEvt(document.querySelector(".div1"),'mousedown',targetMouseDown)
 
-            var startPositionX = 0, 
-                startPositionY = 0,
-                target=document.querySelector(".div1");
-            addEvt(target,'mousedown',targetMouseDown);
-        })
     </script>
-</head>
-<body style="width:3000px;position:absolute;">
-<div class="div1"></div>
 </body>
+
 </html>
