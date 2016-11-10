@@ -13,7 +13,7 @@
             //Invalid default value for prop "popstyle": Props with type Object/Array must use a factory function to return the default value.
             popStyle:{
                 type: Object,
-                default:function(){return {'width':'500px','height':'auto',position:'absolute'}}
+                default:function(){return {'width':'500px','height':'auto',position:'fixed'}}
             },
             bodyStyle:{
                 type: Object,
@@ -78,10 +78,10 @@
         mounted(){
             if (this.show) {
                 debugger
-                var startPositionX = 0, 
-                    startPositionY = 0,
-                    target=document.querySelector(".modal-content");
-                    this.addEvt(target,'mousedown',this.targetMouseDown);
+                // var startPositionX = 0, 
+                //     startPositionY = 0,
+                //     target=document.querySelector(".modal-content");
+                //     //this.addEvt(target,'mousedown',this.targetMouseDown);
                 }
         },
         beforeDestroy () {
@@ -204,7 +204,7 @@
     <div v-show="show">
         <div class="modal flex-center" @click.self="clickMask">
             <div class="modal-dialog tp100"  :class="modalClass" ref:dialog>
-                <div class="modal-content" :style="popStyle">
+                <div class="modal-content" :style="popStyle" @mousedown.stop="targetMouseDown">
                     <!--头部-->
                     <div class="modal-header">
                         <div name="header">
