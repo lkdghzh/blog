@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+    <style>
+        .div1 {
+            width: 100px;
+            height: 100px;
+            background: green;
+            border: 1px solid red;
+           /* position: absolute;*/ /*绝对定位*/
+            position: fixed; /*绝对定位*/
+            left:1000px;
+        }
+    </style>
+  
+</head>
+<body style="width:3000px;height:1000px;position:absolute;">
+<div class="div1"></div>
+  <script>
+       
+            function getCSS(o, key) {
+                return o.currentStyle ? o.currentStyle[key] : document.defaultView.getComputedStyle(o, false)[key];
+            }
+            function getCSSNumber(o, key) {
+                return parseInt(getCSS(o, key));
+            }
+            function getOffset(curEle) {
+                var totalLeft = null, totalTop = null, par = curEle.offsetParent;
+                totalLeft += curEle.offsetLeft;
+                totalTop += curEle.offsetTop;
+                while (par) {
+                    if (navigator.userAgent.indexOf("MSIE 8.0") === -1) {
+                        totalLeft += par.clientLeft;
+                        totalTop += par.clientTop;
+                    }
+                    totalLeft += par.offsetLeft;
+                    totalTop += par.offsetTop;
+                    par = par.offsetParent;
+                }
+                return {left: totalLeft, top: totalTop};
+            }
+            function addEvt(obj, ev, handler) {
+                if (window.attachEvent) {
+                    obj.attachEvent("on" + ev, handler);
+                } else if (window.addEventListener) {
+                    obj.addEventListener(ev, handler, false);
+                }
+            }
+            function removeEvt(elem, type, handler) {
+                if (window.removeEventListener) {
+                    elem.removeEventListener(type, handler, false);
+                }
+                else if (window.detachEvent) {
+                    elem.detachEvent("on" + type, handler);
+                }
+            }
+            
+            var targetMouseDown=function (ev) {
+
+                var target = document.querySelector(".div1");
+
+                var BombInnerLeft = ev.clientX - getOffset(target).left,
+                    BombInnerTop = ev.clientY - getOffset(target).top;
+
+                //向document注册，不管如何移动，不会脱离鼠标。.div1会冒泡到。一直在触发，里面的函数一直在走。
+                //mousemove如果注册到Bomb上，鼠标
+                var mouseMove=function (e) {
+                    debugger
+                    var BombLeft2Body=e.clientX - BombInnerLeft,
+                        BombTop2Body=e.clientY - BombInnerTop,
+                        BombWidth=getCSSNumber(target,'width'),
+                        BombHeight=getCSSNumber(target, 'height'),
+                        docuWidth=document.documentElement.clientWidth,
+                        docuHeight=document.documentElement.clientHeight,
+                         //docuWidth=document.documentElement.getBoundingClientRect().left,
+                        // winWidth=e.ScreenX,
+                        // winHeight=e.ScreenY,
+                        tempLeft="0px",
+                        tempTop="0px";
+
+                    //向右(没超过右边界)
+                    if ( BombLeft2Body>0&&BombLeft2Body+ BombWidth <docuWidth ) {
+                        tempLeft = BombLeft2Body + 'px';
+                    }
+                    //(超过右边界)
+                    if ( BombLeft2Body>0&&BombLeft2Body+ BombWidth >=docuWidth ) {
+                        tempLeft = docuWidth-BombWidth + 'px';
+                    }
+                    //向左走默认
+                    if (BombLeft2Body <= 0) {
+                       tempLeft = '0px';
+                    }
+                    //向下(没超过下边界)
+                    if ( BombTop2Body>0&& BombTop2Body+ BombHeight < docuHeight) {
+                        tempTop = BombTop2Body + 'px';
+                    }
+                    //向下(超过下边界)
+                    if (BombTop2Body>0&&BombTop2Body+ BombHeight>=docuHeight) {
+                        tempTop =docuHeight-BombHeight + 'px';
+                    }
+                    //向上走默认
+                    if (BombTop2Body <= 0) {
+                       // tempTop = '0px';
+                    }
+                    target.style.left=tempLeft;
+                    target.style.top=tempTop;
+                }
+                var mouseUp=function (ev) {
+                     removeEvt(document,'mousemove',mouseMove);
+                }
+                addEvt(document,'mousemove',mouseMove)
+                
+                addEvt(document,'mouseup',mouseUp)
+                return false;//最好阻止.div1的mousedown冒泡和默认。
+            }
+            addEvt(document.querySelector(".div1"),'mousedown',targetMouseDown)
+
+    </script>
+</body>
+
+</html>
