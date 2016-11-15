@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<pre>
+注意对比
+1：function 创建viewmodel
+2：object  创建viewmodel
+</pre>
+<div data-bind="text:outputNameColor()"></div>
+<script src="http://cdn.bootcss.com/knockout/3.4.1/knockout-debug.js"></script>
+<script>
+ class vm{
+        constructor(){
+            this.name = ko.observable("zhangsan");
+            this.color = ko.observable("#cccc");
+        }
+        outputNameColor(){
+            return this.name() + " " +this.color();
+        }
+    }
+  ko.applyBindings(new vm())
+</script>
+</body>
+</html>
