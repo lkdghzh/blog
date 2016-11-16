@@ -1,0 +1,40 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #d1 {
+            width: 200px;
+            height: 200px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+<div id='d1' style="background:green;"></div>
+<script type="text/javascript">
+    window.onload = function () {
+        var d = document.getElementById('d1');
+        console.log(getCSSNumber(d, 'width'));
+        debugger
+
+        //是否ie
+        var isie = !!!document.currentStyle;
+        //是否大于8的ie
+        var isiegtie8 = isie && !!document.defaultView;
+
+        function getCSS(o, key) {
+            //o.currentStyle确保了是否为ie，
+            //不是ie，就是chrome，firefox。用document.defaultView。做兼容（不用window，就是杜绝：在firefox3.6上访问子框架内的样式 (iframe)时，必须用defaultView）
+            return o.currentStyle ? o.currentStyle[key] : document.defaultView.getComputedStyle(o, false)[key];
+        }
+
+        function getCSSNumber(o, key) {
+            return parseInt(getCSS(o, key));
+        }
+
+    }
+</script>
+</body>
+
+</html>

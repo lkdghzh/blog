@@ -60,6 +60,20 @@
     <div>
         <span v-for="n in 10">{{ n }}</span>
     </div>
+   <!--  4.3 v-attr自定义属性 <br/>
+    <div>
+       <div v-attr="ss:self_define_attr"></div>
+    </div> -->
+     4.5 :src图片路径 <br/>
+     <pre>
+     一下2中方式不正确，不要用{{}}
+     <img >src="" {{pic_src}}
+     <img >v-bind:src="" {{pic_src}}
+     </pre>
+    <div>
+       <img :src="pic_src" alt="ddd" style="width:500px;height:300px;">
+    </div>
+    
 </div>
 
 5用组件构建（应用）
@@ -90,7 +104,9 @@
                 {val:"页面网组件传的值,组件已经使用v-bind:属性="},
                 {val:"页面网组件传的值,组件已经使用v-bind:属性="},
                 {val:"页面网组件传的值,组件已经使用v-bind:属性="}
-            ]
+            ],
+            self_define_attr:"sssss",
+            pic_src:"http://images.cnblogs.com/cnblogs_com/leee/801892/o_like.png"
         },
         methods: {
             add_ul_lis: function () {
