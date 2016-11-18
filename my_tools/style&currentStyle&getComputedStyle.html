@@ -16,16 +16,119 @@
     window.onload = function () {
         var d = document.getElementById('d1');
         console.log(getCSSNumber(d, 'width'));
-        debugger
+        //debugger
 
-        //是否ie
-        var isie = !!!document.currentStyle;
+        //是否ie（ie特有currentStyle）
+        var isie = !!(document.createElement("div").currentStyle);
         //是否大于8的ie
         var isiegtie8 = isie && !!document.defaultView;
 
+
+        var isIE = function (ver) {
+            var b = document.createElement('b')
+            b.innerHTML = '<!--[if IE ' + ver + ']><i></i><![endif]-->'
+            return b.getElementsByTagName('i').length === 1
+        }
+        //IE10 IE11 不能判断为ie
+        console.log('isIE()', isIE());
+        console.log('isIE(5)', isIE(5));
+        console.log('isIE(6)', isIE(6));
+        console.log('isIE(7)', isIE(7));
+        console.log('isIE(8)', isIE(8));
+        console.log('isIE(9)', isIE(9));
+
+        //10 11 不能判断
+        console.log('isIE(10)', isIE(10));
+        console.log('isIE(11)', isIE(11));
+
+        //判断ie10
+        if (window.ActiveXObject) {
+            var reg = /10\.0/;
+            var str = navigator.userAgent;
+            //reg.test(str);
+            if (reg.test(str)) {
+                alert("ie10");
+            }
+            ;
+        }
+        ;
+
+
+        //vue2.0.7.js判断 broswer
+        var inBrowser =
+                typeof window !== 'undefined' &&
+                Object.prototype.toString.call(window) !== '[object Object]';
+
+        var UA = inBrowser && window.navigator.userAgent.toLowerCase();
+        var isIE = UA && /msie|trident/.test(UA);
+        var isIE9 = UA && UA.indexOf('msie 9.0') > 0;
+        var isEdge = UA && UA.indexOf('edge/') > 0;
+        var isAndroid = UA && UA.indexOf('android') > 0;
+        var isIOS = UA && /iphone|ipad|ipod|ios/.test(UA);
+        var isChrome = inBrowser && /Chrome\/\d+/.test(window.navigator.userAgent)
+        console.log('vueisIE', isIE)
+        console.log('vueisIE9', isIE9)
+        console.log('vueisEdge', isEdge)
+        console.log('vueisAndroid', isAndroid)
+        console.log('vueisIOS', isIOS)
+        console.log('vueisChrome', isChrome)
+
+        var userAgent = navigator.userAgent,
+                rMsie = /(msies|trident.*rv:)([w.]+)/,
+                rFirefox = /(firefox)/([w.] +) /,
+                rOpera = /(opera).+version/([w.] +) /,
+                rChrome = /(chrome)/([w.] +) /,
+                rSafari = /version/([w.] +).*(safari) /;
+        var browser;
+        var version;
+        var ua = userAgent.toLowerCase();
+
+        function uaMatch(ua) {
+            var match = rMsie.exec(ua);
+            if (match != null) {
+                return {browser: "IE", version: match[2] || "0"};
+            }
+            var match = rFirefox.exec(ua);
+            if (match != null) {
+                return {browser: match[1] || "", version: match[2] || "0"};
+            }
+            var match = rOpera.exec(ua);
+            if (match != null) {
+                return {browser: match[1] || "", version: match[2] || "0"};
+            }
+            var match = rChrome.exec(ua);
+            if (match != null) {
+                return {browser: match[1] || "", version: match[2] || "0"};
+            }
+            var match = rSafari.exec(ua);
+            if (match != null) {
+                return {browser: match[2] || "", version: match[1] || "0"};
+            }
+            if (match != null) {
+                return {browser: "", version: "0"};
+            }
+        }
+
+        var browserMatch = uaMatch(userAgent.toLowerCase());
+        if (browserMatch.browser) {
+            browser = browserMatch.browser;
+            version = browserMatch.version;
+        }
+
+
+        function isIE() {
+            if (!!window.ActiveXObject || "ActiveXObject" in window) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+
         function getCSS(o, key) {
             //o.currentStyle确保了是否为ie，
-            //不是ie，就是chrome，firefox。用document.defaultView。做兼容（不用window，就是杜绝：在firefox3.6上访问子框架内的样式 (iframe)时，必须用defaultView）
+            //不是ie，就是chrome，firefox可以使用document.defaultView。
+            //不用window，就是杜绝：在firefox3.6上访问子框架内的样式 (iframe)时，必须用defaultView
             return o.currentStyle ? o.currentStyle[key] : document.defaultView.getComputedStyle(o, false)[key];
         }
 

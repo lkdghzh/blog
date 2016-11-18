@@ -60,7 +60,19 @@
     <div>
         <span v-for="n in 10">{{ n }}</span>
     </div>
+    4.3 v-for&&table <br/>
+     <div>
+     <table class="table">
+         <tr v-for="book in books">
+            <td>{{book.id}}</td>
+            <td>{{book.name}}</td>
+            <td>{{book.author}}</td>
+            <td>{{book.price}}</td>
+        </tr>
+    </table>
+  </div>
    <!--  4.3 v-attr自定义属性 <br/>
+   :rowspan="bianliang"
     <div>
        <div v-attr="ss:self_define_attr"></div>
     </div> -->
@@ -100,6 +112,17 @@
                 LastName: 'bar',
                 Age: 26
             },
+            books: [{
+                 id: 1,
+                 author: '曹雪芹',
+                 name: '红楼梦',
+                 price: 32.0
+             }, {
+                 id: 2,
+                 author: '施耐庵',
+                 name: '水浒传',
+                 price: 30.0
+            }],
             main_data_prop:[
                 {val:"页面网组件传的值,组件已经使用v-bind:属性="},
                 {val:"页面网组件传的值,组件已经使用v-bind:属性="},
