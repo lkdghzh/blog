@@ -60,7 +60,7 @@
     <div>
         <span v-for="n in 10">{{ n }}</span>
     </div>
-    4.3 v-for&&table <br/>
+    4.3 v-for&&table 记得rowspan和colspan<br/>
      <div>
      <table class="table">
          <tr v-for="book in books">
@@ -85,7 +85,21 @@
     <div>
        <img :src="pic_src" alt="ddd" style="width:500px;height:300px;">
     </div>
-    
+     4.6 ：radio change事件<br/>
+    <div>
+       <input type="radio" id="one" @change="changepicked" value="1" v-model="picked">
+        <label for="one">One</label>
+        <br>
+        <input type="radio" id="two" @change="changepicked" value="2" v-model="picked">
+        <label for="two">Two</label>
+        <br>
+        <span>Picked: {{ picked }}</span>
+    </div>
+    4.6 ：filters过滤器
+     <div>
+     {{'ss'|sum}}
+      {{objarr | att_sum('sex')}}
+    </div>
 </div>
 
 5用组件构建（应用）
@@ -129,7 +143,9 @@
                 {val:"页面网组件传的值,组件已经使用v-bind:属性="}
             ],
             self_define_attr:"sssss",
-            pic_src:"http://images.cnblogs.com/cnblogs_com/leee/801892/o_like.png"
+            pic_src:"http://images.cnblogs.com/cnblogs_com/leee/801892/o_like.png",
+            picked:"",
+            objarr:[{sex:5},{sex:4},{sex:3},{sex:2},{sex:1}]
         },
         methods: {
             add_ul_lis: function () {
@@ -149,6 +165,22 @@
             remove_li: function (index) {
                 //1.x版本有$index.2.x版本不存在$index
                 this.lis.splice(index, 1);
+            },
+            changepicked(){
+                alert('this.picked-----'+this.picked+'------radio的change事件，并非click')
+            }
+        },
+        filters: {
+            sum: function (value) {
+                return value + 4;
+            },
+            att_sum:function(value,attr){
+                debugger
+                let temp=0;
+                value.forEach(function(item){
+                    temp+=item[attr];
+                })
+                return temp;
             }
         }
     })
