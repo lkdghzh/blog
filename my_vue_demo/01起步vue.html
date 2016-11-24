@@ -124,7 +124,7 @@
         <br>
         <span>Picked: {{ picked }}</span>
     </div>
-    7 ：filters过滤器
+    7 ：filters全局过滤器&实例过滤器
     <div>
         {{'aaa'| stitching('bbb')}}
         {{3|add4}}
@@ -132,11 +132,12 @@
     </div>
 </div>
 
-5用组件构建（应用）
+5组件：HTML （特性）不区分大小写。
+
 <br/>
 
 <ul>
-    <self-compoment-detective v-for="" ,v-bind:myprop="main_data_prop"></self-compoment-detective>
+    <self-compoment-detective ></self-compoment-detective>
 </ul>
 
 <div id="app-02">
@@ -148,6 +149,11 @@
     Vue.filter('stitching', function (str, strparam) {
         debugger
         return str + strparam;
+    })
+
+    // 初始化根实例 之前 注册了组件
+    Vue.component('self-compoment-detective', {
+        template: '<div>A custom component!</div>'
     })
 
     new Vue({
@@ -232,11 +238,7 @@
     // })
 
 
-    // Define a new component called todo-item
-    Vue.component('self-compoment-detective', {
-        props: ['myprop'],
-        template: '<li>{{ myprop.val }}</li>'
-    })
+   
 
 
     var app2 = new Vue({
