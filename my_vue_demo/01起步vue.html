@@ -59,35 +59,64 @@
     4.3 v-for循环整数 <br/>
     <div>
         <span v-for="n in 10">{{ n }}</span>
+
     </div>
-    4.3 v-for&&table 记得rowspan和colspan<br/>
+    4.3.0 ：注意：当前的v-html的变量n 是从当前标签v-for指令上的，一个标签可以多个vue属性同时存在。非父标签上
+        <template v-for="n in 2">
+            <div :class="'cls-'+n" v-html='n' v-for="n in 3"></div> 
+        </template>
+    4.3.1 ：错误：Uncaught RangeError: Invalid array length。 v-for循环整数（不能为小数） <br/>
+    <pre>
+        <span>v-for="n in 5.5"</span>
+    </pre>
+    4.4 table<br/>
+        <table class="table" border='1'>
+            <tr v-for="book in books">
+                <td>{{book.id}}</td>
+                <td>{{book.name}}</td>
+                <td>{{book.author}}</td>
+                <td>{{book.price}}</td>
+            </tr>
+        </table>
+    4.4.1rowspan 2次循环tr，不能将v-for放在tr标签上，一个放在template上，一个放tr上
+        多个人，
+        <table class="table" border='1'>
+            <thead>
+            <tr>
+                <td>人</td>
+                <td>水果</td>
+                <td>个数</td>
+            </tr>
+            </thead>
+            <tbody>
+                <template v-for="p in rowspan_table" >
+                    <tr v-for="(friut,index) in p.friuts">
+                        <td v-if="!index" :rowspan="p.friuts.length">{{p.name}}</td>
+                        <td>{{friut.name}}</td>
+                        <td>{{friut.count}}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+   
+
+    <!--  4.3 v-attr自定义属性 <br/>
+    :rowspan="bianliang"
      <div>
-     <table class="table">
-         <tr v-for="book in books">
-            <td>{{book.id}}</td>
-            <td>{{book.name}}</td>
-            <td>{{book.author}}</td>
-            <td>{{book.price}}</td>
-        </tr>
-    </table>
-  </div>
-   <!--  4.3 v-attr自定义属性 <br/>
-   :rowspan="bianliang"
-    <div>
-       <div v-attr="ss:self_define_attr"></div>
-    </div> -->
-     4.5 :src图片路径 <br/>
+        <div v-attr="ss:self_define_attr"></div>
+     </div> -->
+    5 :src图片路径 <br/>
      <pre>
      一下2中方式不正确，不要用{{}}
-     <img >src="" {{pic_src}}
-     <img >v-bind:src="" {{pic_src}}
+     <img>src="" {{pic_src}}
+     <img>v-bind:src="" {{pic_src}}
      </pre>
     <div>
-       <img :src="pic_src" alt="ddd" style="width:500px;height:300px;">
+        <img :src="pic_src" alt="ddd" style="width:500px;height:300px;">
     </div>
-     4.6 ：radio change事件<br/>
+    6 ：radio change事件(非click)<br/>
     <div>
-       <input type="radio" id="one" @change="changepicked" value="1" v-model="picked">
+        <input type="radio" id="one" @change="changepicked" value="1" v-model="picked">
         <label for="one">One</label>
         <br>
         <input type="radio" id="two" @change="changepicked" value="2" v-model="picked">
@@ -95,10 +124,11 @@
         <br>
         <span>Picked: {{ picked }}</span>
     </div>
-    4.6 ：filters过滤器
-     <div>
-     {{'ss'|sum}}
-      {{objarr | att_sum('sex')}}
+    7 ：filters过滤器
+    <div>
+        {{'aaa'| stitching('bbb')}}
+        {{3|add4}}
+        {{objarr | att_sum('sex')}}
     </div>
 </div>
 
@@ -106,7 +136,7 @@
 <br/>
 
 <ul>
-    <self-compoment-detective v-for="",v-bind:myprop="main_data_prop"></self-compoment-detective>
+    <self-compoment-detective v-for="" ,v-bind:myprop="main_data_prop"></self-compoment-detective>
 </ul>
 
 <div id="app-02">
@@ -114,6 +144,12 @@
     <button v-on:click="reverseMessage">颠倒一下</button>
 </div>
 <script>
+    // 全局定义一个过滤器,要在vue实例之前定义
+    Vue.filter('stitching', function (str, strparam) {
+        debugger
+        return str + strparam;
+    })
+
     new Vue({
         el: '#app',
         data: {
@@ -127,25 +163,30 @@
                 Age: 26
             },
             books: [{
-                 id: 1,
-                 author: '曹雪芹',
-                 name: '红楼梦',
-                 price: 32.0
-             }, {
-                 id: 2,
-                 author: '施耐庵',
-                 name: '水浒传',
-                 price: 30.0
+                id: 1,
+                author: '曹雪芹',
+                name: '红楼梦',
+                price: 32.0
+            }, {
+                id: 2,
+                author: '施耐庵',
+                name: '水浒传',
+                price: 30.0
             }],
-            main_data_prop:[
-                {val:"页面网组件传的值,组件已经使用v-bind:属性="},
-                {val:"页面网组件传的值,组件已经使用v-bind:属性="},
-                {val:"页面网组件传的值,组件已经使用v-bind:属性="}
+            main_data_prop: [
+                {val: "页面网组件传的值,组件已经使用v-bind:属性="},
+                {val: "页面网组件传的值,组件已经使用v-bind:属性="},
+                {val: "页面网组件传的值,组件已经使用v-bind:属性="}
             ],
-            self_define_attr:"sssss",
-            pic_src:"http://images.cnblogs.com/cnblogs_com/leee/801892/o_like.png",
-            picked:"",
-            objarr:[{sex:5},{sex:4},{sex:3},{sex:2},{sex:1}]
+            self_define_attr: "sssss",
+            pic_src: "http://images.cnblogs.com/cnblogs_com/leee/801892/o_like.png",
+            picked: "",
+            objarr: [{sex: 5}, {sex: 4}, {sex: 3}, {sex: 2}, {sex: 1}],
+            rowspan_table:[
+                {name:'Tom',friuts:[{name:'苹果',count:5},{name:'香蕉',count:8}]},
+                {name:'like',friuts:[{name:'苹果',count:6},{name:'香蕉',count:9},{name:'柚子',count:10}]},
+                {name:'Kit',friuts:[{name:'苹果',count:4},{name:'香蕉',count:10},{name:'桃子',count:6},{name:'榴莲',count:1}]}
+            ]
         },
         methods: {
             add_ul_lis: function () {
@@ -167,30 +208,36 @@
                 this.lis.splice(index, 1);
             },
             changepicked(){
-                alert('this.picked-----'+this.picked+'------radio的change事件，并非click')
+                alert('this.picked-----' + this.picked + '------radio的change事件，并非click')
             }
         },
         filters: {
-            sum: function (value) {
+            add4: function (value) {
                 return value + 4;
             },
-            att_sum:function(value,attr){
+            att_sum: function (value, attr) {
                 debugger
-                let temp=0;
-                value.forEach(function(item){
-                    temp+=item[attr];
+                let temp = 0;
+                value.forEach(function (item) {
+                    temp += item[attr];
                 })
                 return temp;
             }
         }
     })
+    // vue实例之后定义无效
+    // Vue.filter('stitching',function(str,strparam){
+    //     debugger
+    //     return str+strparam;
+    // })
+
 
     // Define a new component called todo-item
-
     Vue.component('self-compoment-detective', {
-      props: ['myprop'],
-      template: '<li>{{ myprop.val }}</li>'
+        props: ['myprop'],
+        template: '<li>{{ myprop.val }}</li>'
     })
+
 
     var app2 = new Vue({
         el: '#app-02',
