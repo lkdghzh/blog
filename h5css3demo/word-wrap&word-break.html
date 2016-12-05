@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>word-break与word-wrap</title>
+<style type="text/css">
+p{width: 200px; background: yellow; color: red;}
+.word_wrap{ word-wrap:break-word;}
+.word_break{ word-break:break-all;}
+.word_break-keep-all{ word-break:keep-all;}
+.white-space{ white-space: nowrap}
+
+div{
+	width:500px;
+	word-wrap: break-word;
+}
+</style>
+</head>
+<body>
+<ol>
+<li>换行：</li>
+<li>断行：剩下控件不够一个较长的英文单词的宽度的时候，这个单词就会被折断，将多余的部分从下行开始（有换行）</li>
+<li>中文字符不会以”，。“开始，他会将紧靠左侧的字符，拉下来换行。</li>
+<li>word-wrap:break-word; word-break:break-all; 注意换行 与断行。都是使单个较长的单词断行，<br/>
+		word-wrap:break-word;换行后再讲这个较长的英文单词折断。<br/>
+	    word-break:break-all;会将换行的空间给占据。最终就是不溢出，充满整个盒子</li>
+<li>word-break：keep-all 我查了下 caniuse ie11支持，但是和chrome展现形式不同</li>
+	
+</ol>
+
+<b>不加text文本样式，一般文字 </b>
+<p >任何语言的字符永远没间隙，但是一行</p>
+<p >任何语言的字符永远没间隙。但是一行</p>
+<p>啊啊hello，youyounameishahahishahahyouyounameisha，who-areyouyounameishahahishahah ahahahahahhahahahahhahahahahhahah 任何语言溢出的话就任何语言折英语逗号,任何语言溢出的话就任何语言折汉字逗号，</p>
+<b>word_wrap 不管CJK </b>
+<p class="word_wrap">啊啊hello，youyounameishahahishahahyouyounameisha，who-areyouyounameishahahishahah ahahahahahhahahahahhahahahahhahah</p>
+<p class="word_wrap">啊啊hello，youyounameishahahishahahyouyounameisha，who-/areyouyounameishahahishahah ahahahahahhahahahahhahahahahhahah</p>
+<p class="word_wrap">youyounameishahahishahahyouyounameish啊啊hello，who-/areyouyounameishahahishahah ahahahahahhahahahahhahahahahhahah</p>
+
+<b>word_break：任何文本,永远没间隙，“，”永远不能在最前面？</b><br/>
+<b>word-break:break-all</b>
+<p class="word_break">任何语言的字符永远没间隙，但是一行的最后一个单词溢出的话就折断，单词折断不美的haha,haha,haha,haha,haha,haha,haha,haha,haha,haha,haha,</p>
+
+<b>word-break:keep-all：CJK 文本不断行。 Non-CJK 文本表现同 normal。</b>
+<p class="word_break-keep-all">任何语言的字符任任何语言何语言，任何语言溢出的话就任何语言折任何语言断，单词折断不美的haha,haha,haha,haha,haha haha,haha,haha,haha,haha,haha,</p>
+<p class="word_break-keep-all">任何语言的字符任任何语言何语言，任何语言溢出的话就任何语言折任何语言断，单词折断不美的haha,haha,haha,haha,haha-haha,haha,haha,haha,haha,haha,</p>
+<p class="word_break-keep-all">任何语言溢出的话就任何语言折英语逗号,任何语言溢出的话就任何语言折汉字逗号，任何语言溢出的话就任何语言折语言句号。任何语言的字符任任何语言何英文分号;任何语言的字符任任何语汉字分号；任何语言溢出的话就任何语言折任何语言断；任何语言溢出的话就任何语言折任何语言断任何语:言溢出的话就任何语言折任何语言中间点·任何语言溢出的话就任何语言折任何横杠-任何语言溢出的话就任何语言折汉子问号？任何语言溢出的话就任何语言折英语问号?任何语言溢出的话就任何语言语言语言点点.任何语言溢出的话就任何语言折汉字感叹号！任何语言溢出的话就任何语言折英语感叹号!任何语言溢出的话就任何语言折英语感叹号/任何语言溢出的话就任何语言折英语感叹号/hahahahahahahahahahahahahahahaha，任何语言溢出的话就任何语言折英语感叹号-/hahahahahahahahahahahaha-单词折断不美的haha，haha，haha，hahahahahahahahahahahahahahahaha-hahahahahahahahahahahahahahahaha，hahahahahahahahahahahahahahahaha/hahahahahahahahahahahahahahahaha，hahahahahahahahahahahahahahahaha-/hahahahahahahahahahahahahahahaha</p>
+
+<b>white-space</b>
+<p class="white-space">任何语言的字符永远没间隙，但是一行的最后一个单词溢出的话就折断，单词折断不美的haha,haha,haha,haha,haha,haha,haha,haha,haha,haha,haha,</p>
+
+</body>
+</html>
