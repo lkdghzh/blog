@@ -137,6 +137,12 @@
 <ul>
     <self-compoment-detective ></self-compoment-detective>
 </ul>
+<h4> 8：Vue 不允许在已经创建的实例上动态添加新的根级响应式属性（root-level reactive properties）。
+然而它可以使用 Vue.set(object, key, value) 方法将响应属性添加到嵌套的对象上：
+vue.set(instance.dataObj,'attr',value)</h4>
+<br/>
+{{obj_existed.oldAttr}}
+{{obj_existed.newAttr}}
 </div>
 
 
@@ -157,7 +163,7 @@
         template: '<div>A custom component!</div>'
     })
 
-    new Vue({
+  let instance=  new Vue({
         el: '#app',
         data: {
             message: 'Hello Vue.js!',
@@ -193,7 +199,10 @@
                 {name:'Tom',friuts:[{name:'苹果',count:5},{name:'香蕉',count:8}]},
                 {name:'like',friuts:[{name:'苹果',count:6},{name:'香蕉',count:9},{name:'柚子',count:10}]},
                 {name:'Kit',friuts:[{name:'苹果',count:4},{name:'香蕉',count:10},{name:'桃子',count:6},{name:'榴莲',count:1}]}
-            ]
+            ],
+            obj_existed:{
+                oldAttr:"原有的数据"
+            }
         },
         methods: {
             add_ul_lis: function () {
@@ -237,10 +246,8 @@
     //     debugger
     //     return str+strparam;
     // })
-
-
-   
-
+    
+    Vue.set(instance.obj_existed,'newAttr','新加入的属性');
 
     var app2 = new Vue({
         el: '#app-02',

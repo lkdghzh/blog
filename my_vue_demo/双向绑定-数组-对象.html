@@ -1,0 +1,79 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="http://cdn.bootcss.com/vue/2.0.3/vue.js"></script>
+<div id="app">
+    <table class="table" border='1'>
+        <tr v-for="(book,bookIndex) in books">
+            <td>{{book.id}}</td>
+            <td>{{book.name}}</td>
+            <td>{{book.author}}</td>
+            <td>{{book.price}}</td>
+            <td>{{book.arr.join('--')}}</td>
+            <td><button @click="update(book,bookIndex)">点击</button></td>
+        </tr>
+    </table>
+</div>
+
+<script>
+   let app= new Vue({
+        el: '#app',
+        data: {
+            books: [{
+                id: 1,
+                author: 'foo',
+                name: 'js define',
+                price: 32,
+                arr:[1,2,3]
+            }, {
+                id: 2,
+                author: 'bar',
+                name: 'css define',
+                price: 30,
+                arr:[1,2,3]
+            },
+            {
+                id: 3,
+                author: 'baz',
+                name: 'pure book',
+                price: 40,
+                arr:[1,2,3]
+            }],
+        },
+        methods: {
+            update(book,bookIndex){
+                debugger
+                //this.books[bookIndex]
+                book= {
+                    id: 4,
+                    author: 'like',
+                    name: 'git demo',
+                    price: 100
+                }
+                this.$set(book.id, "4")
+
+                // this.$set(book,{
+                //     id: 4,
+                //     author: 'like',
+                //     name: 'git demo',
+                //     price: 100
+                // })
+                // var a=[3,4,5];
+                // this.$set(book.arr, a.toString())
+                /*
+                book.id= 4;
+                book.author= 'like';
+                book.name= 'git demo';
+                book.price= 100;
+                */
+            }
+        }
+    })
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>lvdxiaobao-Promise</title>
+</head>
+<body>
+<script>
+    function runAsync1() {
+        var p = new Promise(function (resolve, reject) {
+            //做一些异步操作
+            setTimeout(function () {
+                console.log('异步任务1执行完成');
+                reject('通过reject(sth1111),进入catch的fn函数，赋值给参数');
+                resolve('随便什么数据1');
+                
+            }, 1000);
+        });
+        return p;
+    }
+    function runAsync2() {
+        var p = new Promise(function (resolve, reject) {
+            //做一些异步操作
+            setTimeout(function () {
+                console.log('异步任务2执行完成');
+                //这里的语法错误是没办法进入catch
+                //必须通过reject(sth),进入catch的fn函数，赋值给参数
+                reject('通过reject(sth),进入catch的fn函数，赋值给参数');
+                resolve('随便什么数据2');
+                
+            }, 2000);
+        });
+        return p;
+    }
+    function runAsync3() {
+        var p = new Promise(function (resolve, reject) {
+            //做一些异步操作
+            setTimeout(function () {
+                console.log('异步任务3执行完成');
+                resolve('随便什么数据3');
+            }, 3000);
+        });
+        return p;
+    }
+    Promise.race([runAsync1(), runAsync2(), runAsync3()])
+            .then(function (results) {
+                debugger
+                console.log(results);
+                })
+            .catch(function (errmsg) {
+        debugger
+        console.log(errmsg)
+    });
+</script>
+</body>
+
+</html>
