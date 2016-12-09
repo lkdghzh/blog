@@ -124,7 +124,7 @@
         <br>
         <span>Picked: {{ picked }}</span>
     </div>
-    7 ：filters全局过滤器&实例过滤器
+    7 ：filters全局过滤器&实例组件内部过滤器
     <div>
         {{'aaa'| stitching('bbb')}}
         {{3|add4}}
@@ -142,7 +142,9 @@
 vue.set(instance.dataObj,'attr',value)</h4>
 <br/>
 {{obj_existed.oldAttr}}
-{{obj_existed.newAttr}}
+{{obj_existed.newAttr1}}
+{{obj_existed.newAttr2}}
+<button @click="addNewAttrForExitObj">实例内部添加的：为已经存在data的对象添加属性22</button>
 </div>
 
 
@@ -225,6 +227,9 @@ vue.set(instance.dataObj,'attr',value)</h4>
             },
             changepicked(){
                 alert('this.picked-----' + this.picked + '------radio的change事件，并非click')
+            },
+            addNewAttrForExitObj(){
+                 Vue.set(instance.obj_existed,'newAttr2','实例内部添加的新加入的属性22222');
             }
         },
         filters: {
@@ -246,8 +251,9 @@ vue.set(instance.dataObj,'attr',value)</h4>
     //     debugger
     //     return str+strparam;
     // })
-    
-    Vue.set(instance.obj_existed,'newAttr','新加入的属性');
+
+    //实例外部添加
+    Vue.set(instance.obj_existed,'newAttr1','实例外部添加的新加入的属性1111111111');
 
     var app2 = new Vue({
         el: '#app-02',
