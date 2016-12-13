@@ -1,0 +1,17 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://cdn.bootcss.com/knockout/3.4.0/knockout-min.js"></script>
+</head>
+<body>
+<div data-bind="foreach:arr">
+   <input type="text" data-bind="value:$data">
+</div>
+<script>
+    ko.applyBindings({
+        arr: ko.observableArray("1","2","3")
+    });
+</script>
+</body>
+</html>

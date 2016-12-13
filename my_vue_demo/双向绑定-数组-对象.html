@@ -6,17 +6,24 @@
 <body>
 <script src="http://cdn.bootcss.com/vue/2.0.3/vue.js"></script>
 <div id="app">
+    <h2>Vue.set  </h2>
     <table class="table" border='1'>
         <tr v-for="(book,bookIndex) in books">
-            <td>{{book.id}}</td>
-            <td>{{book.name}}</td>
             <td>{{book.author}}</td>
-            <td>{{book.price}}</td>
             <td>{{book.arr.join('--')}}</td>
-            <td>{{book.obj.name}}</td>
+            <td> <input type="text" v-model="book.obj.name"><input type="text" v-model="book.obj.name"></td>
             <td><button @click="update(book,bookIndex)">点击</button></td>
         </tr>
     </table>
+    <h2>改变对象,this.对象=sth。</h2>
+    <h2>改变对象的属性，1：对象.属性=sth，2：Vue.set(对象，属性，值)  </h2>
+
+    <span v-html="selfObj.name+','+selfObj.txt"></span>
+    <input type="text" v-model="selfObj.name">
+    <button @click="change(selfObj)">点击</button>
+    <br/>
+    <input type="text" v-model="selfObj2.innerObj.a">
+    <button @click="changeObj(selfObj2)">点击</button>
 </div>
 
 <script>
@@ -24,60 +31,86 @@
         el: '#app',
         data: {
             books: [{
-                id: 1,
                 author: 'foo',
-                name: 'js define',
-                price: 32,
                 arr:[1,2,3],
                 obj: {name: 'text'}
             }, {
-                id: 2,
                 author: 'bar',
-                name: 'css define',
-                price: 30,
                 arr:[1,2,3],
                 obj: {name: 'text'}
             },
             {
-                id: 3,
                 author: 'baz',
-                name: 'pure book',
-                price: 40,
                 arr:[1,2,3],
                 obj: {name: 'text'}
             }],
+            selfObj:{
+                name:'牛牛1',
+                txt:'1号',
+                innerObj:{a:"a"}
+            },
+            selfObj2:{
+                innerObj:{a:"a"}
+            },
+
         },
         methods: {
             update(book,bookIndex){
 
-                //this.books[bookIndex]
-                book= {
-                    id: 4,
-                    author: 'like',
-                    name: 'git demo',
-                    price: 100,
-                    arr:[1,2,3],
-                    obj: {name: 'text'}
-                }
-                Vue.set(this.books, bookIndex, book);
-                // book.price=100;
-                // book.arr = [3,4,5,6];
-                // book.obj = {name: 'tom'};
-
-                // this.$set(book,{
-                //     id: 4,
+                //1:这种将传递过来的参数直接赋值的方式，页面是不会发生变化的。因为book这个对象被替换成新对象。属性是普通数据属性，对象是响应式。
+                // var  data= {
                 //     author: 'like',
-                //     name: 'git demo',
-                //     price: 100
+                //     arr:[4,5,6],
+                //     obj: {name: 'text222'}
+                // }
+                // book=data;
+
+                //2:通过索引，也不行
+                // this.books[bookIndex]= {
+                //     author: 'like',
+                //     arr:[4,5,6],
+                //     obj: {name: 'text222'}
+                // }
+
+                //3:这种单独修改当前想的属性是可以的。将数据属性的值赋值给get set属性。依然结果是get set 存取器属性。对象依然是响应式
+                // book.author='aaaaaa';
+                // book.arr=[5,6,7];
+                // book.obj={name: 'gg'}
+
+
+                //4:利用合并，找到相同属性名，将后者的值赋值给前者。将数据属性的值赋值给get set存取器属性。依然结果是get set 存取器属性。对象依然是响应式
+                //注意bbb属性。原来对象中并没有，并入的bbb是普通数据属性。
+                // Object.assign(book,{
+                //     author: 'like',
+                //     arr:[666,4],
+                //     obj: {name: 'text222'},
+                //     bbb:"bbbb"
                 // })
-                // var a=[3,4,5];
-                // this.$set(book.arr, a.toString())
-                /*
-                book.id= 4;
-                book.author= 'like';
-                book.name= 'git demo';
-                book.price= 100;
-                */
+                console.log(book);//
+
+                //5利用索引，修改当前项（比如table中的tr中的值），需要把当前的索引传过来！
+                //Vue.set(this.books, bookIndex, data);
+
+                //5常用属性键名
+                //Vue.set(this.books, bookIndex, data);
+            },
+            change(obj){
+                //传参数不行
+                //obj={name:"钩钩", txt:'2号'};
+
+                //可以 this.对象
+                this.selfObj={name:"钩钩", txt:'2号'};
+
+                //可以 参数.属性。因为属性为存取器属性 为其赋值，也是存取器属性
+                //obj.name="aa";obj.txt="2号";
+            },
+            changeObj(obj){
+                //传参数不行
+                //obj.innerObj2={a:'b'};
+                //可以 this.对象
+                //this.selfObj2.innerObj={a:'b'};
+                //Vue.set
+                 Vue.set(obj,'innerObj',{a:'b'})
             }
         }
     })
