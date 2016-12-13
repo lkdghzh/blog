@@ -6,12 +6,20 @@
 </head>
 <body>
 <div data-bind="foreach:arr">
-   <input type="text" data-bind="value:$data">
+   <input type="text" data-bind="value:$data,valueUpdate: 'afterkeydown'" >
 </div>
+<button data-bind="click:unshift">unshift</button>
 <script>
-    ko.applyBindings({
-        arr: ko.observableArray("1","2","3")
-    });
+	class vm{
+		constructor(){
+			this.arr= ko.observableArray(["1","2","3"])
+		}
+	    unshift(){
+	        this.arr.unshift("");
+	        console.log(this.arr())
+	    }
+	}
+    ko.applyBindings(new vm());
 </script>
 </body>
 </html>
