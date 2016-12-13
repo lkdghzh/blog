@@ -6,20 +6,43 @@
 </head>
 <body>
 <div data-bind="foreach:arr">
-   <input type="text" data-bind="value:$data,valueUpdate: 'afterkeydown'" >
+   <!-- <input type="text" data-bind="value:$parent.arr()[$index()]" >
+   <span data-bind="text:typeof $parent.arr()[$index()]" ></span>
+   <span data-bind="text:typeof $data" ></span> -->
+   <!-- <input type="text" data-bind="value:$data" > -->
+   <input type="text" data-bind="value:ko.observable($data)" >
 </div>
-<button data-bind="click:unshift">unshift</button>
+<div data-bind="foreach:arr1">
+   <input type="text" data-bind="value:$data.name" >
+   <span data-bind="text:typeof $data" ></span>
+   <span data-bind="text:typeof $parent.arr1()[$index()]" ></span>
+</div>
+<button data-bind="click:unshiftss">unshift</button>
 <script>
 	class vm{
 		constructor(){
-			this.arr= ko.observableArray(["1","2","3"])
+			this.arr= ko.observableArray([ko.observable('23'),"1","2","3"]);
+			this.arr1= ko.observableArray([ko.observable({name:'a'}),{name:'b'},{name:'c'}])
 		}
-	    unshift(){
-	        this.arr.unshift("");
-	        console.log(this.arr())
+	    unshiftss(){
+	        this.arr.unshift(ko.observable(""));
+	        this.arr1.unshift({name:''});
+	        console.log(this.arr(),this.arr1())
 	    }
 	}
-    ko.applyBindings(new vm());
+	// function vm(){
+		
+	// 	this.arr= ko.observableArray([ko.observable('23'),ko.observable('23')]);
+	// 	this.arr1= ko.observableArray([{name:'a'},{name:'b'},{name:'c'}])
+	// }
+
+	// vm.prototype.unshiftss = function(){
+ //        this.arr.unshift(ko.observable(""));
+ //        this.arr1.unshift({name:''});
+ //        console.log(this.arr(),this.arr1())
+ //    }
+    ttt = new vm()
+    ko.applyBindings(ttt);
 </script>
 </body>
 </html>
