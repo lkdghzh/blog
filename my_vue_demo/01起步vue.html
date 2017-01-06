@@ -130,6 +130,13 @@
         {{3|add4}}
         {{objarr | att_sum('sex')}}
     </div>
+    7 ：select
+        <select v-model="selected">
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+        </select>
+        <span>Selected: {{ selected }}</span>
     5组件：HTML （特性）不区分大小写。
 
 <br/>
@@ -204,7 +211,8 @@ vue.set(instance.dataObj,'attr',value)</h4>
             ],
             obj_existed:{
                 oldAttr:"原有的数据"
-            }
+            },
+            selected:"B"
         },
         methods: {
             add_ul_lis: function () {

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ZH-CN">
+<head></head>
+<script type="text/javascript">
+
+	function inherit4fun(Child, Parent) {
+	    function F() {}; // 定义一个临时函数
+	    F.prototype = Parent.prototype; // 把父类的原型赋给临时函数的原型
+	    Child.prototype = new F(); // 把子类的原型赋值为f的对象
+	}
+
+	function inherit4objfun(p){
+	      if(p == null) throw TypeError();
+	      if(Object.create)return Object.create(p);
+	      var t = typeof p;
+	      if(t !== "object" && t !== "function") throw TypeError();
+	      function f(){}
+	      f.prototype = p;
+	      return new f();
+	}
+
+
+    function Person(name, age) {
+        this.name = name;
+        this.age = age;
+        this.aler = function () {
+        	 console.log(`Person.function-aler`);//``es6 的字符串  可以换行
+            // console.log(`Per
+
+            // son.function-aler`);//``es6 的字符串  可以换行
+        }
+    }
+    //因为prototype是对象，可以写成无序键值对
+    Person.prototype = {
+        sayHi: function () {
+            console.log('Person.prototype-sayhi');
+        },
+        sayHello: function () {
+            console.log('Person.prototype-sayhello');
+        }
+    }
+    function Student(sname, sage) {
+        Person.call(this, sname, sage);
+    }
+    /*  错误重现1
+	    //Student.prototype = Person.prototype;
+	    //当修改Student.prototype时候，Person.prototype也会被修改
+	    //Student.prototype.saystu =function () {console.log('saystu');} 
+    */
+
+	/*  错误重现2
+	    //当改变Student.prototype时候，原来的会被覆盖
+	    // Student.prototype = {
+	    //     saystu: function () {
+	    //         console.log('saystu');
+	    //     }
+	    // }
+	*/
+
+	/*  正确重现1
+	    //当改变Student.prototype时候，原来的会被覆盖，达不到子类继承父类，或者子类原型可以增加方法不影响到父类原型
+	    //此时就需要将两者的方法合并。-->将基类原型的方法拷贝到子类原型上 类似$.extend 拷贝继承 （浅拷贝就好了，原型中一般存方法）
+	    // Student.prototype = new Person();
+	    // Student.prototype.constructor = Student;
+	    // Student.prototype.saystu =function () {console.log('saystu');} 
+	*/
+
+	/*  正确重现2
+	    // inherit4fun(Student,Person);
+	    // Student.prototype.saystu =function () {console.log('saystu');} 
+	*/
+
+	/*  正确重现3
+		Student.prototype=inherit4objfun(Person.prototype);
+		Student.prototype.saystu =function () {console.log('saystu');} 
+	*/
+
+    var stu1 = new Student("zg", 18);
+    var p1 = new Person(" ls", 20);
+    console.log(stu1,p1)
+    //Student.prototype增加saystu方法，然后看Person.prototype是否增加，增加便是错误的
+    console.log(Student.prototype,Person.prototype )
+    stu1.aler();
+    stu1.sayHi();
+    stu1.sayHello();
+    //stu1.saystu();
+</script>
+<body>
+</body>
+</html>
