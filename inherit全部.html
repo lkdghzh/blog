@@ -11,7 +11,8 @@
 
 	function inherit4objfun(p){
 	      if(p == null) throw TypeError();
-	      if(Object.create)return Object.create(p);
+	      //可以不用es5中的Object.create
+	      //if(Object.create)return Object.create(p);
 	      var t = typeof p;
 	      if(t !== "object" && t !== "function") throw TypeError();
 	      function f(){}
@@ -30,6 +31,7 @@
             // son.function-aler`);//``es6 的字符串  可以换行
         }
     }
+
     //因为prototype是对象，可以写成无序键值对
     Person.prototype = {
         sayHi: function () {
@@ -42,6 +44,7 @@
     function Student(sname, sage) {
         Person.call(this, sname, sage);
     }
+
     /*  错误重现1
 	    //Student.prototype = Person.prototype;
 	    //当修改Student.prototype时候，Person.prototype也会被修改
@@ -71,10 +74,18 @@
 	*/
 
 	/*  正确重现3
+	*/
 		Student.prototype=inherit4objfun(Person.prototype);
 		Student.prototype.saystu =function () {console.log('saystu');} 
+	
+	/*  正确重现4 对象的继承
 	*/
-
+		var o={x:1}
+		var childObj=inherit4objfun(o);
+		childObj.y=2;
+		console.log(childObj)//打印不出继承的属性。
+		console.log(childObj.x+childObj.y)//3
+	
     var stu1 = new Student("zg", 18);
     var p1 = new Person(" ls", 20);
     console.log(stu1,p1)

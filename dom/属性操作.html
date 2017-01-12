@@ -1,0 +1,86 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<a href="sss" id="aaa"></a>
+</body>
+<script type="text/javascript">
+	//函数： 反复执行的代码块
+    //全局只有一个对象，防止全局变量污染
+    var $ = {
+      	ele : {
+	        tag : function(tag){return document.getElementsByTagName(tag)},
+            id : function(id){return document.getElementById(id)}
+        },
+      	css : {
+	        addStyle : function(){},
+	        removeStyle : function(){},
+	        addClass : function(){}
+      	}
+    }
+    /*
+		DOM是文档（HTML页面）对象(页面中的元素)模型：使用DOM是为了能够更方便的操作JS页面中的元素
+      
+		DOM 按层级划分为：祖先级、父子级、子孙级
+		                
+
+		DOM中的所有内容都是节点，按节点划分常用的有 元素节点（1）、属性节点（2）、文本节点（3）（包含文字、空格、回车、制表符）、注释节点（8）、document节点（9）；
+
+		firstChild与firstElementChild区别：
+		                                               前者高低版本都兼容，但是高版本可以获取所有的子节点（文本、元素、注释等）、低版本只可以获取元素节点
+		                                               后者高版本兼容，低版本不兼容，且在高版本中获取的只是元素节点
+		                                               故在判断时通常会使用 firstElementChild || firstChild ;
+		firstChild 第一个子节点   、 lastChild 最后一个子节点、   previousSibling 上一个兄弟节点 、  nextSibling 下一个兄弟节点
+
+		nodeType 可以判断节点的类型
+
+		childNodes 获取所有的子节点
+
+		attributes 元素属性列表的集合
+
+		nodeName 属性名 （在低版本和火狐浏览器中有兼容问题）
+
+		nodeValue 属性值 （在低版本和火狐浏览器中有兼容问题）
+
+		parentNode查找父元素节点（当前子元素的）在页面中document是最大的父级
+
+		children 只获取元素子节点
+
+    */
+   function Prev(obj){
+		if(!obj || !obj.previousSibling){
+			return null;
+		}
+		return obj.previousSibling.nodeType==1?obj.previousSibling:Prev(obj.previousSibling);//判断元素节点，如果等于1就是元素节点，故而直接返回previousSibling
+	}
+	
+	function Next(obj){
+		if(!obj || !obj.nextSibling){
+			return null;
+		}
+		return obj.nextSibling.nodeType==1?obj.nextSibling:Next(obj.nextSibling);
+	}
+	
+	function First(obj){
+		if(!obj || !obj.firstChild){
+			return null;
+		}
+		return obj.firstChild.nodeType==1?obj.firstChild:Next(obj.firstChild);
+	}
+	
+	function Last(obj){
+		if(!obj || !obj.lastChild){
+			return null;
+		}
+		return obj.lastChild.nodeType==1?obj.lastChild:Prev(obj.lastChild);
+	}
+    //调用
+    //window.onload=function(){}
+    console.log($.ele.id('aaa'));
+    var a=$.ele.id('aaa');
+    
+
+</script>
+</html>

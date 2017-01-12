@@ -1,28 +1,64 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
     <style>
-        #d1 {
-            width: 200px;
-            height: 200px;
+        #buffered {
+            border: solid #ccc 1px;
+            height: 10px;
             background: red;
+            display: block;
+            width: 1%;
         }
     </style>
 </head>
 <body>
-<div id='d1' style="background:green;"></div>
-
-<audio controls="controls" src="http://edu.hivoice.cn:9088/WebAudio-1.0-SNAPSHOT/audio/play/f49f0cfe-1f91-4f9b-807f-d0a81c31dc96/1478764514962441868/bj">
-您老的浏览器不支持 audio 标签。
+<img src="222.png"/>
+<!-- 3401.mp3
+  http://kolber.github.io/audiojs/demos/mp3/juicy.mp3
+  http://myst729.qiniudn.com/within-temptation_pale.mp3
+  http://edu.hivoice.cn:9088/WebAudio-1.0-SNAPSHOT/audio/play/DE276FBC-15D3-7510-8C70-2D86409C49E6/1483679317923288857/bj-->
+<audio controls src="http://kolber.github.io/audiojs/demos/mp3/juicy.mp3" preload="none">
 </audio>
+<audio id="audio2" src="http://kolber.github.io/audiojs/demos/mp3/juicy.mp3" controls preload="none"></audio>
+<p><span></span></p>
+<div id="buffered"></div>
+
+</body>
 <script type="text/javascript">
+    var img = document.getElementsByTagName('img')[0];
+    img.onload  = function () {
+        if(img.complete){
+            console.log('onload 加载网络资源，非缓存')
+        }
+    }
     window.onload = function () {
-       
 
 
+        var audio = document.getElementsByTagName('audio')[0];
+        audio.addEventListener('progress', function () {
+            console.log('....')
+        })
+
+        var audio2 = document.getElementById('audio2');
+//    audio2.onload=function(){
+//    	debugger
+        audio2.addEventListener('progress', function () {
+            //Before start calling buffered.end(0) try check buffered.length first
+            //Failed to execute 'end' on 'TimeRanges': The index provided (0) is greater than or equal to the maximum bound (0)
+            //Failed to execute 'start' on 'TimeRanges': The index provided (1) is greater than or equal to the maximum bound (1) console.log(audio2.buffered.start(0)/ audio2.duration);
+            if (audio2.buffered.length > 0) {
+                console.log(audio2.buffered);
+                console.log(audio2.buffered.end(0) / audio2.duration);
+                var load_percent = (audio2.buffered.end(0) / audio2.duration).toFixed(2);
+                var buffer = "服务器加载百分比: " + load_percent * 100 + '%' +
+                        "<br/>当前缓冲开始位置: " + audio2.buffered.start(0) +
+                        "<br/>当前缓冲结束位置: " + audio2.buffered.end(0) +
+                        "<br/> 总长度: " + audio2.duration;
+                document.querySelectorAll('span')[0].innerHTML = buffer;
+                document.getElementById('buffered').style.width = load_percent * 100 + '%';
+            }
+        })
+//	}
     }
 </script>
-</body>
-
 </html>
