@@ -1,5 +1,5 @@
 ##### 委托调用方法的4种方式。
-··· c#
+<pre>
 using System;
 using System.Collections.Generic;
 namespace ConsoleApplication1
@@ -37,9 +37,10 @@ namespace ConsoleApplication1
 }
 
 new，+=，delegate匿名方法，lamada表达式（就是方法，匿名的）
-···
+	</int>pre>
 ##### 委托约束方法的 参数返回值，泛型约束参数返回值的类型。
-··· c#
+
+<pre>
 namespace ConsoleApplication1
 {
     //委托，规定返回值和参数，泛型<>,规定参数和返回值类型。
@@ -74,7 +75,8 @@ namespace ConsoleApplication1
 }
 
 泛型委托。写一个模仿的 delegate T2 Func(in T1,out T2)(T1 arg)
-···
+</pre>
+
 ##### Func的超强分析
 ··· c#
 using System;
