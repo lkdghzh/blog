@@ -37,7 +37,7 @@ namespace ConsoleApplication1
 }
 
 new，+=，delegate匿名方法，lamada表达式（就是方法，匿名的）
-	</int>pre>
+</pre>
 ##### 委托约束方法的 参数返回值，泛型约束参数返回值的类型。
 
 <pre>
@@ -78,7 +78,7 @@ namespace ConsoleApplication1
 </pre>
 
 ##### Func的超强分析
-··· c#
+<pre>
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -151,5 +151,6 @@ namespace ConsoleApplication1
 }
 
 Where Find OrderBy Take Skip用到的泛型委托方法。Func的来龙去脉
-···
+</pre>
+
    
