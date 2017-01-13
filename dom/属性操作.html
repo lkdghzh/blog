@@ -1,0 +1,134 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<a href="sss" id="aaa"></a>
+</body>
+<script type="text/javascript">
+	//函数： 反复执行的代码块
+    //全局只有一个对象，防止全局变量污染
+	/*
+    var $ = {
+      	ele : {
+	        tag : function(tag){return document.getElementsByTagName(tag)},
+            id : function(id){return document.getElementById(id)}
+        },
+      	css : {
+	        addStyle : function(){},
+	        removeStyle : function(){},
+	        addClass : function(){}
+      	}
+    }
+    //window.onload=function(){}
+    console.log($.ele.id('aaa'));
+    var a=$.ele.id('aaa');
+    */
+
+
+    /*
+		DOM中的所有内容都是节点，按节点划分常用的有
+		元素节点（1）、
+		属性节点（2）、
+		文本节点（3）（包含文字、空格、回车、制表符）、
+		注释节点（8）、
+		document节点（9）；
+
+		节点特征
+			nodeType 可以判断节点的类型
+			nodeName 属性名 （在低版本和火狐浏览器中有兼容问题）
+			nodeValue 属性值 （在低版本和火狐浏览器中有兼容问题）
+			offsetLeft  当前元素的offsetParent的距离 
+					ie7以下：如果自己没有定位，那么offsetLeft[Top]是到body的距离 
+					如果自己有定位，那么就是到定位父级的距离
+					其他：到定位父级的距离									
+
+
+		属性 class href 自定义 ...
+			attributes 元素属性列表的集合
+			setAttribute
+			getAttribute
+			removeAttribute
+			hasAttributes
+			hasAttribute
+			hasAttributeNS
+			1.用.和[]的形式无法操作元素的自定义属性 
+			2.getAttribute可以操作元素的自定义属性
+
+		样式 style
+			style  $0.style.background='green'
+
+		子节点
+			childElementCount
+			childNodes 获取所有的子节点(不包含孙级以及以下的节点)
+			children 只获取元素子节点
+
+			firstChild firstElementChild 第一个子节点、
+			lastChild  lastElementChild 最后一个子节点
+			hasChildNodes
+
+			firstElementChild与firstChild区别：
+           前者低版本不兼容，且在高版本中获取的只是元素节点
+           后者都兼容，但是高版本可以获取所有类型的子节点（文本、元素、注释等）、低版本只可以获取类型为元素节点
+           故在判断时通常会使用 firstElementChild || firstChild ; 兼容低----->高  新---->旧
+
+		兄弟节点   
+			previousSibling  previousElementSibling 上一个兄弟节点、 
+			nextSibling nextElementSibling  下一个兄弟节点
+
+		父节点
+			parentNode查找父元素节点（当前子元素的）在页面中document是最大的父级
+			parentElement
+
+		父节点（最近的具有定位的）	
+			offsetParent 如果没有定位父级 offsetParent -> body offsetLeft -> html
+			offsetLeft[Top] 当前元素的offsetParent的距离
+
+		创建、插入、删除、替换
+		创建节点
+		document.createElement('s')创建s标签    比如兼容h5
+		document.createTextNode('s')'s'文本节点    
+		插入
+			document.body.insertBefore
+			document.body.appendChild
+		删除
+			document.body.removeChild
+		替换
+			document.body.replaceChild
+
+    */
+
+   function Prev(obj){
+		if(!obj || !obj.previousSibling){
+			return null;
+		}
+		return obj.previousSibling.nodeType==1?obj.previousSibling:Prev(obj.previousSibling);//判断元素节点，如果等于1就是元素节点，故而直接返回previousSibling
+	}
+	
+	function Next(obj){
+		if(!obj || !obj.nextSibling){
+			return null;
+		}
+		return obj.nextSibling.nodeType==1?obj.nextSibling:Next(obj.nextSibling);
+	}
+
+	function First(obj){
+		if(!obj || !obj.firstChild){
+			return null;
+		}
+		return obj.firstChild.nodeType==1?obj.firstChild:Next(obj.firstChild);
+	}
+	
+	function Last(obj){
+		if(!obj || !obj.lastChild){
+			return null;
+		}
+		return obj.lastChild.nodeType==1?obj.lastChild:Prev(obj.lastChild);
+	}
+
+   
+    
+
+</script>
+</html>

@@ -2,32 +2,40 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-
-	
 	<style>
-	body{
-		margin:0px;
-	}
+		*,body{
+			margin:50px;
+		}
 		div{
 			width: 100px;
 			height: 100px;
 			padding: 100px;
-			border: 20px solid green;
+			border: 50px solid green;
 		}
 		.first{
 			position: relative;
 			background: red;
-			border: 50px solid green;
+			left: 200px;
 		}
 		.second{
 			background: blue;
-			border: 30px solid green;
+			position: relative;
+			left: 100px;
 		}
 		.third{
 			background: yellow;
+		}
+		#f{
+			position: relative;
+		}
+		#s{
+			position: relative;
+		}
+		#t1{
 			position: fixed;
-			left: 350px;
-			top:300px;
+		}
+		#t2{
+			
 		}
 	</style>
 </head>
@@ -35,46 +43,66 @@
 	<div class="first">
 		<div class="second">
 			<div class="third">
-				
 			</div>
 		</div>
 	</div>
+	<div id="f">
+		<div id="s">
+			<div id="t1"></div>
+			<div id="t2"></div>
+		</div>
+	</div>
+
+	
+	<div id="display">
+		
+	</div>
 	<script type="text/javascript">
+
+	window.onload=function(){
 		function getOffset(curEle) {
-                var totalLeft = null, totalTop = null, par = curEle.offsetParent;
-                totalLeft += curEle.offsetLeft;
-                totalTop += curEle.offsetTop;
-                while (par) {
-                    if (navigator.userAgent.indexOf("MSIE 8.0") === -1) {
-                        totalLeft += par.clientLeft;
-                        totalTop += par.clientTop;
-                    }
-                    totalLeft += par.offsetLeft;
-                    totalTop += par.offsetTop;
-                    par = par.offsetParent;
-                }
-                return {left: totalLeft, top: totalTop};
-            }
+	            var totalLeft , totalTop, par = curEle.offsetParent;
+	            totalLeft += curEle.offsetLeft;
+	            totalTop += curEle.offsetTop;
+	            while (par) {
+	                if (navigator.userAgent.indexOf("MSIE 8.0") === -1) {
+	                    totalLeft += par.clientLeft;
+	                    totalTop += par.clientTop;
+	                }
+	                totalLeft += par.offsetLeft;
+	                totalTop += par.offsetTop;
+	                par = par.offsetParent;
+	            }
+	            return {left: totalLeft, top: totalTop};
+	            }
 
-            function getOffset2(curEle) {
-                var totalLeft = null, totalTop = null, par = curEle.offsetParent;
-                totalLeft += curEle.offsetLeft;
-                totalTop += curEle.offsetTop;
-                while (par) {
-                    if (navigator.userAgent.indexOf("MSIE 8.0") === -1) {
-                        totalLeft += par.clientLeft;
-                        totalTop += par.clientTop;
-                    }
-                    totalLeft += par.offsetLeft;
-                    totalTop += par.offsetTop;
-                    par = par.offsetParent;
-                }
-                return {left: totalLeft, top: totalTop};
-            }
+	    function getOffset2(curEle) {
+	        var totalLeft = null, totalTop = null, par = curEle.offsetParent;
+	        totalLeft += curEle.offsetLeft;
+	        totalTop += curEle.offsetTop;
+	        while (par) {
+	            if (navigator.userAgent.indexOf("MSIE 8.0") === -1) {
+	                totalLeft += par.clientLeft;
+	                totalTop += par.clientTop;
+	            }
+	            totalLeft += par.offsetLeft;
+	            totalTop += par.offsetTop;
+	            par = par.offsetParent;
+	        }
+	        return {left: totalLeft, top: totalTop};
+	    }
+
+		console.log(document.getElementById('t1').offsetParent);//null fixed 的offsetParent是null
+		console.log(document.getElementById('t2').offsetParent);
+
+	    console.log(getOffset(document.querySelector('.third')))
+	    console.log(getOffset(document.querySelector('.second')))
+	}
+	
 
 
-            console.log(getOffset(document.querySelector('.third')))
-            console.log(getOffset(document.querySelector('.second')))
+		
+
             
 	</script>
 	
