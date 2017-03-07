@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图片预览</title>
+	<script type="text/javascript">
+		function changeImgFiles(obj){
+			debugger
+			//对第一张图片处理，多张图片的话，for
+			//FileList
+			//File
+			var file=obj.files[0];
+			var container =document.createElement("div");
+			var img = document.createElement("img");
+			var thumbnail = document.createElement("img");
+			var span = document.createElement("div");
+
+			container.appendChild(span);
+			container.appendChild(thumbnail);
+			container.appendChild(img);
+			document.body.appendChild(container);
+
+			//图片的URL对象 src对象
+			img.src=URL.createObjectURL(file);
+
+			debugger
+			img.onload= function () {
+				
+	            var canvas = document.createElement("canvas"),
+	                context = canvas.getContext("2d");
+
+	            canvas.width=300;
+	            canvas.height=300;
+
+	            context.drawImage(this, 0, 0, 300, 300);
+
+		        // 缩放后的图片的base64 提交后台直接提交此值
+		        //canvas=>base64
+		       	var base64Url = canvas.toDataURL();
+		       	var blob=dataURItoBlob(base64Url);
+		        delete canvas;
+
+	        	// 缩略图
+				thumbnail.src = base64Url;
+
+		        span.innerHTML=  file.name + ": " + file.size + " bytes";
+	        }
+	        function dataURItoBlob(base64) {
+	        	console.log(base64)
+	        	debugger
+  			    var byteString;
+  			    if (base64.split(',')[0].indexOf('base64') >= 0)
+  			        byteString = atob(base64.split(',')[1]);
+  			    else
+  			        byteString = unescape(base64.split(',')[1]);
+  			    var mimeString = base64.split(',')[0].split(':')[1].split(';')[0];
+  			    var ia = new Uint8Array(byteString.length);
+  			    for (var i = 0; i < byteString.length; i++) {
+  			         ia[i] = byteString.charCodeAt(i);
+  			     }
+  			     return new Blob([ia], {type:mimeString});
+  			 }
+		}
+	</script>
+</head>
+<body>
+	<input type="file" multiple accept="image/gif,image.jpg,image/bmp,image/png" onchange="changeImgFiles(this)" >
+	
+</body>
+</html>
