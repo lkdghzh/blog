@@ -1,27 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>伪对象选择器的使用</title>
     <style>
-    .grid{
-        border: 1px solid gray;
-        box-sizing: border-box;
-        padding: 0px;
-    }
-    .grid .grid-item{
-        border-bottom: 1px solid gray;
-        border-right: 1px solid gray;
-        list-style-type: none;
-        height: 50px;
-        width: 200px;
-    }
-    .grid li:last-child{
-        border-bottom: 0px solid gray;
-    }
+        .grid {
+            border: 1px solid gray;
+            box-sizing: border-box;
+            padding: 0px;
+        }
+
+        .grid .grid-item,
+        .ft .grid-item {
+            border-bottom: 1px solid gray;
+            border-right: 1px solid gray;
+            list-style-type: none;
+            height: 50px;
+            width: 200px;
+        }
+
+        .grid li:last-child {
+            border-bottom-width: 0px;
+        }
+        /* ----------------------------------------------------- */
+
+        .ft {
+            overflow: hidden;
+        }
+
+        .ft .grid-item {
+            float: left;
+            border-bottom-width: 0px;
+        }
+        /* ----------------------------------------------------- */
+
+        p:first-of-type {
+            color: red;
+        }
+
+        p:first-child {
+            color: green;
+        }
+
+        span:nth-child(7){
+            background: green;
+        }
+        span:nth-of-type(2){
+            background:hotpink;
+        }
+
+        .p1:last-child {
+            color: blue;
+        }
+        .p1:last-of-type {
+            color: yellow;
+        }
     </style>
 </head>
+
 <body>
     <ul class="grid">
         <li class="grid-item">qqqq</li>
@@ -30,5 +68,40 @@
         <li class="grid-item">aaaa</li>
         <li class="grid-item">cccc</li>
     </ul>
+    <ul class="grid ft">
+        <li class="grid-item">qqqq</li>
+        <li class="grid-item">ssss</li>
+        <li class="grid-item">wwww</li>
+        <li class="grid-item">aaaa</li>
+        <li class="grid-item">cccc</li>
+    </ul>
+    <div>
+        <p>p1</p>
+        <p>p2</p>
+        <p>p3</p>
+        <span>span1</span>
+        <span>span2</span>
+        <span>span3</span>
+    </div>
+    <ul class="parent">
+        <li class="child">111</li>
+        <li class="child">22</li>
+        <p>p1</p>
+        <li class="child">33</li>
+        <p>p2</p>
+        <li class="child">44</li>
+        <span>span1</span>
+        <li class="child">55</li>
+        <span>span2</span>
+    </ul>
+       <div>
+        <p class="p1">p1</p>
+        <p class="p1">p2</p>
+        <p class="p1">p3</p>
+        <span>span1</span>
+        <span>span2</span>
+        <span>span3</span>
+    </div>
 </body>
+
 </html>
