@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            line-height: 500px;
+        }
+        #circle {
+            display: inline-block;
+            vertical-align: middle;
+            width: 50px;
+            height: 50px;
+            background: blue;
+            border-radius: 50%;
+            /* transform:translate(0px,100px) */
+        }
+        hr {
+            border-width: 1px 0px 0px 1px;
+            border-style: solid;
+            border-color: red;
+            position: absolute;
+            width: 500px;
+        }
+        hr:nth-of-type(1) {
+            top: 0px;
+        }
+        hr:nth-of-type(2) {
+            top: 125px;
+        }
+        hr:nth-of-type(3) {
+            top: 225px;
+        }
+        hr:nth-of-type(4) {
+            top: 250px;
+        }
+        hr:nth-of-type(5) {
+            top: 275px;
+        }
+        hr:nth-of-type(6) {
+            top: 375px;
+        }
+        hr:nth-of-type(7) {
+            top: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='circle'></div>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <script>
+        //document.querySelectorAll('#circle')[0]
+        let circle = document.querySelector('#circle');
+        let x = 0;
+        let maxLength = 500;
+        let A = 100;//225;//Y轴最大高度
+        let w = 2;//x轴的系数
+        //A*Math.sin(++y*w*Math.PI/180)（1px相当1角度）一帧水平方向走1px（这里为一角度）。
+        //Math.PI/180 每角度占的弧度y*Math.PI/180增加的弧度（1px这里相当1角度相当多少弧度）
+        //circle并非真正居中，其实稍微偏下 是因为垂直居中（baseline）
+        circle.addEventListener('click', function () {
+            requestAnimationFrame(function frameFn() {
+                console.log(circle.style.transform)
+                if (getTranslatePosition(circle, 'x') < maxLength) {
+                    ++x;
+                    circle.style.transform = 'translate(' + x + 'px,' + (-A * Math.sin(x * w * Math.PI / 180)) + 'px)';
+                    requestAnimationFrame(frameFn);
+                }
+            })
+        })
+        function getTranslatePosition(el, direction) {
+            //"translate(264px, 99.4522px)".match(/translate\((.*)px,(.*)px\)/)
+            let reg = /translate\((.*)px,(.*)px\)/;
+            let transformArr = el.style.transform.match(reg);
+            return !transformArr ? 0 :
+                direction = 'x' ? transformArr[1] :
+                    direction = 'y' ? transformArr[2] :
+                        [transformArr[1], transformArr[2]];
+        }
+    </script>
+</body>
+
+</html>
