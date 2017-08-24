@@ -78,7 +78,7 @@
     <hr>
     <hr>
     <script>
-        //let btns = document.querySelectorAll('[type=button]');
+        
         let circle = document.querySelector('#circle');
 
         let x = 0;
@@ -90,14 +90,9 @@
         //x轴的系数
         let w = 2;
 
-        //for (let [inx, btn] of btns.entries()) {
-        //    (function () {
-        //        let isSin=inx?false:true;
-        //			btn.addEventListener('click', function(){move(circle,duration,isSin?sinFn:cosFn)});
-        //    })(inx)
-        //}
         sin.addEventListener('click', function () { move(circle, duration, sinFn) });
         cos.addEventListener('click', function () { move(circle, duration, cosFn) });
+			
         //duration {{numebr}}持续时长
         //movefn   {{function}}移动函数
         //console.log(timeProportion,circle.style.transform)
