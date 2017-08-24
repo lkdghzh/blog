@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        * {
+            margin: 0
+        }
+
+        body {
+            height: 500px;
+        }
+
+        [type="button"] {
+            position: relative;
+            left: -50px;
+        }
+
+        #circle {
+            position: relative;
+            top: 225px;
+            float: left;
+            text-align: center;
+            line-height: 50px;
+            width: 50px;
+            background: blue;
+            border-radius: 50%;
+            /* transform:translate(0px,100px) */
+        }
+
+        hr {
+            border-width: 1px 0px 0px 1px;
+            border-style: solid;
+            border-color: red;
+            position: absolute;
+            width: 500px;
+        }
+
+        hr:nth-of-type(1) {
+            top: 0px;
+        }
+
+        hr:nth-of-type(2) {
+            top: 125px;
+        }
+
+        hr:nth-of-type(3) {
+            top: 225px;
+        }
+
+        hr:nth-of-type(4) {
+            top: 250px;
+        }
+
+        hr:nth-of-type(5) {
+            top: 275px;
+        }
+
+        hr:nth-of-type(6) {
+            top: 375px;
+        }
+
+        hr:nth-of-type(7) {
+            top: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <button type='button' id='sin'>开始正弦运动</button>
+    <button type='button' id='cos'>开始余弦运动</button>
+    <div id='circle'>X</div>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <script>
+        //let btns = document.querySelectorAll('[type=button]');
+        let circle = document.querySelector('#circle');
+
+        let x = 0;
+        //动画持续时长
+        let duration = 5000;
+
+        //Y轴最大高度
+        let A = 100;
+        //x轴的系数
+        let w = 2;
+
+        //for (let [inx, btn] of btns.entries()) {
+        //    (function () {
+        //        let isSin=inx?false:true;
+        //			btn.addEventListener('click', function(){move(circle,duration,isSin?sinFn:cosFn)});
+        //    })(inx)
+        //}
+        sin.addEventListener('click', function () { move(circle, duration, sinFn) });
+        cos.addEventListener('click', function () { move(circle, duration, cosFn) });
+        //duration {{numebr}}持续时长
+        //movefn   {{function}}移动函数
+        //console.log(timeProportion,circle.style.transform)
+        //timeProportion 当前帧占整个周期的时间比例
+        function move(el, duration, movefn) {
+            let start = Date.now()
+            requestAnimationFrame(function frameFn() {
+                let timeProportion = (Date.now() - start) / duration;
+                if (timeProportion < 1) {
+                    movefn(el)
+                    requestAnimationFrame(frameFn);
+                }
+            })
+        }
+        function sinFn(el) {
+            el.style.transform = 'translate(' + ++x + 'px,' + (-A * Math.sin(w * (x * Math.PI / 180))) + 'px)';
+        }
+        function cosFn(el) {
+            el.style.transform = 'translate(' + ++x + 'px,' + (-A * Math.sin(w * (x * Math.PI / 180 + Math.PI / 2))) + 'px)';
+        }
+    </script>
+</body>
+
+</html>
