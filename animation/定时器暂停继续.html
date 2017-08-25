@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.bootcss.com/jquery/1.10.1/jquery.js"></script>
+    </script>
+    <body>
+        <div id='show'></div><br />
+        <input type='button' value='click' onclick='aa()' />
+    </body>
+    <script>
+        var s = document.getElementById('show');
+        function bb() {
+            s.innerHTML += '1';
+        }
+        
+        var si = setInterval(bb, 1000);
+        
+        function aa() {
+            clearInterval(si);
+            s.innerHTML = 'Running after 10s';
+            setTimeout(cc, 10000);
+        }
+        
+        function cc() {
+            si = setInterval(bb, 1000);
+        }
+    </script>
+</head>
+
+</html>

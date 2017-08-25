@@ -18,62 +18,70 @@
 </head>
 
 <body>
-
+    <button type="button" id='btn'>暂停</button>
     <div id='block'></div>
 
     <script>
         class Animator {
-            constructor(duration, progress, easing) {
+            constructor(fn,duration=500) {
                 this.duration = duration;
-                this.progress = progress;
-                this.easing = easing || function (p) { return p };
-                this.currentTimerStamp=0;
+                this.pauseState = false;
+                this.proport = 0;
+                this.fn = fn;
             }
-            start(cb) {
+
+            go(p) {
                 var start = Date.now();
-                var duration = this.duration,
-                    self = this;
-                let frame=requestAnimationFrame(function frameFn() {
-                    var p = (Date.now() - start) / duration;
-                    if (p < 1.0) {
-                        self.progress(p);
-                        requestAnimationFrame(frameFn);
-                    } else {
-                        if (typeof cb === 'function') {
-                            cb()
+                return new Promise((resolve, reject) => {
+                    let frameFn = () => {
+                        var proport = p ? p : (Date.now() - start) / this.duration;
+                        if (!this.pauseState) {
+                            if (proport < 1) {
+                                this.fn(proport);
+                                let innerFrameId =requestAnimationFrame(frameFn);
+                            } else {
+                                this.fn(1);
+                                cancelAnimationFrame(outerFrameId)
+                                resolve('done');
+                            }
+                        } else {
+                            cancelAnimationFrame(frameId)
+                            this.proport = proport;
                         }
-                        self.progress(1.0);
                     }
-                });
+                    let outerFrameId = requestAnimationFrame(frameFn);
+                })
             }
-            pause(){
-                //
+            pause() {
+                this.pauseState = true;
             }
-            continue(){
-                //
+            continue() {
+                this.pauseState = false;
+                this.go(this.proport)
             }
         }
 
-        var a1 = new Animator(500, function (p) {
-            debugger
-            var tx = 100 * p;
+        var a1 = new Animator(function (p) {
+            var tx = 1000 * p;
 
             block.style.transform = 'translateX('
                 + tx + 'px)';
         });
 
-        var a2 = new Animator(1000, function (p) {
+        var a2 = new Animator(function (p) {
             var ty = 100 * p;
 
             block.style.transform = 'translate(100px,'
                 + ty + 'px)';
         });
 
-        block.addEventListener('click', function () {
-            a1.start(function () {
-                a2.start();
-            });
+        block.addEventListener('click', async function () {
+            await a1.go();
+            await a2.go();
         });
+        btn.addEventListener('click',function(){
+            a1.pause();
+        })
     </script>
 </body>
 
