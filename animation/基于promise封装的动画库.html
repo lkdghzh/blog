@@ -9,10 +9,10 @@
             top: 200px;
             width: 20px;
             height: 20px;
-            background: #0c8;
+            background:red;
             line-height: 80px;
-            text-align: center;
             border-radius: 50%;
+
         }
     </style>
 </head>
@@ -29,19 +29,18 @@
                 this.pauseState = false;
                 this.beginDelay = 0;
                 this.endDelay = 0;
+                this.start = 0;
                 this.fn = fn;
             }
             go(delay = 0) {
-                var start = Date.now();
+                if (!delay) this.start = Date.now();
+
                 return new Promise((resolve, reject) => {
                     let frameFn = () => {
-                        var proport = (Date.now() - start - delay) / this.duration;
-                        //console.log(delay ? 'continue' : 'proport', delay, Date.now() - start, Date.now() - start - delay, proport)
+                        var proport = (Date.now() - this.start - delay) / this.duration;
                         if (proport < 1) {
                             this.fn(proport);
-                            if (!this.pauseState) {
-                                requestAnimationFrame(frameFn);
-                            }
+                            if (!this.pauseState)  requestAnimationFrame(frameFn);
                         } else {
                             this.fn(1);
                             resolve('done');
@@ -57,19 +56,22 @@
             continue() {
                 this.pauseState = false;
                 this.endDelay = Date.now();
-                console.log('------------------------------', this.endDelay - this.beginDelay)
+                // console.log('------------------------------', this.endDelay - this.beginDelay)
                 this.go(this.endDelay - this.beginDelay)
             }
         }
         var a1 = new Animator(function (p) {
-            var tx = 800 * p;
+            var tx = parseInt(800 * p);
+            // console.log('--------------------',tx);
             block.style.transform = 'translateX(' + tx + 'px)';
         }, 3000);
+
         var a2 = new Animator(function (p) {
             var ty = 600 * p;
 
             block.style.transform = 'translate(800px,' + ty + 'px)';
         }, 3000);
+
         block.addEventListener('click', async function () {
             await a1.go();
             await a2.go();
