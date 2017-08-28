@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        html,body{height:100%;width:100%}
+        div{width:20px;height:20px;background-color:black;position:absolute;display:inline-block}
+    </style>
+</head>
+<body>
+    <div id="content" style="height:100%;width:100%;background-color:#979797;overflow:hidden;position:relative"></div>
+    <script type="text/javascript">
+        var cArray = new Array();
+
+        for (var i = 0; i < 1500; i++) {
+            var x = parseInt(Math.random() * document.body.clientWidth);
+            var y = parseInt(Math.random() * document.body.clientHeight);
+            var id = newGuid();
+            content.innerHTML += '<div id="' + id + '"></div>';
+            cArray.push(new Clock(x, y, 100, id));
+        }
+
+        function Clock(x, y, r, id) {
+            this.start = new Date();
+            this.r = r;
+            this.x = x;
+            this.y = y;
+            this.offsetX = r;
+            this.offsetY = 0;
+            this.id = id;
+            this.draw = function(){
+                //update data
+                var timespan = new Date() - this.start;
+                var offsetR = ((timespan % 36000) % 720) / 360 * Math.PI;
+                this.offsetX = this.r * Math.cos(offsetR);
+                this.offsetY = this.r * Math.sin(offsetR);
+                //draw
+                var dom = document.getElementById(this.id);
+                dom.style.left = this.x + this.offsetX + 'px';
+                dom.style.top = this.y + this.offsetY + 'px';
+
+                //var that = this;                                  //test case 01
+                //setTimeout(function(){that.draw()}, 40);          //test case 01 - 1
+                //requestAnimationFrame(function(){that.draw()});   //test case 01 - 2
+            }
+            //this.draw();                                          //test case 01
+        }
+
+        function renderLoop(){
+            for (var i = 0; i < cArray.length; i++) {
+                cArray[i].draw();
+            }
+            //setTimeout(renderLoop, 20);           //test case 02 - 1
+            requestAnimationFrame(renderLoop);      //test case 02 - 2
+        }
+        renderLoop();                               //test case 02
+
+        function newGuid() {
+            var guid = "";
+            for (var i = 1; i <= 32; i++) {
+                var n = Math.floor(Math.random() * 16.0).toString(16);
+                guid += n;
+                if ((i == 8) || (i == 12) || (i == 16) || (i == 20))
+                    guid += "-";
+            }
+            return guid;
+        }
+    </script>
+</body>
+</html>

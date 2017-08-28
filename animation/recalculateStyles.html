@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>innerHeight cause recalculate style</title>
+  </head>
+  <body>
+    <section id="section">
+      <header>结论</header>
+      <ul>
+        <li>console.log会耗费性能（与打印的内容多少有关），产品上尽量去除</li>
+        <li>监听window.onload会耗费性能</li>
+        <li>获取innerHeight不会导致recalculate</li>
+        <li>页面渲染完成前设置height会导致recalculate</li>
+        <li>页面渲染完成后设置height会导致recalculate</li>
+      </ul>
+      <footer>end</footer>
+    </section>
+    <script>
+      //js会阻塞页面加载，所以下面的脚本不会导致recalculate
+      var section = document.querySelector("#section");
+      var height = window.innerHeight;
+      section.style.height = height + "px";
+
+      //下面脚本执行时页面已渲染完成，再次改变为不同的height会到导致recalculate
+      setTimeout(function() {
+        var section = document.querySelector("#section");
+        var height = window.innerHeight;
+        section.style.height = height + 20 + "px";
+      },1000)
+    </script>
+  </body>
+</html>
