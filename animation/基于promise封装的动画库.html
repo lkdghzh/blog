@@ -5,14 +5,12 @@
     <style>
         #block {
             position: absolute;
-            left: 200px;
-            top: 200px;
+            left: 100px;
+            top: 100px;
             width: 20px;
             height: 20px;
-            background:red;
-            line-height: 80px;
+            background: red;
             border-radius: 50%;
-
         }
     </style>
 </head>
@@ -23,65 +21,121 @@
 
     <div id='block'></div>
     <script>
-        class Animator {
+        class Cartoon {
             constructor(fn, duration = 500) {
                 this.duration = duration;
-                this.pauseState = false;
-                this.beginDelay = 0;
-                this.endDelay = 0;
-                this.start = 0;
                 this.fn = fn;
-            }
-            go(delay = 0) {
-                if (!delay) this.start = Date.now();
 
+                this.startTime = 0;
+                this.pauseTimeArr = [];
+                this.continueTimeArr = [];
+            }
+            static sum(arr = []) {
+                return arr.reduce((current, next) => {
+                    return current + next
+                }, 0)
+            }
+            //执行动画
+            go() {
+                this.startTime = Date.now();
                 return new Promise((resolve, reject) => {
-                    let frameFn = () => {
-                        var proport = (Date.now() - this.start - delay) / this.duration;
+                    let frameStep = () => {
+                        let proport = 0;
+                        let isPause = this.pauseTimeArr.length > this.continueTimeArr.length;
+                        if (isPause) {
+                            //console.log('length', this.pauseTimeArr.length, this.continueTimeArr.length)
+                            proport = (Cartoon.sum(this.pauseTimeArr) - Cartoon.sum(this.continueTimeArr) - this.startTime) / this.duration;
+                        }
+                        else {
+                            proport = (Date.now() - this.startTime - (Cartoon.sum(this.continueTimeArr) - Cartoon.sum(this.pauseTimeArr))) / this.duration;
+                        }
+                        //console.log('比例', proport)
                         if (proport < 1) {
-                            this.fn(proport);
-                            if (!this.pauseState)  requestAnimationFrame(frameFn);
+                            if (!isPause) {
+                                this.fn(proport);
+                            }
+                            requestAnimationFrame(frameStep);
                         } else {
                             this.fn(1);
                             resolve('done');
                         }
                     }
-                    requestAnimationFrame(frameFn);
+                    requestAnimationFrame(frameStep);
                 })
             }
+            //暂停动画
             pause() {
-                this.pauseState = true;
-                this.beginDelay = Date.now();
+                if (this.startTime) this.pauseTimeArr.push(Date.now())
             }
+            //继续动画（暂停过）
             continue() {
-                this.pauseState = false;
-                this.endDelay = Date.now();
-                // console.log('------------------------------', this.endDelay - this.beginDelay)
-                this.go(this.endDelay - this.beginDelay)
+                if (this.startTime && (this.pauseTimeArr.length > this.continueTimeArr.length)) this.continueTimeArr.push(Date.now())
+            }
+            //重置动画
+            reset() {
+
             }
         }
-        var a1 = new Animator(function (p) {
-            var tx = parseInt(800 * p);
-            // console.log('--------------------',tx);
+        class Cartoons {
+            constructor(...cartoons) {
+                this.cartoons = []
+                this.currentInx=0;
+                for (let cartoon of cartoons) {
+                    this.cartoons.push(new Cartoon(...cartoon))
+                }
+            }
+            async go() {
+                while (this.currentInx < this.cartoons.length) {
+                    if (await this.cartoons[this.currentInx].go()=='done')
+                        this.currentInx++
+                }
+            }
+            pause() {
+                this.cartoons[this.currentInx].pause()
+            }
+            continue() {
+                this.cartoons[this.currentInx].continue()
+            }
+        }
+        // let a1 = new Cartoon(function (p) {
+        //     let tx = 500 * p;
+        //     block.style.transform = 'translateX(' + tx + 'px)';
+        // }, 3000);
+        // let a2 = new Cartoon(function (p) {
+        //     let ty = 300 * p;
+        //     block.style.transform = 'translate(500px,' + ty + 'px)';
+        // }, 3000);
+        var c1 = [function (p) {
+            let tx = 500 * p;
             block.style.transform = 'translateX(' + tx + 'px)';
-        }, 3000);
+        }, 3000]
 
-        var a2 = new Animator(function (p) {
-            var ty = 600 * p;
-
-            block.style.transform = 'translate(800px,' + ty + 'px)';
-        }, 3000);
-
-        block.addEventListener('click', async function () {
-            await a1.go();
-            await a2.go();
+        var c2 = [function (p) {
+            let ty = 300 * p;
+            block.style.transform = 'translate(500px,' + ty + 'px)';
+        }, 3000]
+        let c = new Cartoons(c1, c2)
+        block.addEventListener('click', function () {
+            c.go();
+            // console.log(111, await a1.go())
+            //await a2.go();
         });
-        btn.addEventListener('click', function () {
-            a1.pause();
+          btn.addEventListener('click', function () {
+            c.pause();
         })
         continuebtn.addEventListener('click', function () {
-            a1.continue();
+            c.continue();
         })
+        // block.addEventListener('click', async function () {
+        //     console.log(111, await a1.go())
+        //     //await a2.go();
+        // });
+        // btn.addEventListener('click', function () {
+        //     a1.pause();
+        // })
+        // continuebtn.addEventListener('click', function () {
+        //     a1.continue();
+        // })
     </script>
 </body>
 
