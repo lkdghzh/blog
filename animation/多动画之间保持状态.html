@@ -22,8 +22,8 @@
     <div id='block'></div>
     <script>
         class Cartoon {
-            constructor(ele,{ beforeCartoon, cartoon, afterCartoon, duration = 500 }) {//factor,
-                this.ele=ele;
+            constructor(ele, { beforeCartoon, cartoon, afterCartoon, duration = 500 }) {//factor,
+                this.ele = ele;
                 this.duration = duration;
                 this.cartoon = cartoon;
                 this.beforeCartoon = beforeCartoon;
@@ -38,8 +38,8 @@
                 }, 0)
             }
             //执行动画
-            go() {
-                this.beforeCartoon&&this.beforeCartoon(this.ele)
+            go(position) {
+                this.beforeCartoon && this.beforeCartoon(this.ele)
                 this.startTime = Date.now();
                 return new Promise((resolve, reject) => {
                     let frameStep = () => {
@@ -55,14 +55,14 @@
                         //console.log('比例', proport)
                         if (proport < 1) {
                             if (!isPause) {
-                                this.cartoon(this.ele,proport);
+                               // console.log('position',position)
+                                this.cartoon(this.ele, proport, position);
                             }
                             requestAnimationFrame(frameStep);
                         } else {
-                            this.cartoon(this.ele,1);
-                            this.afterCartoon&&this.afterCartoon(this.ele);
-
-                            resolve('done');
+                            this.cartoon(this.ele, 1, position);
+                            this.afterCartoon && this.afterCartoon(this.ele);
+                            resolve(this.ele.getBoundingClientRect());
                         }
                     }
                     requestAnimationFrame(frameStep);
@@ -82,17 +82,19 @@
             }
         }
         class Cartoons {
-            constructor(ele,...cartoons) {
+            constructor(ele, ...cartoons) {
                 this.cartoons = []
                 this.currentInx = 0;
                 for (let cartoon of cartoons) {
-                    this.cartoons.push(new Cartoon(ele,cartoon))
+                    this.cartoons.push(new Cartoon(ele, cartoon))
                 }
             }
             async go() {
+                let tmp={left:0,top:0};
                 while (this.currentInx < this.cartoons.length) {
-                    if (await this.cartoons[this.currentInx].go() == 'done')
-                        this.currentInx++
+                    let  position = await this.cartoons[this.currentInx].go(tmp)
+                    tmp=position;
+                    if (position) this.currentInx++
                 }
             }
             pause() {
@@ -106,7 +108,7 @@
             beforeCartoon(ele) {
                 ele.style.background = 'green';
             },
-            cartoon(ele,p) {
+            cartoon(ele, p) {
                 let tx = 500 * p;
                 ele.style.transform = 'translateX(' + tx + 'px)';
             },
@@ -118,13 +120,13 @@
         }
         let c2 = {
             beforeCartoon(ele) {
-                setTimeout(()=>{
+                setTimeout(() => {
                     ele.style.background = 'blue';
-                },1000)
+                }, 1000)
             },
-            cartoon(ele,p) {
+            cartoon(ele, p, position) {
                 let ty = 300 * p;
-                ele.style.transform = 'translate(500px,' + ty + 'px)';
+                ele.style.transform = 'translate(' + position.left + 'px,' + ty + 'px)';
             },
             afterCartoon(ele) {
                 ele.style.background = 'red';
@@ -133,17 +135,17 @@
             duration: 3000
         }
         let c3 = {
-            cartoon(ele,p) {
-                let origin=ele.getBoundingClientRect();
-                let r=100;
-                let tx=r * Math.sin(2 * Math.PI * p)+100;
-                let ty = -r * Math.cos(2 * Math.PI * p)+100;
-                ele.style.transform = 'translate('+tx+'px,' + ty + 'px)';
+          
+            cartoon(ele, p, position) {
+                let r = 100;
+                let tx = r * Math.sin(2 * Math.PI * p) + position.left;
+                let ty = -r * Math.cos(2 * Math.PI * p) + position.top;
+                ele.style.transform = 'translate('+tx + 'px,' + ty + 'px)';
             },
             duration: 30000
         }
-        let c = new Cartoons(block,c1, c2,c3)
-        
+        let c = new Cartoons(block, c1, c2, c3)
+
         block.addEventListener('click', function () {
             c.go();
         });
