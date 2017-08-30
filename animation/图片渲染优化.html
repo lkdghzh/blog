@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        for (var key in object) {
+            if (object.hasOwnProperty(key)) {
+                var element = object[key];
+                
+            }
+        }
+        //渲染图片
+        var createImg=function(img){
+            var newImg=new Img()
+            newImg.src=imfg.dataset.src;
+            
+            newImg.onload=function(){
+                //canvas使用GPU   普通走内存
+                //使用canvas
+                var c=document.createElement('canvas')
+                var contxt=c.getContext('2d');//绘图环境
+                contxt.drawImage(newImg,0,0,newImg.width,newImg.height)
+                newImg.parentNode.replaceChild(c,img)
+            }
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

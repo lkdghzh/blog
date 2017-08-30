@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    label{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 200px;
+        height: 40px;
+        border: 1px solid red;
+        /* margin: -21px 0 0 -101px */
+        /* font:16px/40px */
+    }
+    input{
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <!-- capture 调用摄像头 -->
+    <label for="">上传<input id='fff' type="file" accept="image/*" capture></label>   
+    <script>
+        //  type="file" accept="image/*" 都可以相机和相册  chrome 卡
+        // 老版本 必须加capture 否则只能相册
+        // 新版本 加上capture  只能掉相机 不能到相册（没测哪些机型）
+
+        // 是ios去掉cature
+        //判断安卓，ios
+        //
+        var ua=navigator.userAgent.toLowerCase();
+       if(isIOS){
+        fff.removeAttri
+       }
+    </script>
+</body>
+</html>

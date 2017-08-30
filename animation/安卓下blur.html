@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+
+        }
+        input{
+
+        }   
+        input:focus{
+            border-color: red;
+        }
+    
+    </style>
+</head>
+<body>
+    <input id ='input'type="" name="" value="">
+    <div id="info"></div>
+    <script>
+        /*
+            软键盘的弹出，会影响窗口window的大小发生改变(resize)
+            展开改变一次 收缩 改变一次
+            收缩软键盘  又改变一次
+        */
+        input.onfocus=function(){
+            setInterval(function(){
+                info.innerHTML+='<br/>'+document.documentElement.clientHeight;
+            },100)
+        }
+        window.addEventListener=
+    </script>
+</body>
+</html>

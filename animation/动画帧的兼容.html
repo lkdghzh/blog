@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <div id='block' style="width:100px;height:100px;background:red;">
+    </div>
+    <button id='start'>开始</button><button id='cancel'>取消</button>
+    <script>
+        var timer = 0;
+        var width = 100;
+        function move() {
+            timer = requestAnimationFrame(toMove)
+            console.log(timer)
+        }
+        function toMove() {
+            block.style.width = ++width + 'px';
+            cancelAnimationFrame(timer)//要不要取消timer？
+            timer=requestAnimationFrame(toMove)
+            console.log(timer)
+        }
+        start.addEventListener('click', function () {
+            move()
+        })
+        cancel.addEventListener('click', function () {
+            cancelAnimationFrame(timer)
+        })
+    </script>
+</body>
+
+</html>
