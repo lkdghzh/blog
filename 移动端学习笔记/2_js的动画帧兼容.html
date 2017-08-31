@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,user-scalable=no" />
+<title>Document</title>
+<style type="text/css">
+#box {
+	width: 100px;
+	height: 100px;
+	background: red;
+}	
+</style>
+</head>
+<body>
+<input type="button" value="停止" id="stop">
+<div id="box"></div>
+<script type="text/javascript">
+var box = document.querySelector('#box');
+var stop = document.querySelector('#stop');
+var width = 100;
+var timer = 0;
+box.addEventListener('touchend', move);	
+stop.addEventListener('touchend', function(e) {
+	cancelAnimationFrame(timer);
+});
+function move(){
+	timer = window.requestAnimationFrame(toMove);
+}
+function toMove(){
+	width += 2;
+	box.style.width = width + "px";
+	if(width < 300){
+		timer = window.requestAnimationFrame(toMove);
+	}
+}
+</script>
+</body>
+</html>
