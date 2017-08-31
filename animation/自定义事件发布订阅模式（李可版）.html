@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //obj={listener:{click:[fn1,fn2,fn3],hover:[fn4,fn5,fn6]}}
+        //多人协作的时候，同一个click，多人写不同的功能，只需要写多个绑定就好了，
+        //代码不用时候，只需将某个人的click注释就好了。不需要改别人的代码
+        //比如你写个拖拽组件，
+        // let drag=new Drag();
+        // bindMsg(drag,'click',fn1)//第一个人
+        // bindMsg(drag,'click',fn2)//第二个人
+
+        // 某个对象绑定某个title（事件名、函数名、消息名）
+        let bindMsg = (obj, title, fn) => {
+            obj.listener = obj.listener ? obj.listener : {};
+            obj.listener[title] = obj.listener[title] ? obj.listener[title] : [];
+            obj.listener[title].push(fn)
+        }
+        //fn传参数
+        let fireEvt = (obj, title) => {
+            let params = { target: obj }
+            for (let fn of obj.listener[title]) {
+                fn(params)
+            }
+        }
+        //删除某个消息
+        let removeEvt = (obj, title) => {
+            obj.listener[title]=null;
+        }
+        //如何让自定义事件触发的时候想dom一样具有默认行为和事件冒泡？
+        //这里默认的是先订阅（往对应的事件，添加多种方法），然后再发布（触发对应事件的多个方法）
+        //可以封装成一个Event类
+        //降低订阅和发布者的耦合，让多个对象具有这个Event的订阅（bind）发布功能 ------intitEvent(obj)方法  或者将obj继承这个Event类
+        //一直讲订阅者没显示出来，只是将订阅者的动作显示出来了 bindMsg  
+        //试验
+        let p = { a: '..' };
+        let fn1 = (e) => { alert(e.target.a + 1) }
+        let fn2 = (e) => { alert(e.target.a + 2) }
+        let fn3 = (e) => { alert(e.target.a + 3) }
+        let fn4 = (e) => { alert(e.target.a + 4) }
+
+        bindMsg(p, 'move', fn1);
+        bindMsg(p, 'move', fn2);
+        bindMsg(p, 'go', fn3);
+        bindMsg(p, 'go', fn4);
+        removeEvt(p, 'go')
+
+        fireEvt(p, 'move')
+        fireEvt(p, 'go')
+    </script>
+</body>
+
+</html>
