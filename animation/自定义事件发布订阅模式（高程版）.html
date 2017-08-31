@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function EventTarget() {
+            this.handlers = {};
+        }
+        EventTarget.prototype = {
+            constructor: EventTarget,
+            addHandler: function (type, handler) {
+                if (typeof this.handlers[type] == "undefined") {
+                    this.handlers[type] = [];
+                }
+                this.handlers[type].push(handler);
+            },
+            fire: function (event) {
+                debugger
+                if (!event.target) {
+                    event.target = this;
+                    debugger
+                }
+                if (this.handlers[event.type] instanceof Array) {
+                    var handlers = this.handlers[event.type];
+                    for (var i = 0, len = handlers.length; i < len; i++) {
+                        handlers[i](event);
+                    }
+                }
+            },
+            removeHandler: function (type, handler) {
+                if (this.handlers[type] instanceof Array) {
+                    var handlers = this.handlers[type];
+                    for (var i = 0, len = handlers.length; i < len; i++) {
+                        if (handlers[i] === handler) {
+                            break;
+                        }
+                    }
+                    handlers.splice(i, 1);
+                }
+            }
+        };
+        /**********************************************************************************************/
+        // function handleMessage(event) {
+        //     alert("Message received: " + event.message);
+        // }
+        // //创建一个新对象
+        // var target = new EventTarget();
+        // //添加一个事件处理程序
+        // target.addHandler("message", handleMessage);
+        // //触发事件
+        // target.fire({ type: "message", message: "Hello world!" });
+        // //删除事件处理程序
+        // target.removeHandler("message", handleMessage);
+        // //再次，应没有处理程序
+        // target.fire({ type: "message", message: "Hello world!" });
+        
+        /**********************************************************************************************/
+        function Person(name, age) {
+            EventTarget.call(this);
+            this.name = name;
+            this.age = age;
+        }
+        function inheritPrototype(subType, superType) {
+            var prototype = Object(superType.prototype); //创建对象
+            prototype.constructor = subType; //增强对象
+            subType.prototype = prototype; //指定对象
+        }
+        inheritPrototype(Person, EventTarget);
+        Person.prototype.say = function (message) {
+            this.fire({ type: "message", message: message });
+        };
+
+        /**********************************************************************************************/
+        function handleMessage(event) {
+            alert(event.target.name + " says: " + event.message);
+        }
+        //创建新 person
+        var person = new Person("Nicholas", 29);
+        //添加一个事件处理程序
+        person.addHandler("message", handleMessage);
+        //在该对象上调用 1 个方法，它触发消息事件
+        person.say("Hi there.");
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
