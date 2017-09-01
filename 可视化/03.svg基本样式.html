@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>基本样式</title>
+</head>
+
+<body>
+    <!--
+        像位置（x，y，r）的属性不能写到style里面。
+        其余可以
+        fill="red"      填充色（默认黑色，常用transparent）
+        stroke="black"  边框色
+        stroke-width="2" 边框宽
+    -->
+    <!--拿circle举例子-->
+    <svg width="1000" height="1000" viewBox="0 0 1000 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- 圆 中心点 半径 -->
+        <circle cx="50" cy="50" r="50"  fill="red" stroke="black" stroke-width="2"/>
+        <circle cx="50" cy="150" r="50"  style="fill:transparent; stroke:black; stroke-width:2;"/>
+    </svg>
+
+</body>
+
+</html>
