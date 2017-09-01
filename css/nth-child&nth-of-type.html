@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* 
+        这个选择不中
+        原因参考http://www.cnblogs.com/leee/p/7275860.html
+        li:nth-child(2) {
+            color: green;
+        } */
+        p:nth-child(2) {
+            color: green;
+        }
+        li:nth-of-type(2) {
+            color: red;
+        }
+       
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>li1</li>
+        <p>p1</p>
+        <li>li2</li>
+        <p>p2</p>
+        <li>li3</li>
+    </ul>
+</body>
+
+</html>
