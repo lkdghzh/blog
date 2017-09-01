@@ -11,18 +11,24 @@
 <body>
     <h1>svg的6种嵌入方式</h1>
     <!-- svg、图片、背景、iframe、object、embed 、-->
+
     <!-- 直接写svg -->
     <svg width="200" height="200" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <circle cx="100" cy="100" r="20" fill="red" />
     </svg>
+
     <!-- img -->
     <img src="svg.svg" alt="">
+
     <!-- background -->
     <div style="width:200px;height:200px;display:inline-block;background-image:url('svg.svg')"></div>
+
     <!-- iframe -->
     <iframe src="svg.svg"></iframe>
+
     <!-- embed pluginspage下插件-->
     <embed src="svg.svg" width="200" height="200" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"/>
+    
     <!-- object codebase下插件-->
     <object data="svg.svg" width="200" height="200" type="image/svg+xml" codebase="http://www.adobe.com/svg/viewer/install/"/>
 </body>
