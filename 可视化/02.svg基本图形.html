@@ -11,8 +11,8 @@
 <body>
     <!-- 起点 终点 对应的x，y像定位后的left top值-->
     <!-- 6种基本图形line, rect, ellipse, circle, polyline, polygon-->
-    <!-- 多个点可以用'空格'或者'逗号'  像后续的path(路径)/polyline(折线)/polygon(多边形)标签都用到多点（points）-->
-    
+    <!-- points'空格'或者'逗号'  像path(路径)/polyline(折线)/polygon(多边形)都用到多点（points）-->
+    <!-- 折线 不闭合。多边形闭合-->
     <svg width="1000" height="1000" viewBox="0 0 1000 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
         <!-- 线 起点 终点 -->
@@ -28,8 +28,11 @@
         <ellipse cx="425" cy="50" rx="75" ry="50"/>
         
         <!-- 折线 多个点（逗号或者空格）  -->
-        <polyline points="500 0 600 50 550 100" fill='none' stroke="black" stroke-width="2"/>
-
+        <!-- 多条线连接起来角，没有棱角  -->
+        <polyline points="500 0 600 50 550 100" fill='none' stroke="black" stroke-width="20"/>
+        <line x1="500" y1="100" x2="600" y2="150" stroke="black" stroke-width="20"/>
+        <line x1="600" y1="150" x2="550" y2="200" stroke="black" stroke-width="20"/>
+        
         <!-- (首尾闭合的折线) 多边形 多点（逗号或者空格） -->
         <polygon points="600,0,700,50,650,100" fill='none' stroke="black" stroke-width="2"/>
     </svg>
