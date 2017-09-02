@@ -20,10 +20,24 @@
         }
         let svg = getTag('svg', { xmlns: 'http://www.w3.org/2000/svg', 'xmlns:xlink': "http://www.w3.org/1999/xlink", version: "1.1", width: '100%', height: '100%', viewBox: "0 0 1000 1000", });
         document.querySelector('body').appendChild(svg);
-        let line = getTag('line', { x1: 0, y1: 0, x2: 100, y2: 100, stroke: 'red', 'stroke-width': 5 });
+
+        let line = getTag('line', { x1: 0, y1: 0, x2: 100, y2: 100, stroke: 'green', 'stroke-width': 5 });
         document.querySelector('svg').appendChild(line);
+
         let rect = getTag('rect', { x: 100, y: 0,width: 150, height: 100, fill: 'none',stroke: 'green', 'stroke-width': 5 });
         document.querySelector('svg').appendChild(rect);
+
+        let circle = getTag('circle', { cx:"300", cy:"50", r:"50" ,fill: 'none',stroke: 'green', 'stroke-width': 5 });
+        document.querySelector('svg').appendChild(circle);
+
+        let ellipse = getTag('ellipse', { cx:"425", cy:"50" ,rx:"75" ,ry:"50", fill: 'none',stroke: 'green', 'stroke-width': 5 });
+        document.querySelector('svg').appendChild(ellipse);
+
+        let polyline = getTag('polyline', { points:"500 0 600 50 550 100", fill: 'none',stroke: 'green', 'stroke-width': 5 });
+        document.querySelector('svg').appendChild(polyline);
+
+        let polygon = getTag('polygon', { points:"600,0,700,50,650,100", fill: 'none',stroke: 'green', 'stroke-width': 5 });
+        document.querySelector('svg').appendChild(polygon);
 
     </script>
 </body>
