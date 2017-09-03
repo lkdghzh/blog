@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="李可">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>js操作svg</title>
+</head>
+
+<body>
+    <svg width="1000" height="1000">
+        <!-- 圆 中心点 半径 -->
+        <circle cx="100" cy="100" r="50" fill="none" stroke="black" stroke-width="2" />
+        <circle cx="100" cy="100" r="60" fill="none" stroke="black" stroke-width="2" />
+        <circle cx="100" cy="100" r="70" fill="none" stroke="black" stroke-width="2" />
+
+        <!-- 
+             将公用的属性抽离出来赋值给g标签
+             但是:  标签特有的放到g标签上不起作用。
+             比如circle的 cx cy r  line的x1
+             g标签内全部是circle也不能抽离cx cy r等
+        -->
+        <g stroke="black" stroke-width="2" fill="none">
+            <circle cx="300" cy="100" r="50" />
+            <circle cx="300" cy="100" r="60" />
+            <circle cx="300" cy="100" r="70" />
+
+            <line x1="300" y1="100" x2="400" y2="200" />
+        </g>
+
+        <!-- 
+            但是这些不能抽离的属性大部分是跟位置有关
+            使用transform变换来代替
+        -->
+        <g  transform="translate(600,100)"stroke="black" stroke-width="2" fill="none">
+            <circle  r="50" />
+            <circle  r="60" />
+            <circle  r="70" />
+            <line x1="300" y1="100" x2="400" y2="200" />
+        </g>
+        <!-- 
+            这时line是基于transform之后的距离再移动
+        -->
+        <g  transform="translate(800,100)"stroke="black" stroke-width="2" fill="none">
+            <circle  r="50" />
+            <circle  r="60" />
+            <circle  r="70" />
+            <line x1="0" y1="0" x2="100" y2="0" />
+        </g>
+    </svg>
+</body>
+
+</html>
