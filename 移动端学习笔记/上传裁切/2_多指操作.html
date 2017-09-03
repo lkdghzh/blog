@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width,user-scalable=no" />
+<meta charset="UTF-8">
+<title>Document</title>
+<style type="text/css">
+	#box {
+		position: fixed;
+		width: 200px;
+		height: 200px;
+		background: red;
+		left: 50%;
+		top: 50%;
+		-webtit-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		color: #fff;
+	}
+</style>
+</head>
+<body>
+<div id="box"></div>
+<script type="text/javascript">
+document.addEventListener('touchstart', function(e) {
+	e.preventDefault();
+});
+(function(){
+	var box = document.querySelector('#box');
+	gesture({
+		el:box,
+		start: function(){
+			this.style.background = "blue";
+		},
+		change:function(e){
+			this.innerHTML = e.scale;
+		},
+		end: function(){
+			this.style.background = "red";
+		}
+	});
+})();
+/*
+	{
+		el: el,多指操作的元素
+		start: fn(){},多指触碰
+		change: fn(e){
+			e.scale start时和当前两个手指之间的距离的缩放值
+		},多指位置改变
+		end:function(){
+	
+		}//多指抬起
+	}
+*/
+function gesture(init){
+	var isGesture = false;
+	var el = init.el;
+	var start = [];
+	el.addEventListener('touchstart', function(e) {
+		//e.touches 当前屏幕上手指列表
+		if(e.touches.length >= 2){
+			isGesture = true;
+			start[0] = {
+				x:e.touches[0].pageX,
+				y:e.touches[0].pageY
+			};
+			start[1] = {
+				x:e.touches[1].pageX,
+				y:e.touches[1].pageY
+			}
+			init.start&&init.start.call(el,e);
+		}
+	});
+	el.addEventListener('touchmove', function(e) {
+		//e.touches 当前屏幕上手指列表
+		if(e.touches.length >= 2&&isGesture){
+			var startDis = getDis(start[0],start[1]);//手指按下时两根手指之间的距离
+			var now = [];
+			now[0] = {
+				x:e.touches[0].pageX,
+				y:e.touches[0].pageY
+			};
+			now[1] = {
+				x:e.touches[1].pageX,
+				y:e.touches[1].pageY
+			};
+			var nowDis = getDis(now[0],now[1]);
+			e.scale = nowDis/startDis;
+			init.change&&init.change.call(el,e);
+		}
+	});
+	el.addEventListener('touchend', function(e) {
+		//e.touches 当前屏幕上手指列表
+		if(isGesture){
+			init.end&&init.end.call(el,e);
+		}
+	});
+}
+//alert(Math.sqrt(100*100+100*100));
+function getDis(point,point2){
+	var x = point.x - point2.x;
+	var y = point.y - point2.y;
+	return Math.sqrt((x*x + y*y));
+}
+</script>
+</body>
+</html>

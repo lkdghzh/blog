@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		#c {
+			background: #ccc;
+		} 
+	</style>
+</head>
+<body>
+<img src="公司介绍 - 副本.jpg" id="img" />
+<canvas id="c" width="400" height="400"></canvas>
+<script type="text/javascript">
+(function(){
+	var c = document.querySelector('#c');
+	var ctx = c.getContext("2d");
+	var img = document.querySelector('#img');
+	img.onload = function(){
+		ctx.drawImage(img,0,0,100,300);//img必须加载完之后，才可以使用这个方法
+	};
+	ctx.fillRect(20,20,100,100);
+	
+})();	
+</script>
+</body>
+</html>

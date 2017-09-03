@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,user-scalable=no" />
+<title>Document</title>
+<style type="text/css">
+#box {
+	width: 50px;
+	height: 50px;
+	background: red;
+	font-size: 20px;
+	color: #fff;
+	overflow: hidden;
+}
+</style>
+</head>
+<body>
+<div id="box"></div>
+<script type="text/javascript" src="MTween.js"></script>
+<script type="text/javascript">
+document.addEventListener('touchstart', function(e) {
+	e.preventDefault();
+});
+/*
+	单指拖拽：
+		0. 是否是单指
+		1. 获取按下时手指的坐标
+		2. 获取当前手指的坐标
+		3. 用当前手指的坐标 - 按下时手指的坐标 = 手指移动的距离
+		4. 摁下时元素的坐标 + 手指移动的距离 = 元素得当前位置
+*/	
+/*
+drag(init);
+init: {
+	el: 拖动元素,
+	start:手指按下要做的事情,
+	move: function(e){
+		e.disPoint //手指移动的距离
+	}, 手指移动要做的事情,
+	end: 手指抬起要做的事情
+}
+*/
+(function(){
+	var box = document.querySelector("#box");
+	var startEl = {};
+	css(box, "translateX", 0);
+	css(box, "translateY", 0);
+	drag({
+		el:box,
+		start: function(){
+			startEl = {
+				x: css(box, "translateX"),
+				y: css(box, "translateY")
+			}
+			this.style.background = "blue";
+		},
+		move: function(e){
+			// this.innerHTML = "x:" + e.disPoint.x;
+			// this.innerHTML += "<br/>y:" + e.disPoint.y;
+			css(box, "translateX",startEl.x + e.disPoint.x);
+			css(box, "translateY",startEl.y + e.disPoint.y);
+		},
+		end: function(){
+			this.style.background = "red";	
+		}
+	});
+})();
+function drag(init){
+	var el = init.el;
+	var isDrag = false;
+	var startPoint = {};//手指按下时在页面中坐标
+	el.addEventListener('touchstart', function(e) {
+		if(e.touches.length < 2){
+			isDrag = true;
+			startPoint = {
+				x: e.changedTouches[0].pageX,
+				y: e.changedTouches[0].pageY
+			};
+			init.start&&init.start.call(el,e);
+		}
+	});
+	el.addEventListener('touchmove', function(e) {
+		if(e.touches.length < 2&&isDrag){
+			var nowPoint = {
+				x: e.changedTouches[0].pageX,
+				y: e.changedTouches[0].pageY
+			};
+			e.disPoint = {
+				x: nowPoint.x - startPoint.x,
+				y: nowPoint.y - startPoint.y
+			};
+			init.move&&init.move.call(el,e);
+		}
+	});
+	el.addEventListener('touchend', function(e) {
+		if(isDrag){
+			isDrag = false;
+			init.end&&init.end.call(el,e);
+		}
+	});
+}
+</script>	
+</body>
+</html>

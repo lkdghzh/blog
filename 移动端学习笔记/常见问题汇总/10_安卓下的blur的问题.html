@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width,user-scalable=no" />
+<meta charset="UTF-8">
+<title>Document</title>
+<style type="text/css">
+body {
+	margin: 0;
+}	
+input {
+	width: 100%;
+	box-sizing: border-box;
+	height: 50px;
+	border: 2px solid #000;
+}
+input:focus {
+	border-color: blue;
+	box-shadow: 0 0 10px blue;
+}
+</style>
+</head>
+<body>
+<input id="text" type="text" name="">
+<div id="info"></div>
+<script type="text/javascript">
+(function(){
+	var text = document.querySelector('#text');
+	var info = document.querySelector('#info');
+	text.onfocus = function(){
+		// setInterval(function(){
+		// 	// info.innerHTML += document.documentElement.clientHeight + "|<br/>";
+		// },100);
+		//软键盘的弹出 会影响窗口的大小发生改变
+		// 展开是 改变一次，收缩起来又改变一次
+		window.addEventListener('resize', toResize);
+	};
+	function toResize(){
+		window.removeEventListener('resize', toResize);
+		window.addEventListener('resize', toBlur);
+	}
+	function toBlur(){
+		window.removeEventListener('resize', toBlur);
+		text.blur();
+	}
+})();	
+</script>
+</body>
+</html>

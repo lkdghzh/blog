@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,user-scalable=no" />
+
+<title>Document</title>
+</head>
+<body>
+<ul class="list"></ul>
+<script type="text/javascript">
+/*
+	判断什么时候才会触发到浏览器默认的下拉功能，
+	然后在这个时候再阻止默认事件
+		1. 滚动条的位置已经在0了
+		2. 用户还在向下滑屏
+*/
+(function(){
+	var startPointY = 0;
+	document.body.addEventListener('touchstart', function(e) {
+		startPointY = e.changedTouches[0].pageY;//按下时手指的坐标
+	});
+	document.body.addEventListener('touchmove', function(e) {
+		var nowPointY = e.changedTouches[0].pageY;//手指移动时的坐标
+		//e.preventDefault();
+		if(nowPointY > startPointY && window.scrollY == 0){
+			console.log("向下滑动");
+			e.preventDefault();
+		}
+	});	
+})();
+
+(function(){
+	var list = document.querySelector('.list');
+	var inner = "";
+	for(var i = 0; i < 50; i++){
+		inner += '<li>这是第'+i+'个li</li>'
+	}
+	list.innerHTML = inner;
+})();	
+</script>
+</body>
+</html>
