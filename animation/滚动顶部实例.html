@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #triangle {
+            position: fixed;
+            right: 100px;
+            bottom: 150px;
+            width: 0px;
+            border-bottom: 25px solid burlywood;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            cursor: pointer;
+        }
+        #triangle:hover {
+            border-bottom: 25px solid rebeccapurple;
+        }
+    </style>
+</head>
+
+<body style="height:5000px;">
+    <div id="triangle" onclick="goTop(1000)"></div>
+    <script>
+        function goTop(ms) {
+            var originTop = document.body.scrollTop;
+            var translatYPS = originTop * 16.7 / ms;
+            var count = 0;
+            requestAnimationFrame(function frameFn() {
+                console.log(count++)
+                var currentTop = document.body.scrollTop;
+                if (currentTop > 0) {
+                    document.body.scrollTop = currentTop - translatYPS;
+                    requestAnimationFrame(frameFn)
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
