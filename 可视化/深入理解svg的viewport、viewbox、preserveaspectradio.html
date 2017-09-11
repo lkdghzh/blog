@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="李可">
+    <title>深入理解svg的viewport、viewbox、preserveaspectradio</title>
+</head>
+
+<body>
+    <!-- 
+        
+        viewport 400,300
+        viewbox  40,30 
+        viewbox和viewport的宽高比相等的时候
+
+        三个例子：
+        rect的宽高 跟随viewbox一起放大缩小。
+        在viewbox没缩小、放大前，当rect的宽高超过viewbox的原始宽高的时候，同样也是按照viewbox的缩小放大比例进行缩小放大。例子。
+        viewport和viewbox 先确定好缩小、放大比例
+    -->
+    <!-- 放大 -->
+    <svg width="400" height="300" viewBox="0 0 40 30" version="1.1" style="border:1px solid red">
+        <rect width="40" height="30" />
+    </svg>
+    <svg width="400" height="300" viewBox="0 0 40 30" version="1.1" style="border:1px solid red">
+        <rect width="20" height="15" />
+    </svg>
+    <svg width="400" height="300" viewBox="0 0 40 30" version="1.1" style="border:1px solid red">
+        <rect width="10" height="15" />
+    </svg>
+    
+    <!-- 缩小 -->
+    <svg width="400" height="300" viewBox="0 0 4000 3000" version="1.1" style="border:1px solid red">
+        <rect width="200" height="150" />
+    </svg>
+    <!--  在viewbox没缩小、放大前，当rect的宽高超过viewbox的原始宽高的时候，同样也是按照viewbox的缩小放大比例进行缩小放大。例子。 -->
+    <svg width="400" height="300" viewBox="0 0 40 30" version="1.1" style="border:1px solid red">
+            <rect width="60" height="50" />
+    </svg>
+    <!-- 
+        viewport 400,300
+        viewbox  40,30 
+    -->
+</body>
+
+</html>
