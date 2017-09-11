@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="李可">
+    <title>svgviewBox的放大过程。演示动画</title>
+    <style>
+        div {
+            box-sizing: border-box;
+        }
+    </style>
+
+</head>
+
+<body>
+    <fieldset style="width:600px;">
+        <legend>viewport,viewBox,preserveAspectRatio演示</legend>
+        <h4>viewport: </h4>
+        width:<input type="number" id='viewportWidthNumber' value="400" /> height:
+        <input type="number" id='viewportHeightNumber' value="300" />
+        <h4>viewBox: </h4>
+        <p>默认 0 0 width height</p>
+        width:<input type="number" id='viewBoxWidthNumber' value="40" /> height:
+        <input type="number" id='viewBoxHeightNumber' value="30" />
+        <h4>preserveAspectRatio（align，meetOrSlice）</h4>
+        <p>默认xMidYMid meet,如果align是none，meetOrSlice的值将会被忽略</p>
+        <select name="align" id="align">
+                <option value="none">none</option>
+                <option value="xMinYMin">xMinYMin</option>
+                <option value="xMinYMid">xMinYMid</option>
+                <option value="xMinYMax">xMinYMax</option>
+                <option value="xMidYMin">xMidYMin</option>
+                <option value="xMidYMid" selected>xMidYMid</option>
+                <option value="xMidYMax">xMidYMax</option>
+                <option value="xMaxYMin">xMaxYMin</option>
+                <option value="xMaxYMid">xMaxYMid</option>
+                <option value="xMaxYMax">xMaxYMax</option>
+        </select>
+        <select name="meetOrSlice" id="meetOrSlice">
+                <option value="meet" selected>meet</option>
+                <option value="slice">slice</option>
+        </select>
+        <hr>
+        <button type="button" id='btn1'>初始化动画</button>
+        <button type="button" id='btn2'>运动动画</button>
+    </fieldset>
+    <div id="svg" style="position:relative;width:400px;height:300px; background:gray;">
+        <div id="react" style="position:absolute;width:40px;height:30px;  background:green;">
+            <!-- transform-origin: left top 0px;    transition-duration: 10s; -->
+            <div id="realDiv" style="width:30%;height:50%;background:red;"></div>
+        </div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.js"></script>
+    <script>
+        btn1.addEventListener('click', e => {
+            const svgW = viewportWidthNumber.value;
+            const svgH = viewportHeightNumber.value;
+            const reactW = viewBoxWidthNumber.value;
+            const reactH = viewBoxHeightNumber.value;
+            svg.style.width = svgW + 'px';
+            svg.style.height = svgH + 'px';
+            react.style.width = reactW + 'px';
+            react.style.height = reactH + 'px';
+            switch (align.value) {
+                case 'none':
+                    react.style.left = (svgW - reactW) / 2 + 'px';
+                    react.style.top = (svgH - reactH) / 2 + 'px';
+                    break;
+                case 'xMinYMin':
+                    react.style.transformOrigin="left top";
+                    setTimeout(()=>{
+                        react.style.transitionDuration="10s";
+                    })
+                    react.style.left = 0 + 'px';
+                    react.style.top = 0 + 'px';
+                    break;
+                case 'xMinYMid':
+                    react.style.left = 0 + 'px';
+                    react.style.top = (svgH - reactH) / 2 + 'px';
+                    break;
+                case 'xMinYMax':
+                    react.style.left = 0 + 'px';
+                    react.style.top = (svgH - reactH) + 'px';
+                    break;
+                case 'xMidYMin':
+                    react.style.left = (svgW - reactW) / 2 + 'px';
+                    react.style.top = 0 + 'px';
+                    break;
+                case 'xMidYMid':
+                    react.style.left = (svgW - reactW) / 2 + 'px';
+                    react.style.top = (svgH - reactH) / 2 + 'px';
+                    break;
+                case 'xMidYMax':
+                    react.style.left = (svgW - reactW) / 2 + 'px';
+                    react.style.top = (svgH - reactH) + 'px';
+                    break;
+                case 'xMaxYMin':
+                    react.style.left = (svgW - reactW) + 'px';
+                    react.style.top = 0 + 'px';
+                    break;
+                case 'xMaxYMid':
+                    react.style.left = (svgW - reactW) + 'px';
+                    react.style.top = (svgH - reactH) / 2 + 'px';
+                    break;
+                case 'xMaxYMax':
+                    react.style.left = (svgW - reactW) + 'px';
+                    react.style.top = (svgH - reactH) + 'px';
+                    break;
+            }
+        })
+        btn2.addEventListener('click', e => {
+            const svgW = viewportWidthNumber.value;
+            const svgH = viewportHeightNumber.value;
+            const reactW = viewBoxWidthNumber.value;
+            const reactH = viewBoxHeightNumber.value;
+            svg.style.width = svgW + 'px';
+            svg.style.height = svgH + 'px';
+            react.style.width = reactW + 'px';
+            react.style.height = reactH + 'px';
+
+            let p = (reactW / reactH) / (svgW / svgH) > 1;//p>1,viewbox宽先到viewport的宽 p<1,viewbox高先到viewport的高
+            let scaleX=svgW/reactW;
+            let scaleY=svgH/reactH;
+            switch (align.value) {
+                case 'none':
+                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
+                    break;
+                case 'xMinYMin':
+                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
+                    break;
+                case 'xMinYMid':
+                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
+                    break;
+                case 'xMinYMax':
+                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
+                    break;
+                case 'xMidYMin':
+                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
+                    break;
+                case 'xMidYMid':
+                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
+                    break;
+                case 'xMidYMax':
+                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
+                    break;
+                case 'xMaxYMin':
+                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
+                    break;
+                case 'xMaxYMid':
+                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
+                    break;
+                case 'xMaxYMax':
+                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
+                    break;
+            }
+        })
+    </script>
+</body>
+
+</html>
