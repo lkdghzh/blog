@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="李可">
+    <title>路径概述及A命令</title>
+</head>
+
+<body>
+    <!-- 
+    path像ps的钢笔工具    10个属性
+    M 
+    L
+    H horizen           水平
+    V vertical          垂直
+    A arcus             椭圆弧(elliptical Arc)
+    Z                   首位闭合 closepath
+
+    C curve             曲线
+    S smooth curve      平滑的曲线
+
+    Q quadratic         二次贝塞尔（quadratic Belzier curve）
+    T                   平滑贝塞尔（smooth quadratic Belzier curveto）          
+    -->
+
+    <!-- 大写绝对,小写相对 -->
+    <!-- 
+        A椭圆弧  a长度 b长度  偏转弧度 大小(0,1)  顺逆(0,1)
+        椭圆弧的确定过程：
+        两点：              n个椭圆
+        a， b ，偏转弧度    2个椭圆
+        大小弧度            2个弧度
+        顺逆时针            1个弧度
+    -->
+    <!-- 
+        A20,20 当a b相等 偏转弧度多少都一样，都是圆
+    -->
+    <svg width="1000" height="1000" viewBox="" version="1.1">
+       <path d="M0,0
+                L50,80 
+                A20,50,0,0,0,100,100" fill="none" stroke="red" stroke-width="1" />
+        <path d="M0,100
+                L50,180 
+                A20,50,0,0,0,100,200Z" fill="none" stroke="green" stroke-width="1" />
+       
+    </svg>
+
+</body>
+
+</html>
