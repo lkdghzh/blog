@@ -47,12 +47,25 @@
     <!-- 
         当viebox和viewport宽高比不想等的时候，viewbox怎么缩放呢
         这就用到了preserveAspectRadio保持宽高比
+        preserveAspectRatio的默认值:xMidYMid meet
     -->
 
     <svg width="400" height="300" viewBox="0 0 100 60" version="1.1" style="border:1px solid red">
             <rect width="60" height="50" />
     </svg>
-    <svg width="400" height="300" viewBox="0 0 100 60" version="1.1" prserveAspectRadio='xMinYMin slice' style="border:1px solid red">
+    <svg width="400" height="300" viewBox="0 0 100 60" version="1.1" preserveAspectRatio='xMidYMid meet' style="border:1px solid red">
+            <rect width="60" height="50" />
+    </svg>
+    <svg width="400" height="300" viewBox="0 0 100 60" version="1.1" preserveAspectRatio='xMinYMid meet' style="border:1px solid red">
+            <rect width="60" height="50" />
+    </svg>
+    <svg width="400" height="300" viewBox="0 0 100 60" version="1.1" preserveAspectRatio='xMinYMin meet' style="border:1px solid red">
+            <rect width="60" height="50" />
+    </svg>
+    <svg width="400" height="300" viewBox="0 0 100 60" version="1.1" preserveAspectRatio='xMinYMin slice' style="border:1px solid red">
+            <rect width="60" height="50" />
+    </svg>
+    <svg width="400" height="300" viewBox="0 0 100 60" version="1.1" preserveAspectRatio='none' style="border:1px solid red">
             <rect width="60" height="50" />
     </svg>
 </body>
