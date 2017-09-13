@@ -17,15 +17,17 @@
     <fieldset style="width:600px;">
         <legend>viewport,viewBox,preserveAspectRatio演示</legend>
         <h4>viewport: </h4>
-        width:<input type="number" id='viewportWidthNumber' value="400" /> height:
-        <input type="number" id='viewportHeightNumber' value="300" />
+        width:<input type="number" id='viewportWidthNumber' value="400" oninput="updateView('#svg','width',this.value)" /> 
+        height:
+        <input type="number" id='viewportHeightNumber' value="300" oninput="updateView('#svg','height',this.value)" />
         <h4>viewBox: </h4>
         <p>默认 0 0 width height</p>
-        width:<input type="number" id='viewBoxWidthNumber' value="40" /> height:
-        <input type="number" id='viewBoxHeightNumber' value="30" />
+        width:<input type="number" id='viewBoxWidthNumber' value="40" oninput="updateView('#react','width',this.value)" /> 
+        height:
+        <input type="number" id='viewBoxHeightNumber' value="30" oninput="updateView('#react','height',this.value)" />
         <h4>preserveAspectRatio（align，meetOrSlice）</h4>
         <p>默认xMidYMid meet,如果align是none，meetOrSlice的值将会被忽略</p>
-        <select name="align" id="align">
+        <select name="align" id="align" onchange="preserveAspectRadioFirst(this.value)">
                 <option value="none">none</option>
                 <option value="xMinYMin">xMinYMin</option>
                 <option value="xMinYMid">xMinYMid</option>
@@ -42,118 +44,100 @@
                 <option value="slice">slice</option>
         </select>
         <hr>
-        <button type="button" id='btn1'>初始化动画</button>
         <button type="button" id='btn2'>运动动画</button>
     </fieldset>
     <div id="svg" style="position:relative;width:400px;height:300px; background:gray;">
-        <div id="react" style="position:absolute;width:40px;height:30px;  background:green;">
-            <!-- transform-origin: left top 0px;    transition-duration: 10s; -->
+        <div id="react" style="position:absolute;width:40px;height:30px;background:green;">
             <div id="realDiv" style="width:30%;height:50%;background:red;"></div>
         </div>
     </div>
-    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.js"></script>
     <script>
-        btn1.addEventListener('click', e => {
+        function updateView(selector,attr,val) {
+            document.querySelector(selector).style[attr] = val + 'px';
+        }
+        
+        function preserveAspectRadioFirst(startPosition) {
             const svgW = viewportWidthNumber.value;
             const svgH = viewportHeightNumber.value;
             const reactW = viewBoxWidthNumber.value;
             const reactH = viewBoxHeightNumber.value;
-            svg.style.width = svgW + 'px';
-            svg.style.height = svgH + 'px';
-            react.style.width = reactW + 'px';
-            react.style.height = reactH + 'px';
             switch (align.value) {
                 case 'none':
+                    react.style.transformOrigin = "center center";
                     react.style.left = (svgW - reactW) / 2 + 'px';
                     react.style.top = (svgH - reactH) / 2 + 'px';
                     break;
                 case 'xMinYMin':
-                    react.style.transformOrigin="left top";
-                    setTimeout(()=>{
-                        react.style.transitionDuration="10s";
-                    })
+                    react.style.transformOrigin = "left top";
                     react.style.left = 0 + 'px';
                     react.style.top = 0 + 'px';
                     break;
                 case 'xMinYMid':
+                    react.style.transformOrigin = "left center";
                     react.style.left = 0 + 'px';
                     react.style.top = (svgH - reactH) / 2 + 'px';
                     break;
                 case 'xMinYMax':
+                    react.style.transformOrigin = "left bottom";
                     react.style.left = 0 + 'px';
                     react.style.top = (svgH - reactH) + 'px';
                     break;
                 case 'xMidYMin':
+                    react.style.transformOrigin = "center center";
                     react.style.left = (svgW - reactW) / 2 + 'px';
                     react.style.top = 0 + 'px';
                     break;
                 case 'xMidYMid':
+                    react.style.transformOrigin = "center center";
                     react.style.left = (svgW - reactW) / 2 + 'px';
                     react.style.top = (svgH - reactH) / 2 + 'px';
                     break;
                 case 'xMidYMax':
+                    react.style.transformOrigin = "center bottom";
                     react.style.left = (svgW - reactW) / 2 + 'px';
                     react.style.top = (svgH - reactH) + 'px';
                     break;
                 case 'xMaxYMin':
+                    react.style.transformOrigin = "right top";
                     react.style.left = (svgW - reactW) + 'px';
                     react.style.top = 0 + 'px';
                     break;
                 case 'xMaxYMid':
+                    react.style.transformOrigin = "right center";
                     react.style.left = (svgW - reactW) + 'px';
                     react.style.top = (svgH - reactH) / 2 + 'px';
                     break;
                 case 'xMaxYMax':
+                    react.style.transformOrigin = "right bottom";
                     react.style.left = (svgW - reactW) + 'px';
                     react.style.top = (svgH - reactH) + 'px';
                     break;
             }
-        })
-        btn2.addEventListener('click', e => {
-            const svgW = viewportWidthNumber.value;
-            const svgH = viewportHeightNumber.value;
-            const reactW = viewBoxWidthNumber.value;
-            const reactH = viewBoxHeightNumber.value;
-            svg.style.width = svgW + 'px';
-            svg.style.height = svgH + 'px';
-            react.style.width = reactW + 'px';
-            react.style.height = reactH + 'px';
 
-            let p = (reactW / reactH) / (svgW / svgH) > 1;//p>1,viewbox宽先到viewport的宽 p<1,viewbox高先到viewport的高
-            let scaleX=svgW/reactW;
-            let scaleY=svgH/reactH;
-            switch (align.value) {
-                case 'none':
-                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
-                    break;
-                case 'xMinYMin':
-                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
-                    break;
-                case 'xMinYMid':
-                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
-                    break;
-                case 'xMinYMax':
-                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
-                    break;
-                case 'xMidYMin':
-                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
-                    break;
-                case 'xMidYMid':
-                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
-                    break;
-                case 'xMidYMax':
-                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
-                    break;
-                case 'xMaxYMin':
-                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
-                    break;
-                case 'xMaxYMid':
-                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
-                    break;
-                case 'xMaxYMax':
-                    react.style.transform="scale("+(p > 0?scaleX:scaleY)+")";
-                    break;
-            }
+        }
+
+        btn2.addEventListener('click', e => {
+            let p = new Promise(function (resolve, reject) {
+                setTimeout(() => {
+                    react.style.transitionDuration = "10s";
+                    resolve()
+                })
+            })
+            p.then(function () {
+                const svgW = viewportWidthNumber.value;
+                const svgH = viewportHeightNumber.value;
+                const reactW = viewBoxWidthNumber.value;
+                const reactH = viewBoxHeightNumber.value;
+                svg.style.width = svgW + 'px';
+                svg.style.height = svgH + 'px';
+                react.style.width = reactW + 'px';
+                react.style.height = reactH + 'px';
+
+                let p = (reactW / reactH) / (svgW / svgH) > 1;//p>1,viewbox宽先到viewport的宽 p<1,viewbox高先到viewport的高
+                let scaleX = svgW / reactW;
+                let scaleY = svgH / reactH;
+                react.style.transform = "scale(" + (p > 0 ? scaleX : scaleY) + ")";
+            })
         })
     </script>
 </body>
