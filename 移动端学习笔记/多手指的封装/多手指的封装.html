@@ -1,0 +1,172 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<title>Document</title>  
+<meta name="viewport" content="width=device-width,user-scalable=no" />  
+<style type="text/css">  
+#box {  
+    margin: 100px auto;  
+    width: 100px;  
+    height: 100px;  
+    background-color: red;  
+}     
+</style>  
+</head>  
+<body>  
+<div id="box"></div>  
+<script type="text/javascript">  
+document.addEventListener('touchstart', function(e) {  
+    e.preventDefault();  
+});  
+window.onload = function(){  
+    var box = document.querySelector('#box');  
+    var startRotate = 0;  
+    var startScale = 0;  
+    css(box,"translateZ",0.01);  
+    //封装后的方法使用实例:  
+    setGesture({  
+        //要操作的元素  
+        el: box,  
+        //开始时的状态  
+        start: function(e){  
+            //startRotate = css(this,"rotate");  
+            startScale = css(this,"scale");  
+        },  
+        //改变时要执行的方法  
+        change:function(e){  
+            //css(this,"rotate",startRotate + e.rotation);  
+            css(this,"scale",startScale * e.scale);  
+        }  
+    })  
+};  
+  
+  
+  
+//需要调用此方法  
+function setGesture(init){  
+    var el = init.el;  
+    var isGestrue = false;   
+    var startPoint = [];  
+    if(!el){  
+        return;  
+    }  
+    el.addEventListener('touchstart', function(e) {  
+        if(e.touches.length >= 2){  
+            //记录当前用户触发了gesture  
+            isGestrue = true;  
+            //获取初始的两手指的位置  
+            startPoint[0] = {x:e.touches[0].pageX,y:e.touches[0].pageY};  
+            startPoint[1] = {x:e.touches[1].pageX,y:e.touches[1].pageY};  
+            init.start&&init.start.call(el,e);  
+        }  
+    });  
+    el.addEventListener('touchmove', function(e) {  
+        if(isGestrue&&e.touches.length >= 2){  
+            var nowPoint = [];  
+            nowPoint[0] = {x:e.touches[0].pageX,y:e.touches[0].pageY};  
+            nowPoint[1] = {x:e.touches[1].pageX,y:e.touches[1].pageY};  
+            var startDis = getDis(startPoint[0],startPoint[1]);  
+            var nowDis = getDis(nowPoint[0],nowPoint[1]);  
+            var startDeg = getDeg(startPoint[0],startPoint[1]);  
+            var nowDeg = getDeg(nowPoint[0],nowPoint[1]);  
+            e.scale = nowDis/startDis;  
+            e.rotation = nowDeg - startDeg;  
+            init.change&&init.change.call(el,e);  
+        }  
+    });  
+    el.addEventListener('touchend', function(e) {  
+        if(isGestrue){  
+            if(e.touches.length < 2 || e.targetTouches.length < 1){  
+                isGestrue = false;  
+                init.end&&init.end.call(el,e);  
+            }  
+        }  
+    });  
+}  
+  
+//内部方法一:获取两点见得距离  
+function getDis(point1,point2){  
+    var x = point2.x - point1.x;  
+    var y = point2.y - point1.y;  
+    return Math.sqrt(x*x + y*y);  
+}  
+  
+//内外方法二:获取两点间的角度  
+function getDeg(point1,point2){  
+    var x = point2.x - point1.x;  
+    var y = point2.y - point1.y;  
+    return Math.atan2(y,x)*180/Math.PI;  
+}  
+//transform属性设置相关方法  
+function css(element, attr , val){  
+    if(attr == "scale"||attr == "scaleX"  
+    ||attr == "scaleY"||attr == "scaleZ"  
+    ||attr == "rotateX"||attr == "rotateY"  
+    ||attr == "rotateZ"||attr == "rotate"  
+    ||attr == "skewX"||attr == "skewY"  
+    ||attr == "translateX"||attr == "translateY"  
+    ||attr == "translateZ") {  
+        return cssTransform(element, attr, val);  
+    }  
+    if(arguments.length == 2){  
+        var val = getComputedStyle(element)[attr];  
+        if(attr=='opacity'){  
+            val = Math.round(val*100);  
+        }  
+        return parseFloat(val);  
+    }   
+    if(attr == "opacity") {  
+        element.style.opacity= val/100;  
+    } else {  
+        element.style[attr]= val + "px";      
+    }  
+}  
+//transform属性设置相关方法  
+function cssTransform(element, attr, val){  
+    if(!element.transform){  
+        element.transform = {};  
+    }     
+    if(typeof val === "undefined"){   
+        if(typeof element.transform[attr] === "undefined"){  
+            switch(attr){  
+                case "scale":  
+                case "scaleX":  
+                case "scaleY":  
+                case "scaleZ":  
+                    element.transform[attr] = 100;  
+                    break;  
+                default:  
+                    element.transform[attr] = 0;      
+            }  
+        }   
+        return element.transform[attr];  
+    } else {  
+        element.transform[attr] = val;  
+        var transformVal  = "";  
+        for(var s in element.transform){  
+            switch(s){  
+                case "scale":  
+                case "scaleX":  
+                case "scaleY":  
+                case "scaleZ":  
+                    transformVal += " " + s + "("+(element.transform[s]/100)+")";  
+                    break;  
+                case "rotate":  
+                case "rotateX":  
+                case "rotateY":  
+                case "rotateZ":  
+                case "skewX":  
+                case "skewY":  
+                    transformVal += " " + s + "("+element.transform[s]+"deg)";  
+                    break;  
+                default:  
+                    transformVal += " " + s + "("+element.transform[s]+"px)";                 
+            }  
+        }  
+        element.style.WebkitTransform = element.style.transform = transformVal;  
+    }  
+}  
+</script>  
+</body>  
+</html> 
