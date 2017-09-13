@@ -10,12 +10,11 @@
             box-sizing: border-box;
         }
     </style>
-
 </head>
 
 <body>
     <fieldset style="width:600px;">
-        <legend>viewport,viewBox,preserveAspectRatio演示</legend>
+        <legend> <h2>viewport,viewBox,preserveAspectRatio演示</h2> </legend>
         <h4>viewport: </h4>
         width:<input type="number" id='viewportWidthNumber' value="400" oninput="updateView('#svg','width',this.value)" /> 
         height:
@@ -44,7 +43,7 @@
                 <option value="slice">slice</option>
         </select>
         <hr>
-        <button type="button" id='btn2'>运动动画</button>
+        <button type="button" id='btn'>运动动画</button>
     </fieldset>
     <div id="svg" style="position:relative;width:400px;height:300px; background:gray;">
         <div id="react" style="position:absolute;width:40px;height:30px;background:green;">
@@ -54,9 +53,10 @@
     <script>
         function updateView(selector,attr,val) {
             document.querySelector(selector).style[attr] = val + 'px';
+            preserveAspectRadioFirst(align.value)
         }
-        
-        function preserveAspectRadioFirst(startPosition) {
+       
+        function preserveAspectRadioFirst(startPosition="xMidYMid") {
             const svgW = viewportWidthNumber.value;
             const svgH = viewportHeightNumber.value;
             const reactW = viewBoxWidthNumber.value;
@@ -113,17 +113,21 @@
                     react.style.top = (svgH - reactH) + 'px';
                     break;
             }
-
         }
+        preserveAspectRadioFirst(align.value);
+        // function promiseFn(duration=0){
+        //     return new Promise((resolve, reject) =>{
+        //         setTimeout(() => {
+        //             react.style.transitionDuration = duration +"s";
+        //             debugger
+        //             resolve()
+        //         })
+        //     })
+        // }
+        btn.addEventListener('click', async e => {
+                // await promiseFn(3)
+                react.style.transitionDuration = 10+"s";
 
-        btn2.addEventListener('click', e => {
-            let p = new Promise(function (resolve, reject) {
-                setTimeout(() => {
-                    react.style.transitionDuration = "10s";
-                    resolve()
-                })
-            })
-            p.then(function () {
                 const svgW = viewportWidthNumber.value;
                 const svgH = viewportHeightNumber.value;
                 const reactW = viewBoxWidthNumber.value;
@@ -137,8 +141,21 @@
                 let scaleX = svgW / reactW;
                 let scaleY = svgH / reactH;
                 react.style.transform = "scale(" + (p > 0 ? scaleX : scaleY) + ")";
-            })
+            
+                // await promiseFn()
+                //react.style.opacity = 0;
+                //react.style.transitionDuration = "5s";
+               
+           
         })
+        
+        svg.addEventListener('transitionend',function(e){
+           debugger
+           //transparent 不调用transitionend
+        // if(e.propertyName=='transform'){
+            react.style.background='transparent';
+        // }
+        });
     </script>
 </body>
 

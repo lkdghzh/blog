@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="李可">
+    <title>js控制过渡起始点</title>
+    <style>
+     #cssControl:hover {
+            transform-origin:left top;/*不能在事件之后添加*/
+            transform: scale(2);
+        }
+    </style>
+</head>
+
+<body>
+    <div id='cssControl' style="
+        width:200px;
+        height:200px;
+        background:red;
+        transition:all 5s;
+        /*transform-origin:left top;*/
+        "></div>
+        <br>
+    <div id='div1' style="
+        width:200px;
+        height:200px;
+        background:red;
+        "></div>
+    <button id="btn1"> 错误增加过渡起始点示范</button>
+    <div id='div2' style="
+        width:200px;
+        height:200px;
+        background:red;
+        "></div>
+    <button id="btn2"> 正确增加过渡起始点示范</button>
+    <script>
+        btn1.addEventListener('click', e => {
+            div1.style.transformOrigin = 'left top';
+            div1.style.transitionDuration = '5s';
+            div1.style.transform = 'scale(2)'
+        })
+        btn2.addEventListener('click', e => {
+            div2.style.transformOrigin = 'left top';
+            let p = new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    div2.style.transitionDuration = '5s';
+                    resolve()
+                })
+            })
+            p.then(() => {
+                div2.style.transform = 'scale(2)'
+            })
+
+        })
+    </script>
+</body>
+
+</html>
