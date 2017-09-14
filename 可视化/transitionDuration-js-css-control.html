@@ -6,8 +6,9 @@
     <meta name="author" content="李可">
     <title>js控制过渡起始点</title>
     <style>
-     #cssControl:hover {
-            transform-origin:left top;/*不能在事件之后添加*/
+        #cssControl:hover {
+            transform-origin: left top;
+            /*不能在事件之后添加*/
             transform: scale(2);
         }
     </style>
@@ -21,7 +22,7 @@
         transition:all 5s;
         /*transform-origin:left top;*/
         "></div>
-        <br>
+    <br>
     <div id='div1' style="
         width:200px;
         height:200px;
@@ -33,7 +34,13 @@
         height:200px;
         background:red;
         "></div>
-    <button id="btn2"> 正确增加过渡起始点示范</button>
+    <button id="btn2"> 正确增加过渡起始点示范1</button>
+    <div id='div3' style="
+    width:200px;
+    height:200px;
+    background:red;
+    "></div>
+    <button id="btn3"> 正确增加过渡起始点示范2</button>
     <script>
         btn1.addEventListener('click', e => {
             div1.style.transformOrigin = 'left top';
@@ -41,17 +48,25 @@
             div1.style.transform = 'scale(2)'
         })
         btn2.addEventListener('click', e => {
-            div2.style.transformOrigin = 'left top';
+            //div2.style.transformOrigin = 'left top';
             let p = new Promise((resolve, reject) => {
+                //一定保证在过渡时长设置之前，设置css样式，要不
+                div2.style.transformOrigin = 'left top';
                 setTimeout(() => {
                     div2.style.transitionDuration = '5s';
                     resolve()
                 })
             })
             p.then(() => {
+                debugger
                 div2.style.transform = 'scale(2)'
             })
 
+        })
+        btn3.addEventListener('click', e => {
+            div3.style.transformOrigin = 'left top';
+            div3.style.transition = 'transform 5s';
+            div3.style.transform = 'scale(2)'
         })
     </script>
 </body>

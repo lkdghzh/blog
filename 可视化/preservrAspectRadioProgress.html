@@ -9,23 +9,26 @@
         div {
             box-sizing: border-box;
         }
+
+        span {
+            font-weight: bolder;
+        }
     </style>
 </head>
 
 <body>
-    <fieldset style="width:600px;">
-        <legend> <h2>viewport,viewBox,preserveAspectRatio演示</h2> </legend>
+    <fieldset style="width:800px;">
+        <legend>
+            <h2>viewport,viewBox,preserveAspectRatio演示-李可</h2>
+        </legend>
         <h4>viewport: </h4>
-        width:<input type="number" id='viewportWidthNumber' value="400" oninput="updateView('#svg','width',this.value)" /> 
-        height:
+        width:<input type="number" id='viewportWidthNumber' value="400" oninput="updateView('#svg','width',this.value)" />        height:
         <input type="number" id='viewportHeightNumber' value="300" oninput="updateView('#svg','height',this.value)" />
         <h4>viewBox: </h4>
-        <p>默认 0 0 width height</p>
-        width:<input type="number" id='viewBoxWidthNumber' value="40" oninput="updateView('#react','width',this.value)" /> 
-        height:
+        width:<input type="number" id='viewBoxWidthNumber' value="40" oninput="updateView('#react','width',this.value)" />        height:
         <input type="number" id='viewBoxHeightNumber' value="30" oninput="updateView('#react','height',this.value)" />
         <h4>preserveAspectRatio（align，meetOrSlice）</h4>
-        <p>默认xMidYMid meet,如果align是none，meetOrSlice的值将会被忽略</p>
+
         <select name="align" id="align" onchange="preserveAspectRadioFirst(this.value)">
                 <option value="none">none</option>
                 <option value="xMinYMin">xMinYMin</option>
@@ -43,20 +46,25 @@
                 <option value="slice">slice</option>
         </select>
         <hr>
+        <div id="note" style="display:none;">
+            <p>viewBox，默认 0 0 width height</p>
+            <p>preserverAspectRadio，默认xMidYMid meet,如果align是none，meetOrSlice的值将会被忽略</p>
+            <p>按照---><span id="direction"></span>，缩放 ---> <span id='percent'></span>倍</p>
+        </div>
         <button type="button" id='btn'>运动动画</button>
     </fieldset>
-    <div id="svg" style="position:relative;width:400px;height:300px; background:gray;">
+    <div id="svg" style="margin:100px 0 0 100px;position:relative;width:400px;height:300px; background:gray;">
         <div id="react" style="position:absolute;width:40px;height:30px;background:green;">
-            <div id="realDiv" style="width:30%;height:50%;background:red;"></div>
+            <div id="realDiv" style="margin-top:10%;margin-left:15%;width:30%;height:50%;background:red;"></div>
         </div>
     </div>
     <script>
-        function updateView(selector,attr,val) {
+        let updateView = (selector, attr, val) => {
             document.querySelector(selector).style[attr] = val + 'px';
             preserveAspectRadioFirst(align.value)
         }
-       
-        function preserveAspectRadioFirst(startPosition="xMidYMid") {
+
+        let preserveAspectRadioFirst = (startPosition = "xMidYMid") => {
             const svgW = viewportWidthNumber.value;
             const svgH = viewportHeightNumber.value;
             const reactW = viewBoxWidthNumber.value;
@@ -115,18 +123,44 @@
             }
         }
         preserveAspectRadioFirst(align.value);
-        // function promiseFn(duration=0){
-        //     return new Promise((resolve, reject) =>{
-        //         setTimeout(() => {
-        //             react.style.transitionDuration = duration +"s";
-        //             debugger
-        //             resolve()
-        //         })
-        //     })
-        // }
+
+        let awaitFn = () => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    react.style.transitionDuration = '0s';
+                    resolve()
+                })
+            })
+        }
+        let disableEle = () => {
+            let inputs = document.querySelectorAll('input');
+            let selects = document.querySelectorAll('select');
+            
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].setAttribute('disabled', 'disabled')
+            }
+            for (let i = 0; i < selects.length; i++) {
+                selects[i].setAttribute('disabled', 'disabled')
+            }
+        }
+        let enbledEle = () => {
+            let inputs = document.querySelectorAll('input');
+            let selects = document.querySelectorAll('select');
+            
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].removeAttribute('disabled')
+            }
+            for (let i = 0; i < selects.length; i++) {
+                selects[i].removeAttribute('disabled')
+            }
+        }
+      
+        let step = 1;
         btn.addEventListener('click', async e => {
-                // await promiseFn(3)
-                react.style.transitionDuration = 10+"s";
+            if (step % 2) {
+                btn.innerHTML = '初始化'
+                disableEle();
+                react.style.transition = "transform 5s";
 
                 const svgW = viewportWidthNumber.value;
                 const svgH = viewportHeightNumber.value;
@@ -140,21 +174,32 @@
                 let p = (reactW / reactH) / (svgW / svgH) > 1;//p>1,viewbox宽先到viewport的宽 p<1,viewbox高先到viewport的高
                 let scaleX = svgW / reactW;
                 let scaleY = svgH / reactH;
-                react.style.transform = "scale(" + (p > 0 ? scaleX : scaleY) + ")";
-            
-                // await promiseFn()
-                //react.style.opacity = 0;
-                //react.style.transitionDuration = "5s";
-               
-           
+                let scale = p > 0 ? scaleX : scaleY;
+
+                //note
+                let derector = p > 0 ? 'x轴' : 'y轴';
+                percent.innerHTML = scale;
+                direction.innerHTML = derector;
+                note.style.display = 'block';
+                //note
+
+                react.style.transform = "scale(" + scale + ")";
+            } else {
+                note.style.display = 'none';
+                enbledEle()
+                await awaitFn()
+                react.style.transform = 'scale(1)'
+                react.style.background = 'green'
+                btn.innerHTML = '运动动画'
+            }
+            step++;
         })
-        
-        svg.addEventListener('transitionend',function(e){
-           debugger
-           //transparent 不调用transitionend
-        // if(e.propertyName=='transform'){
-            react.style.background='transparent';
-        // }
+
+        react.addEventListener('transitionend', function (e) {
+            if (e.propertyName == 'transform') {
+                react.style.transition = "background 5s";
+                react.style.background = 'transparent';
+            }
         });
     </script>
 </body>
