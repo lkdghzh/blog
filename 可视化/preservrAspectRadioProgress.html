@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="李可">
-    <title>svgviewBox的放大过程。演示动画</title>
+    <title>svgviewBox的特写过程。演示动画</title>
     <style>
         div {
             box-sizing: border-box;
@@ -22,13 +22,16 @@
             <h2>viewport,viewBox,preserveAspectRatio演示-李可</h2>
         </legend>
         <h4>viewport: </h4>
-        width:<input type="number" id='viewportWidthNumber' value="400" oninput="updateView('#svg','width',this.value)" />        height:
+        <label for="viewportWidthNumber">width:</label>
+        <input type="number" id='viewportWidthNumber' value="400" oninput="updateView('#svg','width',this.value)" />
+        <label for="viewportHeightNumber">height:</label>
         <input type="number" id='viewportHeightNumber' value="300" oninput="updateView('#svg','height',this.value)" />
         <h4>viewBox: </h4>
-        width:<input type="number" id='viewBoxWidthNumber' value="40" oninput="updateView('#react','width',this.value)" />        height:
+        <label for="viewBoxWidthNumber">width:</label>
+        <input type="number" id='viewBoxWidthNumber' value="40" oninput="updateView('#react','width',this.value)" />
+        <label for="viewBoxHeightNumber">height:</label>
         <input type="number" id='viewBoxHeightNumber' value="30" oninput="updateView('#react','height',this.value)" />
         <h4>preserveAspectRatio（align，meetOrSlice）</h4>
-
         <select name="align" id="align" onchange="preserveAspectRadioFirst(this.value)">
                 <option value="none">none</option>
                 <option value="xMinYMin">xMinYMin</option>
@@ -45,13 +48,12 @@
                 <option value="meet" selected>meet</option>
                 <option value="slice">slice</option>
         </select>
-        <hr>
+        <p>viewBox，默认 0 0 width height</p>
+        <p>preserverAspectRadio，默认xMidYMid meet,如果align是none，meetOrSlice的值将会被忽略</p>
         <div id="note" style="visibility:hidden;">
-            <p>viewBox，默认 0 0 width height</p>
-            <p>preserverAspectRadio，默认xMidYMid meet,如果align是none，meetOrSlice的值将会被忽略</p>
-            <p>按照---><span id="direction"></span>，缩放 ---> <span id='percent'></span>倍</p>
+            <p>按照---><span id="direction"></span>，缩放 ---> <span id="percent"></span>倍</p>
         </div>
-        <button type="button" id='btn'>运动动画</button>
+        <button type="button" id="btn">运动动画</button>
     </fieldset>
     <div id="svg" style="margin:100px 0 0 100px;position:relative;width:400px;height:300px; background:gray;">vport
         <div id="react" style="position:absolute;width:40px;height:30px;background:green;">vBox
@@ -64,59 +66,59 @@
             preserveAspectRadioFirst(align.value)
         }
 
-        let preserveAspectRadioFirst = (startPosition = "xMidYMid") => {
+        let preserveAspectRadioFirst = (startPosition = 'xMidYMid') => {
             const svgW = viewportWidthNumber.value;
             const svgH = viewportHeightNumber.value;
             const reactW = viewBoxWidthNumber.value;
             const reactH = viewBoxHeightNumber.value;
             switch (align.value) {
                 case 'none':
-                    react.style.transformOrigin = "center center";
+                    react.style.transformOrigin = 'center center';
                     react.style.left = (svgW - reactW) / 2 + 'px';
                     react.style.top = (svgH - reactH) / 2 + 'px';
                     break;
                 case 'xMinYMin':
-                    react.style.transformOrigin = "left top";
+                    react.style.transformOrigin = 'left top';
                     react.style.left = 0 + 'px';
                     react.style.top = 0 + 'px';
                     break;
                 case 'xMinYMid':
-                    react.style.transformOrigin = "left center";
+                    react.style.transformOrigin = 'left center';
                     react.style.left = 0 + 'px';
                     react.style.top = (svgH - reactH) / 2 + 'px';
                     break;
                 case 'xMinYMax':
-                    react.style.transformOrigin = "left bottom";
+                    react.style.transformOrigin = 'left bottom';
                     react.style.left = 0 + 'px';
                     react.style.top = (svgH - reactH) + 'px';
                     break;
                 case 'xMidYMin':
-                    react.style.transformOrigin = "center center";
+                    react.style.transformOrigin = 'center center';
                     react.style.left = (svgW - reactW) / 2 + 'px';
                     react.style.top = 0 + 'px';
                     break;
                 case 'xMidYMid':
-                    react.style.transformOrigin = "center center";
+                    react.style.transformOrigin = 'center center';
                     react.style.left = (svgW - reactW) / 2 + 'px';
                     react.style.top = (svgH - reactH) / 2 + 'px';
                     break;
                 case 'xMidYMax':
-                    react.style.transformOrigin = "center bottom";
+                    react.style.transformOrigin = 'center bottom';
                     react.style.left = (svgW - reactW) / 2 + 'px';
                     react.style.top = (svgH - reactH) + 'px';
                     break;
                 case 'xMaxYMin':
-                    react.style.transformOrigin = "right top";
+                    react.style.transformOrigin = 'right top';
                     react.style.left = (svgW - reactW) + 'px';
                     react.style.top = 0 + 'px';
                     break;
                 case 'xMaxYMid':
-                    react.style.transformOrigin = "right center";
+                    react.style.transformOrigin = 'right center';
                     react.style.left = (svgW - reactW) + 'px';
                     react.style.top = (svgH - reactH) / 2 + 'px';
                     break;
                 case 'xMaxYMax':
-                    react.style.transformOrigin = "right bottom";
+                    react.style.transformOrigin = 'right bottom';
                     react.style.left = (svgW - reactW) + 'px';
                     react.style.top = (svgH - reactH) + 'px';
                     break;
@@ -151,7 +153,7 @@
                 selects[i].removeAttribute('disabled')
             }
         }
-      
+
         let step = 1;
         btn.addEventListener('click', async e => {
             if (step % 2) {
@@ -169,12 +171,17 @@
                 react.style.height = reactH + 'px';
 
                 let p = (reactW / reactH) / (svgW / svgH) > 1;//p>1,viewbox宽先到viewport的宽 p<1,viewbox高先到viewport的高
+                let s = meetOrSlice.value;
                 let scaleX = svgW / reactW;
                 let scaleY = svgH / reactH;
-                let scale = p > 0 ? scaleX : scaleY;
+                let scale = p ?
+                    s == 'meet' ? scaleX : scaleY :
+                    s == 'meet' ? scaleY : scaleX;
 
                 //note
-                let derector = p > 0 ? 'x轴' : 'y轴';
+                let derector = p ?
+                    s == 'meet' ? 'x轴' : 'y轴' :
+                    s == 'meet' ? 'y轴' : 'x轴';
                 percent.innerHTML = scale;
                 direction.innerHTML = derector;
                 note.style.visibility = 'visible';
@@ -182,7 +189,7 @@
 
                 react.style.transform = "scale(" + scale + ")";
             } else {
-                note.style.display = 'hidden';
+                note.style.visibility = 'hidden';
                 enbledEle()
                 await awaitFn()
                 react.style.transform = 'scale(1)'
@@ -192,7 +199,7 @@
             step++;
         })
 
-        react.addEventListener('transitionend', function (e) {
+        react.addEventListener('transitionend', e => {
             if (e.propertyName == 'transform') {
                 react.style.transition = "background 5s";
                 react.style.background = 'transparent';
