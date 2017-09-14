@@ -46,16 +46,16 @@
                 <option value="slice">slice</option>
         </select>
         <hr>
-        <div id="note" style="display:none;">
+        <div id="note" style="visibility:hidden;">
             <p>viewBox，默认 0 0 width height</p>
             <p>preserverAspectRadio，默认xMidYMid meet,如果align是none，meetOrSlice的值将会被忽略</p>
             <p>按照---><span id="direction"></span>，缩放 ---> <span id='percent'></span>倍</p>
         </div>
         <button type="button" id='btn'>运动动画</button>
     </fieldset>
-    <div id="svg" style="margin:100px 0 0 100px;position:relative;width:400px;height:300px; background:gray;">
-        <div id="react" style="position:absolute;width:40px;height:30px;background:green;">
-            <div id="realDiv" style="margin-top:10%;margin-left:15%;width:30%;height:50%;background:red;"></div>
+    <div id="svg" style="margin:100px 0 0 100px;position:relative;width:400px;height:300px; background:gray;">vport
+        <div id="react" style="position:absolute;width:40px;height:30px;background:green;">vBox
+            <div id="realDiv" style="position:absolute;top:0;left:0;opacity:0.5;margin:10% 0 0 15%;width:30%;height:50%;background:red;"></div>
         </div>
     </div>
     <script>
@@ -132,10 +132,10 @@
                 })
             })
         }
+        let inputs = document.querySelectorAll('input');
+        let selects = document.querySelectorAll('select');
+
         let disableEle = () => {
-            let inputs = document.querySelectorAll('input');
-            let selects = document.querySelectorAll('select');
-            
             for (let i = 0; i < inputs.length; i++) {
                 inputs[i].setAttribute('disabled', 'disabled')
             }
@@ -144,9 +144,6 @@
             }
         }
         let enbledEle = () => {
-            let inputs = document.querySelectorAll('input');
-            let selects = document.querySelectorAll('select');
-            
             for (let i = 0; i < inputs.length; i++) {
                 inputs[i].removeAttribute('disabled')
             }
@@ -180,12 +177,12 @@
                 let derector = p > 0 ? 'x轴' : 'y轴';
                 percent.innerHTML = scale;
                 direction.innerHTML = derector;
-                note.style.display = 'block';
+                note.style.visibility = 'visible';
                 //note
 
                 react.style.transform = "scale(" + scale + ")";
             } else {
-                note.style.display = 'none';
+                note.style.display = 'hidden';
                 enbledEle()
                 await awaitFn()
                 react.style.transform = 'scale(1)'
