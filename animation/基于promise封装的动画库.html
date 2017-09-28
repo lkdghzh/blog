@@ -39,6 +39,7 @@
             }
             //执行动画
             go() {
+                
                 this.beforeCartoon&&this.beforeCartoon(this.ele)
                 this.startTime = Date.now();
                 return new Promise((resolve, reject) => {
