@@ -1,0 +1,16 @@
+diff a/可视化/preservrAspectRadioProgress.html b/可视化/preservrAspectRadioProgress.html	(rejected hunks)
+@@ -177,12 +177,12 @@
+                 let derector = p > 0 ? 'x轴' : 'y轴';
+                 percent.innerHTML = scale;
+                 direction.innerHTML = derector;
+-                note.style.display = 'block';
++                note.style.visibility = 'visible';
+                 //note
+ 
+                 react.style.transform = "scale(" + scale + ")";
+             } else {
+-                note.style.display = 'none';
++                note.style.display = 'hidden';
+                 enbledEle()
+                 await awaitFn()
+                 react.style.transform = 'scale(1)'
