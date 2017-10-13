@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        window.onload = function () {
+            function VoiceWave(opt) {
+               
+                this.opt = opt || {};
+                // this.K = 2;
+                // this.F = 6;
+                // this.speed = this.opt.speed || 0.1;
+                // this.noise = this.opt.noise || 0;
+                // this.phase = this.opt.phase || 0;
+
+                if (!devicePixelRatio) devicePixelRatio = 1;
+                this.width = devicePixelRatio * (this.opt.width || 500);
+                this.height = devicePixelRatio * (this.opt.height || 500);
+                this.canvas = document.createElement('canvas');
+                this.canvas.style.border = "solid 1px red";  
+                this.canvas.id = "canvas"; 
+                (this.opt.container || document.body).appendChild(this.canvas);
+                document.getElementById("canvas").width = this.width / devicePixelRatio
+                document.getElementById("canvas").height = this.height / devicePixelRatio
+                this.ctx = this.canvas.getContext('2d');
+            }
+            VoiceWave.prototype = {
+                _drawLine: function (attenuation, color, width) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, 250);
+                    this.ctx.strokeStyle = color;
+                    this.ctx.lineWidth = width || 1;
+                    var x, y;
+                    //var count=0;
+                    //每条曲线 400个连接线
+                    for (var i = 0; i <600; i +=5) {
+                        x =i;
+                        y =250*Math.sin(2*(i*Math.PI / 180))+250
+                        this.ctx.lineTo(x,y);
+                    }
+                    this.ctx.stroke();
+                },
+                _draw: function () {
+                    // debugger
+                    this._drawLine(-2, 'rgba(255,255,255,0.1)');
+                    // this._drawLine(-6, 'rgba(255,255,255,0.2)');
+                    // this._drawLine(4, 'rgba(255,255,255,0.4)');
+                    // this._drawLine(2, 'rgba(255,255,255,0.6)');
+                    // this._drawLine(1, 'rgba(255,255,255,1)', 1.5);
+
+                   // requestAnimationFrame(this._draw.bind(this), 1000);
+                }
+            };
+
+            var SW = new VoiceWave({
+                width: 500,
+                height: 500
+            });
+            // debugger
+            SW._draw()
+            }
+    </script>
+</head>
+
+<body>
+    <input type="range" id="range" min="0" max="1" step="0.01" />
+</body>
+
+</html>

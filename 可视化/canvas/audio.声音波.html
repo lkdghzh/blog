@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var canvas = document.createElement('canvas');
+        //canvas.style.border = "solid 1px red";  
+        canvas.id = "canvas"; 
+        document.body.appendChild(canvas)
+        //设置宽高一定要在canvas节点添加之后  
+        document.getElementById("canvas").width = 600;  
+        document.getElementById("canvas").height = 500;  
+        // canvas.style.width='500px'
+        // canvas.style.height='500px'
+       
+        var ctx = canvas.getContext('2d');
+        
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(255,255,255,1)';
+        ctx.lineWidth = 2;
+        var x, y;
+        ctx.moveTo(0, 250);
+        // ().toFixed(2)
+        for (var i = 0; i <600; i +=2) {
+            var QuadraticFunctionVal=-1/Math.pow(300,2)*Math.pow((i-300),2)+1;
+            x =i;
+            y =QuadraticFunctionVal*250*Math.sin(2*(i*Math.PI / 180))+250
+            ctx.lineTo(x,y);
+            console.log((-1/Math.pow(300,2)*Math.pow((i-300),2)+1).toFixed(2));
+            //console.log(++count)
+        }
+        
+        ctx.moveTo(0, 250);
+        for (var i = 0; i <600; i +=2) {
+            var QuadraticFunctionVal=-1/Math.pow(300,2)*Math.pow((i-300),2)+1;
+            x =i;
+            y =QuadraticFunctionVal*200*Math.sin(2*(i*Math.PI / 180))+250
+            ctx.lineTo(x,y);
+            //console.log(++count)
+        }
+
+        ctx.moveTo(0, 250);
+        for (var i = 0; i <600; i +=2) {
+            var QuadraticFunctionVal=-1/Math.pow(300,2)*Math.pow((i-300),2)+1;
+            x =i;
+            y =QuadraticFunctionVal*150*Math.sin(2*(i*Math.PI / 180))+250
+            ctx.lineTo(x,y);
+            //console.log(++count)
+        }
+        ctx.moveTo(0, 250);
+        for (var i = 0; i <600; i +=2) {
+            var QuadraticFunctionVal=-1/Math.pow(300,2)*Math.pow((i-300),2)+1;
+            x =i;
+            y =QuadraticFunctionVal*100*Math.sin(2*(i*Math.PI / 180))+250
+            ctx.lineTo(x,y);
+            //console.log(++count)
+        }
+        ctx.moveTo(0, 250);
+        for (var i = 0; i <600; i +=2) {
+            var QuadraticFunctionVal=-1/Math.pow(300,2)*Math.pow((i-300),2)+1;
+            x =i;
+            y =QuadraticFunctionVal*50*Math.sin(2*(i*Math.PI / 180))+250
+            ctx.lineTo(x,y);
+            //console.log(++count)
+        }
+
+        //开始为-2
+        // for (var i = -2; i <= 2; i += 0.01) {
+        //     x = this.width * ((i + 2) / (2 * 2));
+        //     y = this.height / 2 + Math.sin(5*(i * Math.PI / 180));
+        //     ctx.lineTo(x,y);
+        //     //console.log(++count)
+        // }
+        // ctx.lineTo(100,100);
+        // ctx.lineTo(120,Math.sin(120));
+        // ctx.lineTo(180,Math.sin(200));
+
+        ctx.strokeStyle='red';
+        ctx.stroke()
+        
+    </script>
+</body>
+</html>
