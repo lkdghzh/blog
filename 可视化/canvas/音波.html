@@ -6,17 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    
+</head>
+
+<body>
+    <input type="range" id="range" min="0" max="1" step="0.1" onchange="change()" />
     <script>
-        window.onload = function () {
-            function VoiceWave(opt) {
-
+        function VoiceWave(opt) {
                 this.opt = opt || {};
-                // this.K = 2;
-                // this.F = 6;
-                // this.speed = this.opt.speed || 0.1;
-                // this.noise = this.opt.noise || 0;
-                // this.phase = this.opt.phase || 0;
-
                 if (!devicePixelRatio) devicePixelRatio = 1;
                 this.width = devicePixelRatio * (this.opt.width || 600);
                 this.height = devicePixelRatio * (this.opt.height || 500);
@@ -27,56 +24,61 @@
                 document.getElementById("canvas").width = this.width / devicePixelRatio
                 document.getElementById("canvas").height = this.height / devicePixelRatio
                 this.ctx = this.canvas.getContext('2d');
+                this.count=0;
+                this.A=0.5;
             }
             VoiceWave.prototype = {
-                _drawLine: function (attenuation, color, width) {
+                _clear: function () {
+                    this.ctx.clearRect(0, 0, this.width, this.height);
+                },
+                _drawLine: function (attenuation, color) {
                     this.ctx.beginPath();
                     //this.ctx.strokeStyle = color;
-                    this.ctx.lineWidth = width || 1;
+                    this.ctx.lineWidth = 1;
                     var x, y;
                     //var count=0;
-                    //每条曲线 400个连接线
+                    //每条曲线 count个连接线
                     this.ctx.moveTo(0, 250);
                     for (var i = 0; i < 600; i += 2) {
                         var QuadraticFunctionVal = -1 / Math.pow(300, 2) * Math.pow((i - 300), 2) + 1;
                         x = i;
-                        y = QuadraticFunctionVal * 250 * Math.sin(2 * (i * Math.PI / 180)) + 250
+                        y = this.A*attenuation*QuadraticFunctionVal * 250 * Math.sin(2 * (i * Math.PI / 180-this.count)) + 250
                         this.ctx.lineTo(x, y);
-                        //console.log((-1 / Math.pow(300, 2) * Math.pow((i - 300), 2) + 1).toFixed(2));
                         //console.log(++count)
                     }
-                    debugger
-                    // for (var i = 0; i <600; i +=5) {
-                    //     x =i;
-                    //     y =250*Math.sin(2*(i*Math.PI / 180))+250
-                    //     this.ctx.lineTo(x,y);
-                    // }
                     this.ctx.stroke();
                 },
                 _draw: function () {
-                    // debugger
-                    //this._drawLine(-2, 'rgba(255,255,255,0.1)');
-                    // this._drawLine(-6, 'rgba(255,255,255,0.2)');
-                    // this._drawLine(4, 'rgba(255,255,255,0.4)');
-                    // this._drawLine(2, 'rgba(255,255,255,0.6)');
-                    this._drawLine(1, 'rgba(255,255,255,1)', 1.5);
-
-                    // requestAnimationFrame(this._draw.bind(this), 1000);
+                    this._clear()
+                    this._drawLine(-1, 'rgba(255,255,255,0.1)');
+                    this._drawLine(-0.5, 'rgba(255,255,255,0.2)');
+                    //this._drawLine(0.8, 'rgba(255,255,255,0.4)');
+                    this._drawLine(0.5, 'rgba(255,255,255,0.6)');
+                    this._drawLine(1, 'rgba(255,255,255,1)');
+                    if(this.count<500){
+                        this.count-=100;
+                    }else{
+                        this.count+=100;
+                    }
+                    //setInterval(this._draw.bind(this),500)
+                    requestAnimationFrame(this._draw.bind(this));
+                },
+                setA:function(val){
+                    this.A=val
                 }
             };
 
-            var SW = new VoiceWave({
+            var vw = new VoiceWave({
                 width: 600,
                 height: 500
             });
-            // debugger
-            SW._draw()
-        }
-    </script>
-</head>
+            vw._draw()
+            function change() {
+                var value = document.getElementById('range').value ;
+                vw.setA(value);
+            }
 
-<body>
-    <!-- <input type="range" id="range" min="0" max="1" step="0.01" /> -->
+    </script>
 </body>
 
 </html>
