@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
+    <style>
+        * {
+            margin: 0px;
+        }
+    </style>
 </head>
 
 <body>
@@ -15,15 +19,15 @@
         function VoiceWave(opt) {
             this.opt = opt || {};
             if (!devicePixelRatio) devicePixelRatio = 1;
-            this.width = devicePixelRatio * (this.opt.width || 600);
-            this.height = devicePixelRatio * (this.opt.height || 100);
+            this.width = document.body.clientWidth; 
+            this.height = this.width / 5
             this.canvas = document.createElement('canvas');
-            this.canvas.style.border = "solid 1px red";
+            //this.canvas.style.border = "solid 1px red";
             this.canvas.id = "canvas";
             (this.opt.container || document.body).appendChild(this.canvas);
-            console.log(devicePixelRatio)
-            document.getElementById("canvas").style.width = '100%'//this.width / devicePixelRatio
-            document.getElementById("canvas").height = this.height / devicePixelRatio
+            document.getElementById("canvas").width = this.width
+            document.getElementById("canvas").height = this.height
+            console.log(this.width)
             this.ctx = this.canvas.getContext('2d');
             this.count = 0;
             this.A = 0.5;
@@ -37,12 +41,12 @@
                 this.ctx.beginPath();
                 this.ctx.lineWidth = 1;
                 var x, y;
-               
-                this.ctx.moveTo(0, this.height/2);
-                for (var i = 0; i < this.width; i ++) {
-                    var QuadraticFunctionVal = (Math.cos(90 / (this.width/4) * (i - (this.width/2)) * Math.PI / 180) + 1) / 2;
+
+                this.ctx.moveTo(0, this.height / 2);
+                for (var i = 0; i < this.width; i++) {
+                    var QuadraticFunctionVal = (Math.cos(90 / (this.width / 4) * (i - (this.width / 2)) * Math.PI / 180) + 1) / 2;
                     x = i;
-                    y = this.A * attenuation * QuadraticFunctionVal * this.height/2 * Math.sin(5*(i * Math.PI / 180 - this.count)) + this.height/2
+                    y = this.A * attenuation * QuadraticFunctionVal * this.height / 2 * Math.sin(5 * (i * Math.PI / 180 - this.count)) + this.height / 2
                     this.ctx.lineTo(x, y);
                 }
                 this.ctx.stroke();
@@ -55,12 +59,12 @@
                 this._drawLine(0.5, 'rgba(255,255,255,0.6)');
                 this._drawLine(1, 'rgba(255,255,255,1)');
                 this.count += 600;
-                if(this.timer){
+                if (this.timer) {
                     clearInterval(this.timer)
                     //cancelAnimationFrame(this.timer)
                 }
-                this.timer=setInterval(this._draw.bind(this),100)
-                
+                this.timer = setInterval(this._draw.bind(this), 100)
+
                 //this.timer=requestAnimationFrame(this._draw.bind(this));
             },
             setA: function (val) {
@@ -69,10 +73,10 @@
         };
 
         var vw = new VoiceWave({
-            width: 60,
+            width: 600,
             height: 100
         });
-        
+
         vw._draw()
         function change() {
             var value = document.getElementById('range').value;
