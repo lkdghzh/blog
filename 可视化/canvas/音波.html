@@ -6,78 +6,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    
+
 </head>
 
 <body>
     <input type="range" id="range" min="0" max="1" step="0.1" onchange="change()" />
     <script>
         function VoiceWave(opt) {
-                this.opt = opt || {};
-                if (!devicePixelRatio) devicePixelRatio = 1;
-                this.width = devicePixelRatio * (this.opt.width || 600);
-                this.height = devicePixelRatio * (this.opt.height || 500);
-                this.canvas = document.createElement('canvas');
-                this.canvas.style.border = "solid 1px red";
-                this.canvas.id = "canvas";
-                (this.opt.container || document.body).appendChild(this.canvas);
-                document.getElementById("canvas").width = this.width / devicePixelRatio
-                document.getElementById("canvas").height = this.height / devicePixelRatio
-                this.ctx = this.canvas.getContext('2d');
-                this.count=0;
-                this.A=0.5;
-            }
-            VoiceWave.prototype = {
-                _clear: function () {
-                    this.ctx.clearRect(0, 0, this.width, this.height);
-                },
-                _drawLine: function (attenuation, color) {
-                    this.ctx.beginPath();
-                    //this.ctx.strokeStyle = color;
-                    this.ctx.lineWidth = 1;
-                    var x, y;
-                    //var count=0;
-                    //每条曲线 count个连接线
-                    this.ctx.moveTo(0, 250);
-                    for (var i = 0; i < 600; i += 2) {
-                        var QuadraticFunctionVal = -1 / Math.pow(300, 2) * Math.pow((i - 300), 2) + 1;
-                        x = i;
-                        y = this.A*attenuation*QuadraticFunctionVal * 250 * Math.sin(2 * (i * Math.PI / 180-this.count)) + 250
-                        this.ctx.lineTo(x, y);
-                        //console.log(++count)
-                    }
-                    this.ctx.stroke();
-                },
-                _draw: function () {
-                    this._clear()
-                    this._drawLine(-1, 'rgba(255,255,255,0.1)');
-                    this._drawLine(-0.5, 'rgba(255,255,255,0.2)');
-                    //this._drawLine(0.8, 'rgba(255,255,255,0.4)');
-                    this._drawLine(0.5, 'rgba(255,255,255,0.6)');
-                    this._drawLine(1, 'rgba(255,255,255,1)');
-                    if(this.count<500){
-                        this.count-=100;
-                    }else{
-                        this.count+=100;
-                    }
-                    //setInterval(this._draw.bind(this),500)
-                    requestAnimationFrame(this._draw.bind(this));
-                },
-                setA:function(val){
-                    this.A=val
+            this.opt = opt || {};
+            if (!devicePixelRatio) devicePixelRatio = 1;
+            this.width = devicePixelRatio * (this.opt.width || 600);
+            this.height = devicePixelRatio * (this.opt.height || 500);
+            this.canvas = document.createElement('canvas');
+            this.canvas.style.border = "solid 1px red";
+            this.canvas.id = "canvas";
+            (this.opt.container || document.body).appendChild(this.canvas);
+            document.getElementById("canvas").width = this.width / devicePixelRatio
+            document.getElementById("canvas").height = this.height / devicePixelRatio
+            this.ctx = this.canvas.getContext('2d');
+            this.count = 0;
+            this.A = 0.5;
+        }
+        VoiceWave.prototype = {
+            _clear: function () {
+                this.ctx.clearRect(0, 0, this.width, this.height);
+            },
+            _drawLine: function (attenuation, color) {
+                this.ctx.beginPath();
+                //this.ctx.strokeStyle = color;
+                this.ctx.lineWidth = 1;
+                var x, y;
+                //var count=0;
+                //每条曲线 count个连接线
+                this.ctx.moveTo(0, 250);
+                for (var i = 0; i < 600; i += 2) {
+                    //var QuadraticFunctionVal = -1 / Math.pow(300, 2) * Math.pow((i - 300), 2) + 1;
+                    var QuadraticFunctionVal = (Math.cos(90 / 150 * (i - 300) * Math.PI / 180) + 1) / 2;
+                    x = i;
+                    y = this.A * attenuation * QuadraticFunctionVal * 250 * Math.sin(2 * (i * Math.PI / 180 - this.count)) + 250
+                    this.ctx.lineTo(x, y);
+                    //console.log(++count)
+                    //console.log(QuadraticFunctionVal)
                 }
-            };
-
-            var vw = new VoiceWave({
-                width: 600,
-                height: 500
-            });
-            vw._draw()
-            function change() {
-                var value = document.getElementById('range').value ;
-                vw.setA(value);
+                this.ctx.stroke();
+            },
+            _draw: function () {
+                this._clear()
+                this._drawLine(-1, 'rgba(255,255,255,0.1)');
+                this._drawLine(-0.5, 'rgba(255,255,255,0.2)');
+                //this._drawLine(0.8, 'rgba(255,255,255,0.4)');
+                this._drawLine(0.5, 'rgba(255,255,255,0.6)');
+                this._drawLine(1, 'rgba(255,255,255,1)');
+                if (this.count < 500) {
+                    this.count -= 100;
+                } else {
+                    this.count += 100;
+                }
+                //setInterval(this._draw.bind(this),500)
+                requestAnimationFrame(this._draw.bind(this));
+            },
+            setA: function (val) {
+                this.A = val
             }
+        };
 
+        var vw = new VoiceWave({
+            width: 600,
+            height: 500
+        });
+        
+        vw._draw()
+        function change() {
+            var value = document.getElementById('range').value;
+            vw.setA(value);
+        }
     </script>
 </body>
 
