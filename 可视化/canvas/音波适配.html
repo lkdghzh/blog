@@ -10,6 +10,10 @@
         * {
             margin: 0px;
         }
+        html,body{
+            width:100%;
+            height:100%;
+        }
     </style>
 </head>
 
@@ -22,43 +26,48 @@
             this.width = document.body.clientWidth; 
             this.height = this.width / 5
             this.canvas = document.createElement('canvas');
-            //this.canvas.style.border = "solid 1px red";
+           this.canvas.style.border = "solid 1px red";
             this.canvas.id = "canvas";
             (this.opt.container || document.body).appendChild(this.canvas);
-            document.getElementById("canvas").width = this.width
+            document.getElementById("canvas").width = this.width-2
             document.getElementById("canvas").height = this.height
             console.log(this.width)
             this.ctx = this.canvas.getContext('2d');
+           
             this.count = 0;
             this.A = 0.5;
             this.timer;
         }
         VoiceWave.prototype = {
             _clear: function () {
-                this.ctx.clearRect(0, 0, this.width, this.height);
+                this.ctx.fillRect(0, 0, this.width, this.height);
             },
-            _drawLine: function (attenuation, color) {
+            _drawLine: function (attenuation, color,width,w) {
                 this.ctx.beginPath();
-                this.ctx.lineWidth = 1;
+                this.ctx.strokeStyle = color;  
+                this.ctx.lineWidth = width;
+                //this.ctx.fillRect(0, 0, this.width, this.height);
                 var x, y;
 
                 this.ctx.moveTo(0, this.height / 2);
                 for (var i = 0; i < this.width; i++) {
                     var QuadraticFunctionVal = (Math.cos(90 / (this.width / 4) * (i - (this.width / 2)) * Math.PI / 180) + 1) / 2;
                     x = i;
-                    y = this.A * attenuation * QuadraticFunctionVal * this.height / 2 * Math.sin(5 * (i * Math.PI / 180 - this.count)) + this.height / 2
+                    y = this.A * attenuation * QuadraticFunctionVal * this.height / 2 * Math.sin(w * (i * Math.PI / 180 - this.count)) + this.height / 2
                     this.ctx.lineTo(x, y);
                 }
                 this.ctx.stroke();
             },
             _draw: function () {
                 this._clear()
-                this._drawLine(-1, 'rgba(255,255,255,0.1)');
-                this._drawLine(-0.5, 'rgba(255,255,255,0.2)');
-                this._drawLine(0.8, 'rgba(255,255,255,0.4)');
-                this._drawLine(0.5, 'rgba(255,255,255,0.6)');
-                this._drawLine(1, 'rgba(255,255,255,1)');
-                this.count += 600;
+
+                this._drawLine(-1, 'rgba(255,255,255,0.5)',2,2);
+                this._drawLine(-0.5, 'rgba(255,255,255,0.8)',2,3);
+                // this._drawLine(0.8, 'rgba(255,255,255,0.1)',4);
+                this._drawLine(0.5, 'rgba(255,255,255,0.8)',2,3);
+                this._drawLine(1, 'rgba(255,255,255,1)',2,2);
+                
+                this.count += 2;Math.PI;
                 if (this.timer) {
                     clearInterval(this.timer)
                     //cancelAnimationFrame(this.timer)
