@@ -63,23 +63,26 @@
             _draw: function () {
                 this._clear()
 
-                this._drawLine(1, 'green',4,2);
-                this._drawLine(0.8, 'rgba(144,219,201,1)',1,2);
-                this._drawLine(0.7, 'rgba(144,219,201,1)',1,2);
-                this._drawLine(0.6, 'rgba(144,219,201,1)',1,2);
-                this._drawLine(0.5, 'rgba(144,219,201,1)',1,2);
-                // this._drawLine(-0.5, 'rgba(229,255,198,1)',2,3);
-                // this._drawLine(0.8, 'rgba(136,175,218,1)',1,3);
-                // this._drawLine(0.5, 'rgba(144,219,201,1)',2,3);
-                //this._drawLine(1, 'rgba(250,233,119,1)',2,2);
+                this._drawLine(1, 'rgba(67,198,68,1)', 2, 2);
+                this._drawLine(0.8, 'rgba(186,245,154,1)', 0.5, 2);
+                this._drawLine(0.5, 'rgba(186,245,154,1)', 0.5, 2);
+                this._drawLine(0.3, 'rgba(186,245,154,1)', 0.5, 2);
+                this._drawLine(0.2, 'rgba(186,245,154,1)', 0.5, 2);
                 
                 this.count += 2;Math.PI;
                 if (this.timer) {
                      clearInterval(this.timer)
                    //cancelAnimationFrame(this.timer)
                 }
-                this.timer = setInterval(this._draw.bind(this), 80)
+                if (this.A < 0.2) {
+                    this.timer = setInterval(this._draw.bind(this), 150)
+                } else if(this.A < 0.5) {
+                    this.timer = setInterval(this._draw.bind(this), 100)
+                } else {
+                	this.timer = setInterval(this._draw.bind(this), 80)
+                }
 
+                
                 //this.timer=requestAnimationFrame(this._draw.bind(this));
             },
             setA: function (val) {
