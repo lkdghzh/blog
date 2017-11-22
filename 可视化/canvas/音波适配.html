@@ -19,6 +19,8 @@
 
 <body>
     <input type="range" id="range" min="0" max="1" step="0.1" onchange="change()" />
+    <input type="button" id="stop" onClick="stop()" value="结束"/>
+    
     <script>
         function VoiceWave(opt) {
             this.opt = opt || {};
@@ -37,12 +39,12 @@
             this.count = 0;
             this.A = 0.5;
             this.timer;
+            this.w=1;
+            this.run=false;
         }
         VoiceWave.prototype = {
             _clear: function () {
-                this.ctx.fillRect(0, 0, this.width, this.height);
-                this.ctx.fillStyle="white";
-                
+                this.ctx.clearRect(0, 0, this.width, this.height);
             },
             _drawLine: function (attenuation, color,width,w) {
                 this.ctx.beginPath();
@@ -61,32 +63,46 @@
                 this.ctx.stroke();
             },
             _draw: function () {
-                this._clear()
+                if (!this.run) return;
+                //this._clear()
+                this.ctx.fillRect(0, 0, this.width, this.height);
+                this.ctx.fillStyle="white";
+                this._drawLine(1, 'rgba(67,198,68,1)', 2, 1);
+                this._drawLine(0.8, 'rgba(186,245,154,1)', 0.5, 1);
+                this._drawLine(0.7, 'rgba(186,245,154,1)', 0.5, 1);
+                this._drawLine(0.6, 'rgba(186,245,154,1)', 0.5, 1);
+                this._drawLine(0.5, 'rgba(186,245,154,1)', 0.5, 1);
 
-                this._drawLine(1, 'rgba(67,198,68,1)', 2, 2);
-                this._drawLine(0.8, 'rgba(186,245,154,1)', 0.5, 2);
-                this._drawLine(0.5, 'rgba(186,245,154,1)', 0.5, 2);
-                this._drawLine(0.3, 'rgba(186,245,154,1)', 0.5, 2);
-                this._drawLine(0.2, 'rgba(186,245,154,1)', 0.5, 2);
-                
-                this.count += 2;Math.PI;
+                console.log(11,this.count)
                 if (this.timer) {
-                     clearInterval(this.timer)
-                   //cancelAnimationFrame(this.timer)
+                     //clearInterval(this.timer)
+                   cancelAnimationFrame(this.timer)
                 }
-                if (this.A < 0.2) {
-                    this.timer = setInterval(this._draw.bind(this), 150)
-                } else if(this.A < 0.5) {
-                    this.timer = setInterval(this._draw.bind(this), 100)
-                } else {
-                	this.timer = setInterval(this._draw.bind(this), 80)
-                }
-
                 
-                //this.timer=requestAnimationFrame(this._draw.bind(this));
+                if(this.A < 0.3) {
+                    this.count += 0.2;
+                } else if(this.A < 0.6) {
+                    this.count += 0.3;
+                } else {
+                    this.count += 0.4;
+                }
+                
+                //this.timer = setInterval(this._draw.bind(this), 16.7)
+                this.timer=requestAnimationFrame(this._draw.bind(this));
             },
             setA: function (val) {
                 this.A = val
+            },
+            setW:function(val){
+                this.w = val
+            },
+            start:function(){
+                this.run=true;
+                this._draw()
+            },
+            stop:function(){
+                this.run=false;
+                this._clear()
             }
         };
 
@@ -95,10 +111,14 @@
             height: 100
         });
 
-        vw._draw()
+        vw.start()
         function change() {
             var value = document.getElementById('range').value;
             vw.setA(value);
+        }
+        function stop() {
+debugger
+            vw.stop();
         }
     </script>
 </body>
