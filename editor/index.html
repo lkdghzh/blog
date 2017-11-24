@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <div class="editor" contenteditable="true">
+        u see, in this world there's two kinds of people, my friend: those with loaded guns and those who dig. you dig. well, do
+        you have anything to say for yourself? you see, in this world there's two kinds of people, my friend: those with
+        loaded guns and those who dig. you dig. don't p!ss down my back and tell me it's raining. dyin' ain't much of a livin',
+        boy. are you feeling lucky punk this is the ak-47 assault rifle, the preferred weapon of your enemy; and it makes
+        a distinctive sound when fired at you, so remember it. when a naked man's chasing a woman through an alley with a
+        butcher knife and a hard-on, i figure he's not out collecting for the red cross. man's gotta know his limitations.
+        ever notice how sometimes you come across somebody you should
+    </div>
+    <div id="edoitor-bars">
+        <button id="btn">foreColor</button>
+        <span id="span" onmousedown="event.preventDefault();" >span</span>
+        <a id="a" onmousedown="event.preventDefault();" >aaa</a>
+    </div>
+    <script>
+        window.onload = function () {
+            var btn = document.querySelector('#btn');
+            btn.onclick = function () {
+                document.execCommand('foreColor', false, 'red')
+            }
+            var span = document.querySelector('#span');
+            span.onclick = function (e) {
+                document.execCommand('foreColor', false, 'green')
+            }
+            var a = document.querySelector('#a');
+            a.onclick = function () {
+                document.execCommand('foreColor', false, 'blue')
+            }
+        }
+    </script>
+</body>
+
+</html>
