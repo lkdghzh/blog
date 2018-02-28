@@ -1,64 +1,20 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <style>
-        #buffered {
-            border: solid #ccc 1px;
-            height: 10px;
-            background: red;
-            display: block;
-            width: 1%;
-        }
-    </style>
+    <title>vedio</title>
 </head>
 <body>
-<img src="222.png"/>
-<!-- 3401.mp3
-  http://kolber.github.io/audiojs/demos/mp3/juicy.mp3
-  http://myst729.qiniudn.com/within-temptation_pale.mp3
-  http://edu.hivoice.cn:9088/WebAudio-1.0-SNAPSHOT/audio/play/DE276FBC-15D3-7510-8C70-2D86409C49E6/1483679317923288857/bj-->
-<audio controls src="http://kolber.github.io/audiojs/demos/mp3/juicy.mp3" preload="none">
-</audio>
-<audio id="audio2" src="http://kolber.github.io/audiojs/demos/mp3/juicy.mp3" controls preload="none"></audio>
-<p><span></span></p>
-<div id="buffered"></div>
-
+    <video id='vedio' controls src="http://edu.hivoice.cn:9088/WebAudio-1.0-SNAPSHOT/audio/play/71fb0b7e-effa-49cb-93f8-9b0762d7565f/1486285340277170843/bj"></video><br>
+    count-><span id='count'>0</span><br>
+    currentTime-><span id='time'>0</span><br>
+    进度-><span id='percent'>0</span><br>
+    <script>
+        var  count=0;
+        vedio.addEventListener("timeupdate", e=>{
+            count.innerHTML=parseInt(count.innerHTML)+1;
+            time.innerHTML=vedio.currentTime;
+            percent.innerHTML=Math.round((vedio.currentTime/vedio.duration)*100)+'%';
+        });
+    </script>
 </body>
-<script type="text/javascript">
-    var img = document.getElementsByTagName('img')[0];
-    img.onload  = function () {
-        if(img.complete){
-            console.log('onload 加载网络资源，非缓存')
-        }
-    }
-    window.onload = function () {
-
-
-        var audio = document.getElementsByTagName('audio')[0];
-        audio.addEventListener('progress', function () {
-            console.log('....')
-        })
-
-        var audio2 = document.getElementById('audio2');
-//    audio2.onload=function(){
-//    	debugger
-        audio2.addEventListener('progress', function () {
-            //Before start calling buffered.end(0) try check buffered.length first
-            //Failed to execute 'end' on 'TimeRanges': The index provided (0) is greater than or equal to the maximum bound (0)
-            //Failed to execute 'start' on 'TimeRanges': The index provided (1) is greater than or equal to the maximum bound (1) console.log(audio2.buffered.start(0)/ audio2.duration);
-            if (audio2.buffered.length > 0) {
-                console.log(audio2.buffered);
-                console.log(audio2.buffered.end(0) / audio2.duration);
-                var load_percent = (audio2.buffered.end(0) / audio2.duration).toFixed(2);
-                var buffer = "服务器加载百分比: " + load_percent * 100 + '%' +
-                        "<br/>当前缓冲开始位置: " + audio2.buffered.start(0) +
-                        "<br/>当前缓冲结束位置: " + audio2.buffered.end(0) +
-                        "<br/> 总长度: " + audio2.duration;
-                document.querySelectorAll('span')[0].innerHTML = buffer;
-                document.getElementById('buffered').style.width = load_percent * 100 + '%';
-            }
-        })
-//	}
-    }
-</script>
 </html>
