@@ -13,8 +13,8 @@ export class Person {
         console.log('hello,ts');
     }
 };
-var p = new Person(18);
-console.log(p)
+// var p = new Person(18);
+// console.log(p)
 
 /**
  * 
