@@ -7,9 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
     <div id="root">
-        
+        <input v-model="a" :id="id" />123 {{a}}
+        <input v-model="a" />
+        <input v-model="b" />
+        <input v-model="b" />
+        {{c}}
+        <input v-model="c" />
+        <input v-model="d" />
+        <button @click="fn">点击</button>
     </div>
     <script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
     <script>
@@ -25,9 +33,12 @@
                     console.log(this.a)
                 }
             },
-            computeds: {
+            computed: {
                 c() {
                     return this.a + this.b
+                },
+                d(){
+                    return this.a+this.c
                 }
             },
             watchers: {
