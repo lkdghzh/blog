@@ -14,9 +14,9 @@
         <input v-model="a" />
         <input v-model="b" />
         <input v-model="b" />
-        {{c}}
+        <!-- {{c}}
         <input v-model="c" />
-        <input v-model="d" />
+        <input v-model="d" /> -->
         <button @click="fn">点击</button>
     </div>
     <script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
@@ -35,6 +35,7 @@
             },
             computed: {
                 c() {
+                    debugger
                     return this.a + this.b
                 },
                 d(){
