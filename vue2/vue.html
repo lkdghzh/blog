@@ -14,8 +14,9 @@
         <input v-model="a" />
         <input v-model="b" />
         <input v-model="b" />
-        <!-- {{c}}
+        
         <input v-model="c" />
+        <!-- {{c}}
         <input v-model="d" /> -->
         <button @click="fn">点击</button>
     </div>
@@ -34,15 +35,20 @@
                 }
             },
             computed: {
-                c() {
-                    debugger
+                c:{
+                   get(){
                     return this.a + this.b
+                    },
+                    set(val){
+                        debugger
+                        this.a=val
+                    }
                 },
                 d(){
                     return this.a+this.c
                 }
             },
-            watchers: {
+            watch: {
                 a: function (val, old) {
                     debugger
                     console.log(`a->haschanged,${old}-->${val}`)
