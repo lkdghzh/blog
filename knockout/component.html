@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>ko demo</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		body {
+			background: #f8f8f8;
+		}
+
+		.wrap {
+			width: 100%;
+		}
+
+		.header {
+			width: 100%;
+			height: 50px;
+			background: #ddd;
+			color: #222;
+			line-height: 50px;
+			text-align: center;
+
+		}
+		.label {
+			width: 100%;
+			height: 50px;
+			color: #222;
+			line-height: 50px;
+			margin: 40px 0;
+		}
+
+		.input {
+			width: 100%;
+			height: 40px;
+			margin: 40px 0;
+		}
+
+		.input input {
+			height: 100%;
+			width: 100%;
+		}
+
+		.button {
+			height: 50px;
+			width: 100%;
+			margin: 10px 0;
+			text-align: center;
+			line-height: 50px;
+		}
+
+		.button button {
+			height: 100%;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="root" class="wrap">
+		<div data-bind='component: {
+		    name: "component-header",
+		    params: { 
+		    	title: "页面标题"
+		    }
+		}'></div>
+
+		<div data-bind='component: {
+		    name: "component-label",
+		    params: { 
+		    	text: myInputText
+		    }
+		}'></div>
+
+		<div data-bind='component: {
+		    name: "component-input",
+		    params: { 
+		    	text: myInputText
+		    }
+		}'></div>
+
+		<div data-bind='component: {
+		    name: "component-button",
+		    params: { 
+		    	handleClick: handleClick,
+		    	text: "确认按钮"
+		    }
+		}'></div>
+
+		<div data-bind='component: {
+		    name: "component-parent",
+		    params: {}
+		}'>
+			<div data-bind='component: {
+			    name: "component-child",
+			    params: {}
+			}'>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-debug.js"></script>
+<script type="text/javascript">
+	var vm = {
+		handleClick: function () {
+			//todo with myInputText
+			console.log(vm.myInputText())
+		},
+		myInputText: ko.observable('hello')
+	};
+
+	ko.components.register('component-header', {
+		viewModel: function (params) {
+			this.title = params.title
+		},
+		template: '<div class="header" data-bind="text: title" ></div>'
+	});
+
+	ko.components.register('component-label', {
+		viewModel: function (params) {
+			this.text = params.text
+		},
+		template: '<div class="label" data-bind="text: text" ></div>'
+	});
+
+	ko.components.register('component-input', {
+		viewModel: function (params) {
+			this.text = params.text
+		},
+		template: '<div class="input">' +
+			'<input data-bind="value: text" />' +
+			'</div>'
+	});
+
+	ko.components.register('component-button', {
+		viewModel: function (params) {
+			this.handleClick = params.handleClick
+			this.text = params.text
+		},
+		template: '<div class="button" >' +
+			'<button data-bind="click: handleClick,text: text"></button' +
+			'</div>'
+	});
+	ko.components.register('component-parent', {
+		viewModel: function (params) {
+		},
+		template: '<div class="parent" >' +
+			'<p>this is parent</p>' +
+			'<!-- ko template: { nodes: $componentTemplateNodes } --><!-- /ko -->' +
+			'</div>'
+	});
+	ko.components.register('component-child', {
+		viewModel: function (params) {
+
+		},
+		template: '<div class="child" >' +
+			'<p>this is child</p>' +
+			'</div>'
+	});
+
+	ko.applyBindings(vm, document.getElementById('root'));
+</script>
