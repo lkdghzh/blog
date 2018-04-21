@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Parent {
+            constructor() {
+                this.name = 'parent'
+                this.age = 30
+                this.childInit0()
+            }
+            say() {
+                this.childInit()
+                console.log('im parent')
+            }
+        }
+        class Child extends Parent {
+            constructor() {
+                // Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+                // this.age=18
+                super()
+                this.name = 'child'
+                this.age = 18
+            }
+            say() {
+                super.say()
+                console.log('im child')
+            }
+            childInit0() {
+                console.log('parent constructor call child function')
+            }
+            childInit() {
+                console.log('parent proto call child function')
+            }
+        }
+        var child = new Child()
+        console.log(child.name, child.age)
+        child.say()
+
+    </script>
+</body>
+
+</html>
