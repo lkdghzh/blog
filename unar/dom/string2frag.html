@@ -19,27 +19,33 @@
         /**
         代码长，可阅读差
         效率慢
+        此方法，一般用于遍历dom 递归，node
         */
         const $f2 = str => {
-            var i = document.createElement('i')
-            i.innerHTML = str
+            var root = document.createElement('i')
+            root.innerHTML = str
             var frag = document.createDocumentFragment()
-            while ((firstChild = i.firstChild)) {
+            while ((firstChild = root.firstChild)) {
                 frag.appendChild(firstChild);
             }
             return frag
         }
-        document.body.appendChild($f2('<a target="_blank" href="http://www.cnblogs.com/leee">blog</a>'))
-        
-        console.time()//2 ms
-        for(let i=0;i<500;i++){
+        var root = '<a target="_blank" href="http://www.cnblogs.com/leee">blog</a>'
+        document.body.appendChild($f2(root))
+
+        console.time()//40ms
+        for (let i = 0; i < 5000; i++) {
             $f1('<div></div>')
         }
         console.timeEnd()
-        console.time()//12 ms
-        for(let i=0;i<500;i++){
-            $f2('<div></div>')
+
+        var div = '<div></div>'
+        var str=''
+        for (let i = 0; i < 5000; i++) {
+            str += div
         }
+        console.time()// 750ms
+        $f2(str)
         console.timeEnd()
     </script>
 </body>
