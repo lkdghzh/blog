@@ -6,10 +6,41 @@
     <title>range.createContextualFragment,字符串创建文档片段</title>
     <meta author='李可'>
 </head>
+
 <body>
     <script>
-        const $ = str => document.createRange().createContextualFragment(str);
-        document.body.appendChild($('<a target="_blank" href="http://www.cnblogs.com/leee">blog</a>'))
+        /**
+        
+        */
+        const $f1 = str => document.createRange().createContextualFragment(str);
+        document.body.appendChild($f1('<a target="_blank" href="http://www.cnblogs.com/leee">blog</a><br>'))
+
+
+        /**
+        代码长，可阅读差
+        效率慢
+        */
+        const $f2 = str => {
+            var i = document.createElement('i')
+            i.innerHTML = str
+            var frag = document.createDocumentFragment()
+            while ((firstChild = i.firstChild)) {
+                frag.appendChild(firstChild);
+            }
+            return frag
+        }
+        document.body.appendChild($f2('<a target="_blank" href="http://www.cnblogs.com/leee">blog</a>'))
+        
+        console.time()//2 ms
+        for(let i=0;i<500;i++){
+            $f1('<div></div>')
+        }
+        console.timeEnd()
+        console.time()//12 ms
+        for(let i=0;i<500;i++){
+            $f2('<div></div>')
+        }
+        console.timeEnd()
     </script>
 </body>
 
