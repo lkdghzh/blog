@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>range.createContextualFragment,字符串创建文档片段</title>
+    <meta author='李可'>
+</head>
+<body>
+    <script>
+        const $ = str => document.createRange().createContextualFragment(str);
+        document.body.appendChild($('<a target="_blank" href="http://www.cnblogs.com/leee">blog</a>'))
+    </script>
+</body>
+
+</html>
