@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>shuffle by 李可</title>
+</head>
+
+<body>
+    <script>
+        var arr = Array.from({ length: 5 }, (_, i) => i + 1)
+        console.log(arr)
+        /**
+        1，不是in-place操作
+        2，fisherYates 费舍尔耶特 时间复杂度 O(n^2)
+        while //n
+        splice //n
+        push //no n
+        */
+        function fisherYatesShuffle(arr) {
+            var newArr = []
+            while (arr.length) {//n
+                var randomInx = Math.floor(Math.random() * arr.length)
+                //console.log(randomInx)
+                newArr.push(arr[randomInx])//push no n
+                arr.splice(randomInx, 1)//n
+                //console.log(arr, newArr)
+            }
+            return newArr
+        }
+        console.log(fisherYatesShuffle(arr))
+        console.log('---------------')
+        /*
+        1，Knuth-Durstenfeld Shuffle 科鲁兹 和 道斯顿-菲尔德  两人改进了fisher算法 从O(n^2)-> O(n)
+        2，in-place操作
+        */
+        /*
+        随机索引  randomInx 从剩下的数字数组长度，随机索引,得到这个索引的值,放到剩下数组最前面（这里）,也可以放数组最后
+        交换变量
+            eg.  1 2 3 4 5
+            i    randomInx       randomVal   switch      result
+            0     2 <[0,5)12345       3       3<->1     3 1245
+            1     3 <[0,4]1245        5       5<->1     3 5 124
+            2     1 <[0,3)124         2       2<->1     3 5 2 14
+            3     1 <[0,2)14          4       4<->1     3 5 2 4 1  此时剩下 最后一个值，就不用交换，不用循环
+            4     0 =[0,1)1           1                 3 2 5 4 1
+        最后数组只剩下一项，不用交换，故：循环次数 arr.length-1
+        */
+        var arr = Array.from({ length: 5 }, (_, i) => i + 1)
+        console.log(arr)
+        function knuthDorstenfeldShuffle(arr) {
+            for (let i = 0; i < arr.length - 1; i++) {
+                const A = arr.length - i
+                const randomInx = Math.floor(Math.random() * A)//[0,A)
+                // console.log(randomInx)
+                // console.log(arr[randomInx])
+                var t;
+                t = arr[i];
+                arr[i] = arr[randomInx];
+                arr[randomInx] = t;
+                //[arr[i], arr[randomInx]] = [arr[randomInx], arr[i]]
+                // console.log(arr)
+            }
+            return arr
+        }
+        knuthDorstenfeldShuffle(arr)
+        console.log(arr)
+
+        // var arr = [1, 2, 3, 4]
+        // for (let i = 0; i < arr.length; i++) {
+        //     [arr[i],arr[i + 1]] = [arr[i + 1],arr[i]];
+        // }
+        // console.log(arr)
+    </script>
+</body>
+
+</html>
