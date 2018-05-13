@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>WeakMap by 李可</title>
+</head>
+
+<body>
+    <script>
+        /*
+            weakmap中的键，
+            1,只接受对象作为键(null)
+            2,保持是弱引用，引用计数不增加。
+                eg. 
+                var a=new Array(5*1024*1024) 
+
+                若果对象 这里拿对象的值做演示
+                var o={key:a}
+                //此时a的引用计数=2
+                 a=null
+                //此时，o.key还有a的引用.还要手动再去o.key=null
+
+                设计的weakmap的目的。当删除外面的对象a引用，weakmap内部的键a就自动释放
+                var a=new Array(5*1024*1024) 
+                const wm=new WeakMap()
+                wm.set(a,1)
+                //此时a的引用计数=1
+                a=null
+                //但 wm就不用手动了。
+
+            主要实际使用：
+                防止node带来的内存泄漏
+                队列
+                私有属性实例
+        */
+        const wm = new WeakMap()
+        //wm.set(1,1)// Invalid value used as weak map key
+    </script>
+</body>
+
+</html>
