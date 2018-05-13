@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>queue by 李可</title>
+</head>
+
+<body>
+    <script>
+        // 这和队列本身没关系，完全有外面传值来控制
+        // 每个节点是immutable的，实现这个queue.items不能使用[],因为数组引用计数累加.
+        // 使用weakmap这种弱引用类型。引用计数不累加。item状态和外面保持一致。
+        /*
+          和数组最大的区别：
+                使用weakmap，当外面把queue实例置空时，这里的this对应的值也变成undefined
+                队列不会造成内存的泄露
+          普通队列
+                FIFO
+                添加：从尾部追加
+                删除：从头部删除
+          优先队列
+          循环队列
+        */
+        const Queue = (function () {//尚未实现重载
+            const items = new WeakMap()
+            class Q {
+                constructor() {//尚未实现重载
+                    items.set(this, [])
+                }
+                get() {
+                    //查看队列
+                    return items.get(this)
+                }
+                in(...items) {
+                    //推入一项
+                    this.get().push(...items)
+                }
+                out() {
+                    //推出第一项
+                    return this.get().shift()
+                }
+                clear() {
+                    //清空队列
+                    this.get().set(this, [])
+                }
+                isEmpty() {
+                    //判断队列是否为空
+                    return this.get().length === 0 ? true : false
+                }
+                getfirst() {
+                    //查看第一项
+                    return this.get()[0]
+                }
+                getLength() {
+                    //获取队列长度
+                    return this.get().length
+                }
+                getOne(inx){
+                    return this.get()[inx]
+                }
+            }
+            return Q
+        })()
+        let queue = new Queue()
+        queue.in({ fn: function () { console.log(1) } })
+        queue.in({ fn: function () { console.log(2) } })
+        queue.in({ fn: function () { console.log(3) } })
+        queue.in({ fn: function () { console.log(4) } })
+        console.log(queue.get())
+        queue.out()
+        console.log(queue.getLength())
+        queue.getfirst().fn()//2
+        queue=null//此时weakmap对象queue键的就会被垃圾回收
+    </script>
+</body>
+
+</html>
