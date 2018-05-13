@@ -13,7 +13,7 @@
         // 使用weakmap这种弱引用类型。引用计数不累加。item状态和外面保持一致。
         /*
           和数组最大的区别：
-                使用weakmap，当外面把queue实例置空时，这里的this对应的值也变成undefined
+                使用weakmap，当外面把queue实例置空时，items weakmap这里的this对应的值也变成undefined
                 队列不会造成内存的泄露
           普通队列
                 FIFO
