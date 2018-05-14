@@ -1,12 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <script src="quick-sort-origin-es6.js"></script>
+    <meta charset="UTF-8">
+    <title>quicksort in-place by 李可</title>
     <script>
-    console.log(quickSort([1,4,7,2,6,8,3,5,9]))
+        /*
+                                        3 4 2 5 1
+        i          lessInx       比(i,p)      换swap(i,lessInx)           lessInx    endInx                     
+        1          设定基准右面，1   43比                                   没加 1       5     34251            
+        2             1            23比    i=2 lessInx=1                  +1  2             32451                 
+        3             2            53比                                   没加 2             32451
+        4             2            13比    i=4 lessInx=2                  +1  3             32154
+        */
+
+        const quickSort = (array, privotInx = 0, endInx = array.length) => {
+            if (privotInx < endInx) {//当数组为一项的时候 right可能为0
+                var lessInx = privotInx + 1  //这是重点。小于基准值的右面。随着循环，更新这本身，记录小于基准值的最新值的索引
+
+                for (let i = privotInx + 1; i < endInx + 1; i++) {
+                    const element = array[i];
+                    if (element < array[privotInx]) {//和基准值比
+                        [array[i], array[lessInx]] = [array[lessInx], array[i]]//和最近的小于基准的值对应的索引换。
+                        lessInx++
+                    }
+                }
+                [array[privotInx], array[lessInx - 1]] = [array[lessInx - 1], array[privotInx]]
+
+                quickSort(array, privotInx, lessInx - 1 - 1)
+                quickSort(array, lessInx, endInx)
+            }
+            return array
+        }
+
+        console.log(quickSort([1, 4, 7, 2, 6, 8, 3, 5, 9]))
+        console.log(quickSort([1, 100, 7, 200, 6, 8, 8, 300, 6, 9]))
+        console.log(quickSort([1, 10, 7, 2, 99, 8, 92, 5, 100]))
     </script>
 </head>
+
 <body>
 </body>
+
 </html>
