@@ -12,10 +12,12 @@
         2             1            23比    i=2 lessInx=1                  +1  2             32451                 
         3             2            53比                                   没加 2             32451
         4             2            13比    i=4 lessInx=2                  +1  3             32154
+
+        一次分区最后：基准值和 lessInx值换，注意对应索引privotInx和lessInx - 1 
         */
 
         const quickSort = (array, privotInx = 0, endInx = array.length) => {
-            if (privotInx < endInx) {//当数组为一项的时候 right可能为0
+            if (privotInx < endInx) {//当数组为一项的时候 endInx可能为0
                 var lessInx = privotInx + 1  //这是重点。小于基准值的右面。随着循环，更新这本身，记录小于基准值的最新值的索引
 
                 for (let i = privotInx + 1; i < endInx + 1; i++) {
