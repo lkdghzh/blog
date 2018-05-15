@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>递归和动态规划</title>
+</head>
+
+<body>
+    <script>
+        /*
+           f(0) = 0
+            f(1) = 1
+            f(2) = 1
+            f(n) = f(n-1) + f(n-2)
+            写个函数，求f(n)
+        */
+        /*动态规划*/
+        const sequence = (n) => {
+            let arr = Array.from({ length: n-2 }, (_, i) => i)
+            console.log(arr)
+            if (n > 0 && n <= 2) {
+                return n
+            }
+            let t
+            let first = 1
+            let second = 2
+            for (let i in arr) {
+                t = first + second
+                first = second
+                second = t
+            }
+            return t
+        }
+        console.log(sequence(5))
+    </script>
+</body>
+
+</html>
