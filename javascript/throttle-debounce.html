@@ -18,6 +18,13 @@
             color: white;
             font-size: 4em;
         }
+
+        #content1,
+        #content2 {
+            background: #444444;
+            color: white;
+            height: 50px;
+        }
     </style>
 </head>
 
@@ -25,20 +32,32 @@
     <div id="Timing1">1</div>
     <br>
     <div id="Timing2">1</div>
+    <br>
+    <input id="input1" type="text" />
+    <div id="content1"></div>
+    <br>
+    <input id="input2" type="text" />
+    <div id="content2"></div>
     <script>
+
+        /*
+            throttle 节流.(输入非常频繁执行一个函数，确保 一定时间内，只执行一次)
+            场景eg。
+            1，keydown，键盘：用户输入非常频繁的keydown（游戏，玩家开枪，会连续按很多次。。。）
+            2，mousemove 鼠标移动 如下例子。
+            3，resize window.resize窗口
+            4，scroll 滚动事件   mouseWheel滚轮
+        */
         /**
          *如果你持续触发事件，每隔一段时间，只执行一次事件
          *+new Date()==Date.now()//√
          *+new Date==Date.now()//√
          *+new Date()==+new Date==Date.now()
          */
-        var throttle = function (fn, delay, scope) {
-            scope = scope || this
-            delay = delay || 1000
-            var args = arguments
+        var throttle = function (fn, delay = 1000, scope = null) {
 
             var previous = 0
-            var delayFn = function () {
+            var delayFn = function (...args) {
                 var now = Date.now()
                 var run = now - previous > delay
                 if (run) {
@@ -60,6 +79,29 @@
         var start2 = 0
         Timing2.onmousemove = throttle(function () {
             Timing2.innerHTML = ++start2
+        })
+
+
+        /*
+           debounce 防抖.(不明确)
+           多次输入，每次输入，都要重新算时间
+           场景eg。
+           1，keyup，下拉组建，搜索
+       */
+        var debounce = (fn, delay = 1000, scope = null) => {
+            var id
+            var delayFn = function (...args) {
+                clearTimeout(id)
+                id = setTimeout(fn.bind(scope, ...args), delay)
+            }
+            return delayFn
+        }
+        input1.onkeyup = function () {
+            content1.innerHTML = input1.value
+        }
+        input2.onkeyup = debounce(function () {
+            content2.innerHTML = input2.value
+            //这里经常是ajax请求。返回值得abort().除了清除定时器，还是打断上次请求。debounce 里面多个 abort
         })
     </script>
 </body>
