@@ -6,10 +6,11 @@
     <title>Document</title>
     <!-- 李可 -->
     <style>
-        #Timing {
+        #Timing1,
+        #Timing2 {
             display: flex;
-            justify-content:center;
-            align-items:center;
+            justify-content: center;
+            align-items: center;
 
             width: 400px;
             height: 200px;
@@ -21,7 +22,9 @@
 </head>
 
 <body>
-    <div id="Timing">1</div>
+    <div id="Timing1">1</div>
+    <br>
+    <div id="Timing2">1</div>
     <script>
         /**
          *如果你持续触发事件，每隔一段时间，只执行一次事件
@@ -50,13 +53,13 @@
          * 2，对象的属性函数（引用对象其他属性）
          * 3，dom事件对象的函数引用外层的变量这里的start
          */
-        // var start = 0
-        // Timing.onmousemove = function () {
-        //     Timing.innerHTML = ++start
-        // }
-        var start = 0
-        Timing.onmousemove = throttle(function () {
-            Timing.innerHTML = ++start
+        var start1 = 0
+        Timing1.onmousemove = function () {
+            Timing1.innerHTML = ++start1
+        }
+        var start2 = 0
+        Timing2.onmousemove = throttle(function () {
+            Timing2.innerHTML = ++start2
         })
     </script>
 </body>
