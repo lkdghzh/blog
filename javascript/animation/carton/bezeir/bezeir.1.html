@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>bezeir by 李可</title>
+
+</head>
+
+<body>
+    <canvas id="canvas" width="1000" height="600"></canvas>
+    <br> 颜色：
+    <input type="text"> 点：
+    <input type="text">
+    <br>
+    <input type="button" id="btn1" value="绘制">
+    <input type="button" id="btn2" value="清空">
+    <br>
+
+    <script src="bezeir.js"></script>
+    <script>
+        var controlPoints = []//{ x: 100, y: 500 }, { x: 150, y: 400 }, { x: 600, y: 300 }, { x: 400, y: 150 }
+
+        const pen = canvas.getContext('2d')
+        function init(pen) {
+            pen.fillStyle = "#444"
+            pen.fillRect(0, 0, canvas.width, canvas.height)
+        }
+        init(pen)
+
+        canvas.onmousedown = function (e) {
+            controlPoints.push({ x: e.offsetX, y: e.offsetY })
+            var count = controlPoints.length
+            if (count === 1) {
+                pen.moveTo(controlPoints[0].x, controlPoints[0].y)
+            }
+            else if (count >= 2) {
+                pen.strokeStyle = "white"
+                pen.lineTo(controlPoints[count - 1].x, controlPoints[count - 1].y)
+                pen.stroke()
+            }
+        }
+
+        var pointCount = 100
+        btn1.onclick = function () {
+            var allBezeirPoints = nbezeirCurve(controlPoints, pointCount)
+            pen.moveTo(allBezeirPoints[0].x, allBezeirPoints[0].y)
+            for (let { x, y } of allBezeirPoints) {
+                pen.strokeStyle = "white"
+                pen.lineTo(x, y)
+            }
+            pen.stroke()
+        }
+        btn2.onclick = function () {
+            controlPoints=[]
+            canvas.width = canvas.width
+            init(pen)
+            // pen.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+    </script>
+</body>
+
+</html>
