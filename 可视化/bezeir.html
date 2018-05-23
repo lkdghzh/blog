@@ -11,10 +11,17 @@
     <canvas id="canvas" width="800" height="600"></canvas>
     <script>
         var controlPoints = [{ x: 100, y: 500 }, { x: 150, y: 400 }, { x: 600, y: 300 }, { x: 400, y: 150 }]
-        function nbezeirCurve(points) {
-            for (let point of points) {
-
+        var pointCount = 1000//一条贝塞尔曲线上有多少个点，todo，用户配置--点--暂停--嵌入动画里面
+        console.log(nbezeirCurve(controlPoints, pointCount))
+        //得到杯赛曲线的pointCount个数个点数组
+        function nbezeirCurve(controlPoints, pointCount, t = 0) {
+            var step = 1 / pointCount//t->step++[0,1]
+            var pointArr = []
+            while (t < 1) {
+                pointArr.push(getOnePointXY(controlPoints, t))
+                t += step
             }
+            return pointArr
         }
 
         //曲线上的一个点,分别求出x，和y
@@ -22,24 +29,24 @@
         //t是自变量，这里获取一个点的时候，需要t固定，画线的时候再赋值[0,1],分100份的话，每次t差距0.01，循环t
         //公式中需要组合
         function getOnePointXY(points, t) {
-            let point = {
-                x: -1,
-                y: -1
+            return {
+                x: Sigmar('x', points, t),
+                y: Sigmar('y', points, t)
             }
-            let x = Sigmar('x', points, t)
-            let y = Sigmar('y', points, t)
-            return point
         }
         //x或者y方向上的坐标，bezier曲线求和
         function Sigmar(direction, points, t) {
-            let coordinateVal
-            let n = points.length
-            for (let [i, point] of points.entries()) {
-                point.x * C(n)
+            var result = 0
+            //n+1个节点，是n次贝塞尔曲线
+            let n = points.length - 1
+            for (let [i, { x, y }] of points.entries()) {
+                var A = C(n, i)
+                var P = direction === 'x' ? x : direction === 'y' ? y : x//不传'x' 'y'默认x方向
+                var t1 = Math.pow(1 - t, n - i)
+                var t2 = Math.pow(t, i)
+                result += A * P * t1 * t2
             }
-            for (let i in points) {
-                point.x * C(n)
-            }
+            return result
         }
         //组合
         function C(n, i) {
