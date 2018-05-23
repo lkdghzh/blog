@@ -11,9 +11,23 @@
     <canvas id="canvas" width="800" height="600"></canvas>
     <script>
         var controlPoints = [{ x: 100, y: 500 }, { x: 150, y: 400 }, { x: 600, y: 300 }, { x: 400, y: 150 }]
-        var pointCount = 1000//一条贝塞尔曲线上有多少个点，todo，用户配置--点--暂停--嵌入动画里面
+
+        //一条bezier曲线上有多少个点，
+        //分100份的话，每次t差距0.01，循环。
+        //todo，用户配置--点--暂停--嵌入动画里面
+        var pointCount = 1000
+        var allBezeirPoints = nbezeirCurve(controlPoints, pointCount)
+        const pen = canvas.getContext('2d')
+        pen.moveTo(allBezeirPoints[0].x, allBezeirPoints[0].y)
+        //pen.moveTo(0, allBezeirPoints[0].y)
+        
+        for (let { x, y } of allBezeirPoints) {
+            pen.lineTo(x, y)
+        }
+        pen.stroke()
+
         console.log(nbezeirCurve(controlPoints, pointCount))
-        //得到杯赛曲线的pointCount个数个点数组
+        //得到n次bezier曲线的pointCount个数个点数组
         function nbezeirCurve(controlPoints, pointCount, t = 0) {
             var step = 1 / pointCount//t->step++[0,1]
             var pointArr = []
@@ -37,7 +51,7 @@
         //x或者y方向上的坐标，bezier曲线求和
         function Sigmar(direction, points, t) {
             var result = 0
-            //n+1个节点，是n次贝塞尔曲线
+            //n+1个节点，是n次bezier曲线
             let n = points.length - 1
             for (let [i, { x, y }] of points.entries()) {
                 var A = C(n, i)
