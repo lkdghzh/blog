@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>bezeir by 李可</title>
+
+</head>
+
+<body>
+    <canvas id="canvas" width="1000" height="600"></canvas>
+    <br> 颜色：
+    <input type="text"> 点：
+    <input type="text">
+    <br>
+    <input type="button" id="btn1" value="绘制">
+    <input type="button" id="btn2" value="清空">
+    <br>
+
+    <script src="bezeir.js"></script>
+    <script>
+        var controlPoints = []//{ x: 100, y: 500 }, { x: 150, y: 400 }, { x: 600, y: 300 }, { x: 400, y: 150 }
+
+        const pen = canvas.getContext('2d')
+        function init(pen) {
+            pen.fillStyle = "#444"
+            pen.fillRect(0, 0, canvas.width, canvas.height)
+        }
+        init(pen)
+
+        canvas.onmousedown = function (e) {
+            var point = { x: e.offsetX, y: e.offsetY }
+            drawNode(point)
+            controlPoints.push(point)
+            drawlastBrokenline(controlPoints)
+        }
+
+        function drawNode({ x, y, borderColor = '#fff' }) {
+            //画节点
+            pen.beginPath()
+            pen.strokeStyle = borderColor
+            pen.arc(x, y, 10, 0, 2 * Math.PI)
+            pen.stroke()
+        }
+        function drawlastBrokenline(points) {
+            //画最后两点连线 -折线
+            var count = points.length
+            if (count >= 2) {
+                pen.beginPath()
+                pen.strokeStyle = "white"
+                pen.moveTo(points[count - 2].x, points[count - 2].y)
+                pen.lineTo(points[count - 1].x, points[count - 1].y)
+                pen.stroke()
+            }
+        }
+
+        var pointCount = 100
+        btn1.onclick = function () {
+            var allBezeirPoints = nbezeirCurve(controlPoints, pointCount)
+            pen.moveTo(allBezeirPoints[0].x, allBezeirPoints[0].y)
+            for (let { x, y } of allBezeirPoints) {
+                pen.strokeStyle = "white"
+                pen.lineTo(x, y)
+            }
+            pen.stroke()
+        }
+        btn2.onclick = function () {
+            controlPoints = []
+            canvas.width = canvas.width
+            init(pen)
+            // pen.clearRect(0, 0, canvas.width, canvas.height)
+        }
+
+    </script>
+</body>
+
+</html>
