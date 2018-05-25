@@ -14,7 +14,7 @@
     <input type="button" id="btn2" value="清空">
     <br>
 
-    <script src="bezeir.js"></script>
+    <script src="bezier.js"></script>
     <script>
         var controlPoints = []//{ x: 100, y: 500 }, { x: 150, y: 400 }, { x: 600, y: 300 }, { x: 400, y: 150 }
 
@@ -28,19 +28,18 @@
         canvas.onmousedown = function (e) {
             var point = { x: e.offsetX, y: e.offsetY }
             controlPoints.push(point)
-
-            displayPoint(point, controlPoints.length)
+            drawText(point, controlPoints.length)
             drawNode(point)
-            drawlastBrokenline(controlPoints)
+            drawLastLine(controlPoints)
         }
         //显示点击位置
-        function displayPoint(point, inx, y = 10, font = 16) {
+        function drawText(point, inx, y = 10, font = 16) {
             pen.fillStyle = "#fff";
             pen.textAlign = 'end'
             pen.textBaseline = 'hanging'
             pen.font = `${font}px`;//times
             //const colCount = Math.ceil((inx * font + y) / canvas.height)//- 80 * (colCount-1)
-            pen.fillText(`${point.x}x${point.y}：${inx}`, 1000 - 20 , inx === 1 ? y : (inx - 1) * font + y)
+            pen.fillText(`${point.x}x${point.y}：${inx}`, 1000 - 20, inx === 1 ? y : (inx - 1) * font + y)
 
         }
         function drawNode({ x, y, borderColor = '#fff' }) {
@@ -50,7 +49,7 @@
             pen.arc(x, y, 10, 0, 2 * Math.PI)
             pen.stroke()
         }
-        function drawlastBrokenline(points) {
+        function drawLastLine(points) {
             //画最后两点连线 -折线
             var count = points.length
             if (count >= 2) {
@@ -61,16 +60,18 @@
                 pen.stroke()
             }
         }
-
-        var pointCount = 100
-        btn1.onclick = function () {
-            var allBezeirPoints = nbezeirCurve(controlPoints, pointCount)
-            pen.moveTo(allBezeirPoints[0].x, allBezeirPoints[0].y)
-            for (let { x, y } of allBezeirPoints) {
+        function drawBrokenLline(points) {
+            pen.moveTo(points[0].x, points[0].y)
+            for (let { x, y } of points) {
                 pen.strokeStyle = "white"
                 pen.lineTo(x, y)
             }
             pen.stroke()
+        }
+        var pointCount = 100
+        btn1.onclick = function () {
+            var allBezeirPoints = nbezeirCurve(controlPoints, pointCount)
+            drawBrokenLline(allBezeirPoints)
         }
         btn2.onclick = function () {
             controlPoints = []
