@@ -34,15 +34,14 @@
             drawlastBrokenline(controlPoints)
         }
         //显示点击位置
-        function displayPoint(point, inx, lineHeight = 30) {
+        function displayPoint(point, inx, y = 10, font = 16) {
             pen.fillStyle = "#fff";
             pen.textAlign = 'end'
-            //y轴最后一个点值canvas外
-            if ((inx-1) * lineHeight < canvas.height) {
-                pen.fillText(`${point.x}x${point.y}：${inx}`, 1000 - 20, lineHeight * inx)
-            } else {
-                pen.fillText(`${point.x}x${point.y}：${inx}`, 1000 - 20 - 80, lineHeight * (inx - canvas.height / lineHeight))
-            }
+            pen.textBaseline = 'hanging'
+            pen.font = `${font}px`;//times
+            //const colCount = Math.ceil((inx * font + y) / canvas.height)//- 80 * (colCount-1)
+            pen.fillText(`${point.x}x${point.y}：${inx}`, 1000 - 20 , inx === 1 ? y : (inx - 1) * font + y)
+
         }
         function drawNode({ x, y, borderColor = '#fff' }) {
             //画节点
