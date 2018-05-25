@@ -1,24 +1,54 @@
-function nbezeirCurve(controlPoints, pointCount, t = 0) {
-    var step = 1 / pointCount//t->step++[0,1]
+//绘bezier曲线
+function drawBrokenLine(pen, points) {
+    pen.moveTo(points[0].x, points[0].y)
+    for (let { x, y } of points) {
+        pen.strokeStyle = "white"
+        pen.lineTo(x, y)
+    }
+    pen.stroke()
+}
+function getBezierPoints(points, step, t = 0) {
     var pointArr = []
-    while (t < 1) {
-        pointArr.push(getOnePointXY(controlPoints, t))
+    while (t <= 1) {
+        var node = getOneBezierPoint(points, t)
+        pointArr.push(node)
         t += step
     }
     return pointArr
 }
+
+function getPercentPoints(points, t) {
+    if (points.length <= 1) {
+        return
+    }
+    const perPoints = []
+    for (let inx in points) {
+        const current = points[inx]
+        const next = points[inx + 1]
+        if (points.length >= 2) {
+            var perPoint = {
+                x: current.x + (next.x - current.x) * t,
+                y: current.y + (next.y - current.y) * t
+            }
+            perPoints.push(perPoint)
+        }
+    }
+    return perPoints
+}
+
+
 //曲线上的一个点,分别求出x，和y
 //points确定系数
 //t是自变量，这里获取一个点的时候，需要t固定，画线的时候再赋值[0,1],分100份的话，每次t差距0.01，循环t
 //公式中需要组合
-function getOnePointXY(points, t) {
+function getOneBezierPoint(points, t) {
     return {
-        x: Sigmar('x', points, t),
-        y: Sigmar('y', points, t)
+        x: sigmar('x', points, t),
+        y: sigmar('y', points, t)
     }
 }
 //x或者y方向上的坐标，bezier曲线求和
-function Sigmar(direction, points, t) {
+function sigmar(direction, points, t) {
     var result = 0
     //n+1个节点，是n次bezier曲线
     let n = points.length - 1

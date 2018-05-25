@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>bezeir by 李可</title>
+    <title>bezier by 李可</title>
 
 </head>
 
@@ -12,11 +12,9 @@
     <br>
     <input type="button" id="btn1" value="绘制">
     <input type="button" id="btn2" value="清空">
-    <br>
-
     <script src="bezier.js"></script>
     <script>
-        var controlPoints = []//{ x: 100, y: 500 }, { x: 150, y: 400 }, { x: 600, y: 300 }, { x: 400, y: 150 }
+        const controlPoints = []//{ x: 100, y: 500 }, { x: 150, y: 400 }, { x: 600, y: 300 }, { x: 400, y: 150 }
 
         const pen = canvas.getContext('2d')
         function init(pen) {
@@ -26,7 +24,7 @@
         init(pen)
 
         canvas.onmousedown = function (e) {
-            var point = { x: e.offsetX, y: e.offsetY }
+            const point = { x: e.offsetX, y: e.offsetY }
             controlPoints.push(point)
             drawText(point, controlPoints.length)
             drawNode(point)
@@ -60,21 +58,16 @@
                 pen.stroke()
             }
         }
-        function drawBrokenLline(points) {
-            pen.moveTo(points[0].x, points[0].y)
-            for (let { x, y } of points) {
-                pen.strokeStyle = "white"
-                pen.lineTo(x, y)
-            }
-            pen.stroke()
-        }
-        var pointCount = 100
+
+        const pointCount = 100
+        const step = 1 / pointCount//t->step++[0,1]
+        
         btn1.onclick = function () {
-            var allBezeirPoints = nbezeirCurve(controlPoints, pointCount)
-            drawBrokenLline(allBezeirPoints)
+            const allBezeirPoints = getBezierPoints(controlPoints, step)
+            drawBrokenLine(pen, allBezeirPoints)
         }
         btn2.onclick = function () {
-            controlPoints = []
+            controlPoints.splice(0, controlPoints.length)
             canvas.width = canvas.width
             init(pen)
             // pen.clearRect(0, 0, canvas.width, canvas.height)
