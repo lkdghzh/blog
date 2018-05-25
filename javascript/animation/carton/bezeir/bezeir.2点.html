@@ -9,9 +9,6 @@
 
 <body>
     <canvas id="canvas" width="1000" height="600"></canvas>
-    <br> 颜色：
-    <input type="text"> 点：
-    <input type="text">
     <br>
     <input type="button" id="btn1" value="绘制">
     <input type="button" id="btn2" value="清空">
@@ -40,10 +37,11 @@
         function displayPoint(point, inx, lineHeight = 30) {
             pen.fillStyle = "#fff";
             pen.textAlign = 'end'
-            if (inx * lineHeight < canvas.height) {
-                pen.fillText(`${point.x}x${point.y}`, 1000 - 50, lineHeight * inx)
+            //y轴最后一个点值canvas外
+            if ((inx-1) * lineHeight < canvas.height) {
+                pen.fillText(`${point.x}x${point.y}：${inx}`, 1000 - 20, lineHeight * inx)
             } else {
-                pen.fillText(`${point.x}x${point.y}`, 1000 - 50 - 50, lineHeight * (inx - canvas.height / lineHeight))
+                pen.fillText(`${point.x}x${point.y}：${inx}`, 1000 - 20 - 80, lineHeight * (inx - canvas.height / lineHeight))
             }
         }
         function drawNode({ x, y, borderColor = '#fff' }) {
