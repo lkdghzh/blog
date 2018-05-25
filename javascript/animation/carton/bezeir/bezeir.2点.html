@@ -30,11 +30,22 @@
 
         canvas.onmousedown = function (e) {
             var point = { x: e.offsetX, y: e.offsetY }
-            drawNode(point)
             controlPoints.push(point)
+
+            displayPoint(point, controlPoints.length)
+            drawNode(point)
             drawlastBrokenline(controlPoints)
         }
-
+        //显示点击位置
+        function displayPoint(point, inx, lineHeight = 30) {
+            pen.fillStyle = "#fff";
+            pen.textAlign = 'end'
+            if (inx * lineHeight < canvas.height) {
+                pen.fillText(`${point.x}x${point.y}`, 1000 - 50, lineHeight * inx)
+            } else {
+                pen.fillText(`${point.x}x${point.y}`, 1000 - 50 - 50, lineHeight * (inx - canvas.height / lineHeight))
+            }
+        }
         function drawNode({ x, y, borderColor = '#fff' }) {
             //画节点
             pen.beginPath()
