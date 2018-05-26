@@ -32,10 +32,10 @@
         }
         //显示点击位置
         function drawText(point, inx, y = 10, font = 16) {
-            pen.fillStyle = "#fff";
+            pen.fillStyle = "#fff"
             pen.textAlign = 'end'
             pen.textBaseline = 'hanging'
-            pen.font = `${font}px`;//times
+            pen.font = `${font}px`//times
             //const colCount = Math.ceil((inx * font + y) / canvas.height)//- 80 * (colCount-1)
             pen.fillText(`${point.x}x${point.y}：${inx}`, 1000 - 20, inx === 1 ? y : (inx - 1) * font + y)
 
@@ -61,10 +61,47 @@
 
         const pointCount = 100
         const step = 1 / pointCount//t->step++[0,1]
-        
+
+        function drawBrokenLineRecursion(points, t) {
+            var percentPoints = getPercentPoints(points, t)
+            drawBrokenLine(pen, percentPoints)
+            if (percentPoints.length > 1) {
+                drawBrokenLineRecursion(percentPoints, t)
+            }
+            const bezeirPoints = getBezierPoints(controlPoints, step, t)
+            drawBrokenLine(pen, bezeirPoints,'red')
+        }
+
+        function drawframe(points, t) {
+            canvas.width = canvas.width
+            init(pen)
+            drawBrokenLine(pen, points)
+            drawBrokenLineRecursion(points, t)
+        }
         btn1.onclick = function () {
-            const allBezeirPoints = getBezierPoints(controlPoints, step)
-            drawBrokenLine(pen, allBezeirPoints)
+            var t = 0
+            // var timer = setInterval(() => {
+            //     if (t <= 1) {
+            //         drawframe(controlPoints, t)
+            //         t += step
+            //     } else {
+            //         clearInterval(timer)
+            //         drawframe(controlPoints, 1)
+            //     }
+            // }, 16.7)
+            var timer=requestAnimationFrame(function frame(){
+                if (t <= 1) {
+                    drawframe(controlPoints, t)
+                    t += step
+                    requestAnimationFrame(frame)
+                } else {
+                    cancelAnimationFrame(timer)
+                    drawframe(controlPoints, 1)
+                }
+            })
+            // const bezeirPoints = getBezierPoints(controlPoints, step)
+            // drawBrokenLine(pen, bezeirPoints,'red')
+
         }
         btn2.onclick = function () {
             controlPoints.splice(0, controlPoints.length)

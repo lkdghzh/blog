@@ -1,41 +1,43 @@
+
+
+function getPercentPoints(points, t) {
+    if (points.length <= 1) {
+        return points
+    }
+    const perPoints = []
+    var inx = 0
+    while (inx < points.length - 1) {
+        const current = points[inx]
+        const next = points[inx + 1]
+        var perPoint = {
+            x: current.x + (next.x - current.x) * t,
+            y: current.y + (next.y - current.y) * t
+        }
+        perPoints.push(perPoint)
+        inx++
+    }
+    return perPoints
+}
+
 //绘bezier曲线
-function drawBrokenLine(pen, points) {
+function drawBrokenLine(pen, points,color='white') {
+    pen.beginPath()
     pen.moveTo(points[0].x, points[0].y)
     for (let { x, y } of points) {
-        pen.strokeStyle = "white"
+        pen.strokeStyle = color
         pen.lineTo(x, y)
     }
     pen.stroke()
 }
-function getBezierPoints(points, step, t = 0) {
+function getBezierPoints(points, step, allt = 1, t = 0) {
     var pointArr = []
-    while (t <= 1) {
+    while (t <= allt) {
         var node = getOneBezierPoint(points, t)
         pointArr.push(node)
         t += step
     }
     return pointArr
 }
-
-function getPercentPoints(points, t) {
-    if (points.length <= 1) {
-        return
-    }
-    const perPoints = []
-    for (let inx in points) {
-        const current = points[inx]
-        const next = points[inx + 1]
-        if (points.length >= 2) {
-            var perPoint = {
-                x: current.x + (next.x - current.x) * t,
-                y: current.y + (next.y - current.y) * t
-            }
-            perPoints.push(perPoint)
-        }
-    }
-    return perPoints
-}
-
 
 //曲线上的一个点,分别求出x，和y
 //points确定系数
