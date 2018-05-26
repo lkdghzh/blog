@@ -19,22 +19,13 @@ function getPercentPoints(points, t) {
     return perPoints
 }
 
-//绘bezier曲线
-function drawBrokenLine(pen, points,color='white') {
-    pen.beginPath()
-    pen.moveTo(points[0].x, points[0].y)
-    for (let { x, y } of points) {
-        pen.strokeStyle = color
-        pen.lineTo(x, y)
-    }
-    pen.stroke()
-}
-function getBezierPoints(points, step, allt = 1, t = 0) {
+
+function getBezierPoints(points, t, end = 1, start = 0) {
     var pointArr = []
-    while (t <= allt) {
-        var node = getOneBezierPoint(points, t)
+    while (start <= end) {
+        var node = getOneBezierPoint(points, start)
         pointArr.push(node)
-        t += step
+        start += t
     }
     return pointArr
 }

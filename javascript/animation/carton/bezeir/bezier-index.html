@@ -61,22 +61,27 @@
 
         const pointCount = 100
         const step = 1 / pointCount//t->step++[0,1]
-
-        function drawBrokenLineRecursion(points, t) {
-            var percentPoints = getPercentPoints(points, t)
-            drawBrokenLine(pen, percentPoints)
-            if (percentPoints.length > 1) {
-                drawBrokenLineRecursion(percentPoints, t)
+        //绘bezier曲线
+        function drawBrokenLine(points, t = 1, color = 'white') {
+            pen.beginPath()
+            pen.moveTo(points[0].x, points[0].y)
+            for (let { x, y } of points) {
+                pen.strokeStyle = color
+                pen.lineTo(x, y)
             }
-            const bezeirPoints = getBezierPoints(controlPoints, step, t)
-            drawBrokenLine(pen, bezeirPoints,'red')
+            pen.stroke()
+            return getPercentPoints(points, t)
         }
 
         function drawframe(points, t) {
             canvas.width = canvas.width
             init(pen)
-            drawBrokenLine(pen, points)
-            drawBrokenLineRecursion(points, t)
+            var percentPoints = drawBrokenLine(points, t)
+            while (percentPoints.length > 1) {
+                percentPoints = drawBrokenLine(percentPoints, t)
+            }
+            const bezeirPoints = getBezierPoints(controlPoints, step, t)
+            drawBrokenLine(bezeirPoints, t, 'red')
         }
         btn1.onclick = function () {
             var t = 0
@@ -89,7 +94,7 @@
             //         drawframe(controlPoints, 1)
             //     }
             // }, 16.7)
-            var timer=requestAnimationFrame(function frame(){
+            var timer = requestAnimationFrame(function frame() {
                 if (t <= 1) {
                     drawframe(controlPoints, t)
                     t += step
@@ -99,9 +104,8 @@
                     drawframe(controlPoints, 1)
                 }
             })
-            // const bezeirPoints = getBezierPoints(controlPoints, step)
-            // drawBrokenLine(pen, bezeirPoints,'red')
-
+            // const bezeirPoints = getBezierPoints(controlPoints, step, 0.5)
+            // drawBrokenLine(bezeirPoints, 1, 'red')
         }
         btn2.onclick = function () {
             controlPoints.splice(0, controlPoints.length)
@@ -109,7 +113,14 @@
             init(pen)
             // pen.clearRect(0, 0, canvas.width, canvas.height)
         }
-
+        function getRandomColor() {
+            var arr = Array.from('0123456789abcdef')
+            var color = "#"
+            for (let i = 0; i < 6; i++) {
+                color += arr[Math.floor(16 * Math.random())]
+            }
+            return color
+        }
     </script>
 </body>
 
