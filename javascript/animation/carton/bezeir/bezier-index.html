@@ -40,13 +40,7 @@
             pen.fillText(`${point.x}x${point.y}：${inx}`, 1000 - 20, inx === 1 ? y : (inx - 1) * font + y)
 
         }
-        function drawNode({ x, y, borderColor = '#fff' }) {
-            //画节点
-            pen.beginPath()
-            pen.strokeStyle = borderColor
-            pen.arc(x, y, 10, 0, 2 * Math.PI)
-            pen.stroke()
-        }
+
         function drawLastLine(points) {
             //画最后两点连线 -折线
             var count = points.length
@@ -58,52 +52,88 @@
                 pen.stroke()
             }
         }
+        function drawNode(point, nodeColor = 'white') {
+            //画节点
+            pen.beginPath()
+            pen.strokeStyle = nodeColor
+            pen.arc(point.x, point.y, 10, 0, 2 * Math.PI)
+            pen.stroke()
+        }
+        function drawLine(current, next, color = "white") {
+            //画最后两点连线 -折线
+            pen.beginPath()
+            pen.strokeStyle = color
+            pen.moveTo(current.x, current.y)
+            pen.lineTo(next.x, next.y)
+            pen.stroke()
+        }
 
         const pointCount = 100
         const step = 1 / pointCount//t->step++[0,1]
         //绘bezier曲线
-        function drawBrokenLine(points, t = 1, color = 'white') {
-            pen.beginPath()
-            pen.moveTo(points[0].x, points[0].y)
-            for (let { x, y } of points) {
-                pen.strokeStyle = color
-                pen.lineTo(x, y)
+        function drawBrokenLine(points, t = 1, lineColor = 'white', hasNode = true, nodeColor = 'white') {
+            if (points.length >= 2) {
+                for (var i = 0; i < points.length - 1; i++) {
+                    var current = points[i]
+                    var next = points[i + 1]
+                    drawLine(current, next, lineColor)
+                    hasNode && drawNode(current, nodeColor)
+                }
+                hasNode && drawNode(points[points.length - 1], nodeColor)
             }
-            pen.stroke()
+
             return getPercentPoints(points, t)
         }
-
+        function getRandomColor() {
+            var color = "#"
+            for (let i = 0; i < 6; i++) {
+                color += Array.from('0123456789abcdef')[Math.floor(16 * Math.random())]
+            }
+            return color
+        }
+        //n次，画n-1条折线
+        var lineColors = []
+        function getColors(points) {
+            const len = points.length
+            for (let i = 0; i < len - 1; i++) {
+                lineColors.push(getRandomColor())
+            }
+            return lineColors
+        }
         function drawframe(points, t) {
+            var lineColors = getColors(points)
             canvas.width = canvas.width
             init(pen)
-            var percentPoints = drawBrokenLine(points, t)
+            var percentPoints = drawBrokenLine(points, t, lineColors[0], true, lineColors[0])
+            var i = 0
             while (percentPoints.length > 1) {
-                percentPoints = drawBrokenLine(percentPoints, t)
+                const currentColor=lineColors[++i]
+                percentPoints = drawBrokenLine(percentPoints, t,currentColor, true, currentColor)
             }
             const bezeirPoints = getBezierPoints(controlPoints, step, t)
-            drawBrokenLine(bezeirPoints, t, 'red')
+            drawBrokenLine(bezeirPoints, t, 'red', false)
         }
         btn1.onclick = function () {
             var t = 0
-            // var timer = setInterval(() => {
-            //     if (t <= 1) {
-            //         drawframe(controlPoints, t)
-            //         t += step
-            //     } else {
-            //         clearInterval(timer)
-            //         drawframe(controlPoints, 1)
-            //     }
-            // }, 16.7)
-            var timer = requestAnimationFrame(function frame() {
+            var timer = setInterval(() => {
                 if (t <= 1) {
                     drawframe(controlPoints, t)
                     t += step
-                    requestAnimationFrame(frame)
                 } else {
-                    cancelAnimationFrame(timer)
+                    clearInterval(timer)
                     drawframe(controlPoints, 1)
                 }
-            })
+            }, 200)
+            // var timer = requestAnimationFrame(function frame() {
+            //     if (t <= 1) {
+            //         drawframe(controlPoints, t)
+            //         t += step
+            //         requestAnimationFrame(frame)
+            //     } else {
+            //         cancelAnimationFrame(timer)
+            //         drawframe(controlPoints, 1)
+            //     }
+            // })
             // const bezeirPoints = getBezierPoints(controlPoints, step, 0.5)
             // drawBrokenLine(bezeirPoints, 1, 'red')
         }
@@ -113,14 +143,7 @@
             init(pen)
             // pen.clearRect(0, 0, canvas.width, canvas.height)
         }
-        function getRandomColor() {
-            var arr = Array.from('0123456789abcdef')
-            var color = "#"
-            for (let i = 0; i < 6; i++) {
-                color += arr[Math.floor(16 * Math.random())]
-            }
-            return color
-        }
+
     </script>
 </body>
 
