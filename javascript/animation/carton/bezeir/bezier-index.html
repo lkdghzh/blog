@@ -12,6 +12,7 @@
     <br>
     <input type="button" id="btn1" value="绘制">
     <input type="button" id="btn2" value="清空">
+    <input type="button" id="btn3" value="暂停">
     <script src="bezier.js"></script>
     <script>
         const controlPoints = []//{ x: 100, y: 500 }, { x: 150, y: 400 }, { x: 600, y: 300 }, { x: 400, y: 150 }
@@ -36,7 +37,6 @@
             pen.textAlign = 'end'
             pen.textBaseline = 'hanging'
             pen.font = `${font}px`//times
-            //const colCount = Math.ceil((inx * font + y) / canvas.height)//- 80 * (colCount-1)
             pen.fillText(`${point.x}x${point.y}：${inx}`, 1000 - 20, inx === 1 ? y : (inx - 1) * font + y)
 
         }
@@ -44,12 +44,10 @@
         function drawLastLine(points) {
             //画最后两点连线 -折线
             var count = points.length
+            var current = points[count - 2]
+            var next = points[count - 1]
             if (count >= 2) {
-                pen.beginPath()
-                pen.strokeStyle = "white"
-                pen.moveTo(points[count - 2].x, points[count - 2].y)
-                pen.lineTo(points[count - 1].x, points[count - 1].y)
-                pen.stroke()
+                drawLine(current, next)
             }
         }
         function drawNode(point, nodeColor = 'white') {
@@ -107,21 +105,24 @@
             var percentPoints = drawBrokenLine(points, t, lineColors[0], true, lineColors[0])
             var i = 0
             while (percentPoints.length > 1) {
-                const currentColor=lineColors[++i]
-                percentPoints = drawBrokenLine(percentPoints, t,currentColor, true, currentColor)
+                const currentColor = lineColors[++i]
+                percentPoints = drawBrokenLine(percentPoints, t, currentColor, true, currentColor)
             }
             const bezeirPoints = getBezierPoints(controlPoints, step, t)
             drawBrokenLine(bezeirPoints, t, 'red', false)
         }
-        btn1.onclick = function () {
-            var t = 0
-            var timer = setInterval(() => {
+        var timer
+        var state
+        function startBezier(t, recursive = false) {//iteration
+            timer = setInterval(() => {
                 if (t <= 1) {
                     drawframe(controlPoints, t)
                     t += step
+                    state = t
                 } else {
                     clearInterval(timer)
                     drawframe(controlPoints, 1)
+                    recursive && startBezier(0)
                 }
             }, 200)
             // var timer = requestAnimationFrame(function frame() {
@@ -137,11 +138,27 @@
             // const bezeirPoints = getBezierPoints(controlPoints, step, 0.5)
             // drawBrokenLine(bezeirPoints, 1, 'red')
         }
+        btn1.onclick = function () {
+            startBezier(0)
+        }
         btn2.onclick = function () {
             controlPoints.splice(0, controlPoints.length)
             canvas.width = canvas.width
+            clearInterval(timer)
             init(pen)
-            // pen.clearRect(0, 0, canvas.width, canvas.height)
+        }
+        var count = 0
+        btn3.onclick = function () {
+            if (++count % 2 === 1) {
+                btn3.value = '继续'
+                if (timer) {
+                    clearInterval(timer)
+                }
+            } else {
+                btn3.value = '暂停'
+                console.log(state)
+                startBezier(state)
+            }
         }
 
     </script>
