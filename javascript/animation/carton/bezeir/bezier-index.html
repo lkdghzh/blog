@@ -55,14 +55,14 @@
             pen.beginPath()
             pen.strokeStyle = nodeColor
             pen.lineWidth = 2
-            pen.arc(point.x, point.y, 10, 0, 2 * Math.PI)
+            pen.arc(point.x, point.y, 8, 0, 2 * Math.PI)
             pen.stroke()
         }
         function drawLine(current, next, color = "white") {
             //画最后两点连线 -折线
             pen.beginPath()
             pen.strokeStyle = color
-            pen.lineWidth = 3
+            pen.lineWidth = 2
             pen.moveTo(current.x, current.y)
             pen.lineTo(next.x, next.y)
             pen.stroke()
