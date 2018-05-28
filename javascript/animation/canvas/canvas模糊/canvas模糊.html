@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<!-- http://www.dengzhr.com/frontend/html/1050 -->
+    <canvas id="myCanvas1" width="400" height="300" style="border:1px solid #d3d3d3;">
+        Your browser does not support the HTML5 canvas tag.
+    </canvas>
+    <div class="container" style="zoom:0.5">
+        <canvas id="myCanvas2" width="800" height="600" style="border:1px solid #d3d3d3;">
+            Your browser does not support the HTML5 canvas tag.
+        </canvas>
+    </div>
+    <script>
+
+        var c = document.getElementById("myCanvas1");
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.fillStyle = "yellow";
+        ctx.arc(200, 150, 100, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fill();
+
+        var c = document.getElementById("myCanvas2");
+        var ctx = c.getContext("2d");
+        ctx.scale(2, 2);
+        ctx.beginPath();
+        ctx.fillStyle = "yellow";
+        ctx.arc(200, 150, 100, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fill();
+    </script>
+
+</body>
+
+</html>
