@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
-
+"""
 # mongo 请看mongo文件夹
 # pip install mongoengine
 # 设置配置文件->解析器路径（例mongoengine下载安装读位置）
+"""
 
 from mongoengine import connect, Document, StringField, IntField
 
-connect('db_like','demo', host='127.0.0.1', port=27017)
+connect('db_like', 'demo', host='127.0.0.1', port=27017)
 
 
 class User(Document):
     name = StringField(required=True)
     age = IntField()
     meta = {
-       'collection': 'collection_user',
-       'db_alias': 'demo',
-       'strict': False
+        'collection': 'collection_user',
+        'db_alias': 'demo',
+        'strict': False
     }
+
 
 # 写
 user = User()
