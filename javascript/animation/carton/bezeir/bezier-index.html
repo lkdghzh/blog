@@ -116,27 +116,29 @@
         var timer
         var state
         function startBezier(t, recursive = false) {//iteration
-            timer = setInterval(() => {
+            // timer = setInterval(() => {
+            //     if (t <= 1) {
+            //         drawframe(controlPoints, t)
+            //         t += step
+            //         state = t
+            //     } else {
+            //         clearInterval(timer)
+            //         drawframe(controlPoints, 1)
+            //         recursive && startBezier(0)
+            //     }
+            // }, 200)
+            timer = requestAnimationFrame(function frame() {
                 if (t <= 1) {
                     drawframe(controlPoints, t)
                     t += step
                     state = t
+                    requestAnimationFrame(frame)
                 } else {
-                    clearInterval(timer)
+                    cancelAnimationFrame(timer)
                     drawframe(controlPoints, 1)
                     recursive && startBezier(0)
                 }
-            }, 200)
-            // var timer = requestAnimationFrame(function frame() {
-            //     if (t <= 1) {
-            //         drawframe(controlPoints, t)
-            //         t += step
-            //         requestAnimationFrame(frame)
-            //     } else {
-            //         cancelAnimationFrame(timer)
-            //         drawframe(controlPoints, 1)
-            //     }
-            // })
+            })
             // const bezeirPoints = getBezierPoints(controlPoints, step, 0.5)
             // drawBrokenLine(bezeirPoints, 1, 'red')
         }
