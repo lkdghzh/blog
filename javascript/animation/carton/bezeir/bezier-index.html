@@ -113,8 +113,10 @@
             const bezeirPoints = getBezierPoints(controlPoints, step, t)
             drawBrokenLine(bezeirPoints, t, 'red', false)
         }
+
         var timer
         var state
+        var runFlag = true
         function startBezier(t, recursive = false) {//iteration
             // timer = setInterval(() => {
             //     if (t <= 1) {
@@ -128,15 +130,19 @@
             //     }
             // }, 200)
             timer = requestAnimationFrame(function frame() {
-                if (t <= 1) {
-                    drawframe(controlPoints, t)
-                    t += step
-                    state = t
-                    requestAnimationFrame(frame)
+                if (runFlag) {
+                    if (t <= 1) {
+                        drawframe(controlPoints, t)
+                        t += step
+                        state = t
+                        requestAnimationFrame(frame)
+                    } else {
+                        cancelAnimationFrame(timer)
+                        drawframe(controlPoints, 1)
+                        recursive && startBezier(0)
+                    }
                 } else {
                     cancelAnimationFrame(timer)
-                    drawframe(controlPoints, 1)
-                    recursive && startBezier(0)
                 }
             })
             // const bezeirPoints = getBezierPoints(controlPoints, step, 0.5)
@@ -148,7 +154,8 @@
         btn2.onclick = function () {
             controlPoints.splice(0, controlPoints.length)
             canvas.width = canvas.width
-            clearInterval(timer)
+            // clearInterval(timer)
+            runFlag = true
             init(pen)
         }
         var count = 0
@@ -156,11 +163,13 @@
             if (++count % 2 === 1) {
                 btn3.value = '继续'
                 if (timer) {
-                    clearInterval(timer)
+                    //clearInterval(timer)
+                    runFlag = false
                 }
             } else {
                 btn3.value = '暂停'
                 console.log(state)
+                runFlag = true
                 startBezier(state)
             }
         }
