@@ -17,3 +17,6 @@
     假如：描了100个点，就是把范围1分成100份 ，每份0.01
     假如：描了1000个点，就是把范围1分成100份 ，每份0.001
 </pre>
+
+<div align=center><img width="500" src="https://github.com/lkdghzh/blog/blob/master/blog-assets/bezier-simple.gif"/></div>
+<div align=center><img width="500" src="https://github.com/lkdghzh/blog/blob/master/blog-assets/besier-multi.gif"/></div>
