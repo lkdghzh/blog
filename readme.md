@@ -5,7 +5,7 @@
 1. [canvas：贝塞尔曲线及动画演示](https://github.com/lkdghzh/blog/tree/master/javascript/animation/carton/bezeir)
 2. [svg：演示viewport,viewBox,preserveAspectRatio](https://github.com/lkdghzh/blog/blob/master/javascript/animation/svg/preservrAspectRadioProgress.html)
 
-## [Vue](https://github.com/lkdghzh/unar.js)
+## [Unar Vue](https://github.com/lkdghzh/unar.js)
 > Unar是一个模仿vue重写的mvvm框架（已经完成核心），欢迎star:bowtie:
 1. vue源码解析：[劫持、代理](https://github.com/lkdghzh/unar.js/blob/master/packages/instance/config.js#L11)
 1. vue源码解析：[数据属性->存取器属性->收集依赖->实现mvvm双向绑定](https://github.com/lkdghzh/unar.js/blob/master/packages/instance/config.js#L59)
@@ -15,8 +15,8 @@
 
 
 ## 前端性能
-> 我平常用到的性能优化策略
-1. 防抖节流
+> 列举我平常用到的性能优化策略
+1. [防抖节流](https://github.com/lkdghzh/blog/blob/master/javascript/browser-optimistic/throttle-debounce.html)
 1. 浏览器渲染引擎优化
     + 重排=回流 render tree中layout、reflow
     + 重绘 render layer中repaint
