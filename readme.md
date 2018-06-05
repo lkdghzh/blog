@@ -10,8 +10,8 @@
 1. vue源码解析：[劫持、代理](https://github.com/lkdghzh/unar.js/blob/master/packages/instance/config.js#L11)
 1. vue源码解析：[数据属性->存取器属性->收集依赖->实现mvvm双向绑定](https://github.com/lkdghzh/unar.js/blob/master/packages/instance/config.js#L59)
 1. vue源码解析：[fragment编译模板](https://github.com/lkdghzh/unar.js/blob/master/packages/view/compile.js#L4)
-1. vue源码解析：[指令继承（oop思想）](https://github.com/lkdghzh/unar.js/blob/master/packages/view/compile.js#L25)
-1. vue源码解析：[逻辑指令（if for）,操作指令（html value text）,属性指令（：class ：self）](https://github.com/lkdghzh/unar.js/tree/master/packages/view/directives)
+1. vue源码解析：[指令工厂创建指令实例](https://github.com/lkdghzh/unar.js/blob/master/packages/view/compile.js#L25)
+1. vue源码解析：[指令继承（oop思想）逻辑指令（if for）,操作指令（html value text）,属性指令（：class ：self）](https://github.com/lkdghzh/unar.js/tree/master/packages/view/directives)
 
 
 ## 前端性能
