@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>amd与cmd区别 by李可</title>
+</head>
+
+<body>
+    <script data-main="js/entry" src="require.js"></script>
+    <pre>
+    在network查看加载js时机
+    //deps没有加载顺序
+    //mo1
+    define([], function () {
+        console.log('mo1')
+        return {
+            name: 'mo1'
+        }
+    });
+    //mo2
+    define([], function () {
+        console.log('mo2')
+        return {
+            name: 'mo2'
+        }
+    });
+    //entry
+    require(["./mo1", "./mo2"], function (m1, m2) {
+        console.log('entry')
+    })
+    //加载与运行顺序
+    entry在前
+    mo1和mo2不能没有依赖关系，并不能确保mo1和mo2的加载与运行先后
+    可能entry--mo1--mo2
+    可能entry--mo2--mo1
+</pre>
+
+</body>
+
+</html>
