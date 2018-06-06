@@ -1837,6 +1837,8 @@ var requirejs, require, define;//只是向外暴露了这三个变量
     };
 
     //Create default context.
+    debugger
+    //  第一步
     req({});
 
     //Exports some context-sensitive methods on global require.
@@ -2076,7 +2078,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
             callback = deps;
             deps = null;
         }
-
+        debugger
         //If no name, and callback is a function, then figure out if it a
         //CommonJS thing with dependencies.
         if (!deps && isFunction(callback)) {
@@ -2084,6 +2086,12 @@ var requirejs, require, define;//只是向外暴露了这三个变量
             //Remove comments from the callback string,
             //look for require calls, and pull them into the dependencies,
             //but only if there are function args.
+
+            //.toString()
+            //第一个正则是用来支掉callback中的注释的，
+            //而第二个正则是用来匹配callback.toString()文本中的require(.....)，并将.....这个字段push到queue中，
+            //这个方法是不是很变态？
+            //现在让我们来接着回到require的completeLoad函数
             if (callback.length) {
                 callback
                     .toString()
@@ -2091,7 +2099,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
                     .replace(cjsRequireRegExp, function (match, dep) {
                         deps.push(dep);
                     });
-
+                debugger
                 //May be a CommonJS thing even without require calls, but still
                 //could use exports, and module. Avoid doing exports and module
                 //work though if it just needs require.
