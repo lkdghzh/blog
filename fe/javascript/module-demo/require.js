@@ -106,6 +106,16 @@ var requirejs, require, define;//只是向外暴露了这三个变量
      * Simple function to mix in properties from source into target,
      * but only if target does not already have a property of the same name.
      */
+
+    /**
+     * require调用这个函数的时候，传入target===makeRequire是一个函数
+     * 函数也是一个对象，往这个函数对象上，增加（混合上）source源对象的属性
+     * 
+     *     defined:ƒ (id)
+           isBrowser:true
+           specified:ƒ (id)
+           toUrl:ƒ (moduleNamePlusExt)
+     */
     function mixin(target, source, force, deepStringMixin) {
         if (source) {
             eachProp(source, function (value, prop) {
@@ -196,6 +206,13 @@ var requirejs, require, define;//只是向外暴露了这三个变量
         require = undefined;
     }
 
+
+    /**
+     * 得到一个context
+     * 包含多个针对上下文的特征、方法（makeRequire...nextTick defQueue..）和一个module对象
+     *                                               -这个module，包含模块的shim.map等很多属性，和针对模块的很多方法
+     * @param {*} contextName 
+     */
     function newContext(contextName) {
         var inCheckLoaded, Module, context, handlers,
             checkLoadedTimeoutId,
@@ -1409,6 +1426,9 @@ var requirejs, require, define;//只是向外暴露了这三个变量
                         callback.__requireJsBuild = true;
                     }
 
+                    //var util = require('./path/to/util'); 这种没有回调的require的时候，
+                    //会直接返回值
+                   // require(['jquery', 'backbone'], function($, Backbone){});这种有回调函数的require的时候，会执行intake
                     if (typeof deps === 'string') {
                         if (isFunction(callback)) {
                             //Invalid call
@@ -1443,8 +1463,10 @@ var requirejs, require, define;//只是向外暴露了这三个变量
                     }
 
                     //Grab defines waiting in the global queue.
+                    //往全局队列推送定义的模块（defines）
                     intakeDefines();
 
+                    //此方法会在整个进程的最后执行。nextTick本质调用的定时器，4毫秒
                     //Mark all the dependencies as needing to be loaded.
                     context.nextTick(function () {
                         //Some defines could have been added since the
@@ -1466,7 +1488,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
 
                     return localRequire;
                 }
-
+                
                 mixin(localRequire, {
                     isBrowser: isBrowser,
 
@@ -1761,12 +1783,15 @@ var requirejs, require, define;//只是向外暴露了这三个变量
      * on a require that are not standardized), and to give a short
      * name for minification/local scope use.
      */
+
+     //多个require模块,就走几次||1次 req({})创建上下文 +||设置配置信息 req(cfg)
+     //每个require模块，有多个依赖
     req = requirejs = function (deps, callback, errback, optional) {
 
         //Find the right context, use default
         var context, config,
             contextName = defContextName;
-       
+
         //传入用户的require.config的参数对象{baseUrl：‘’，paths：{a：‘’，b：‘’}，shim:{}}
         if (!isArray(deps) && typeof deps !== 'string') {
             // deps =参数对象
@@ -1793,7 +1818,8 @@ var requirejs, require, define;//只是向外暴露了这三个变量
         if (config) {
             context.configure(config);
         }
-
+        
+       
         return context.require(deps, callback, errback);
     };
 
@@ -1802,9 +1828,9 @@ var requirejs, require, define;//只是向外暴露了这三个变量
      * AMD loaders on globally agreed names.
      */
 
-    //二  我们一般先进行配置。baseUrl path shim 等...
+    //四  第四步。我们一般先进行配置。baseUrl path shim 等...
     req.config = function (config) {
-        debugger
+        
         //走requirejs（）
         return req(config);
     };
@@ -1837,10 +1863,10 @@ var requirejs, require, define;//只是向外暴露了这三个变量
     };
 
     //Create default context.
-    debugger
-    //  第一步
+    
+    //  第一步 创建上下文
     req({});
-
+    debugger
     //Exports some context-sensitive methods on global require.
     each([
         'toUrl',
@@ -2008,8 +2034,9 @@ var requirejs, require, define;//只是向外暴露了这三个变量
         });
         return interactiveScript;
     }
-    //一  入口
-    //寻找一个data-main脚本属性，data-main它也可以调整baseUrl。
+    
+    //二 第二步 入口
+    //寻找data-main脚本属性，data-main它也可以调整baseUrl。
     if (isBrowser && !cfg.skipDataMain) {
         //找出baseUrl。从其中包含require.js的脚本标记中获取它。
         eachReverse(scripts(), function (script) {
@@ -2023,7 +2050,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
             if (dataMain) {
                 //Preserve dataMain in case it is a path (i.e. contains '?')
                 mainScript = dataMain;
-                debugger
+                
                 //Set final baseUrl if there is not already an explicit one,
                 //but only do so if the data-main value is not a loader plugin
                 //module ID.
@@ -2038,7 +2065,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
 
 
                 }
-                //'entry.js'---'entry',自从现在使用mainScript以后,去除后缀.js,使他像一个模块
+                //'entry.js'---'entry',自从现在使用mainScript以后,去除后缀.js,使他像个模块
                 mainScript = mainScript.replace(jsSuffixRegExp, '');
 
                 //如果mainScript仍然是路径，请回退到dataMain
@@ -2046,7 +2073,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
                     mainScript = dataMain;
                 }
 
-                
+
                 //将数据主脚本放入要加载的列表变量里 cfg.deps=['entry']
                 cfg.deps = cfg.deps ? cfg.deps.concat(mainScript) : [mainScript];
 
@@ -2078,7 +2105,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
             callback = deps;
             deps = null;
         }
-        debugger
+        
         //If no name, and callback is a function, then figure out if it a
         //CommonJS thing with dependencies.
         if (!deps && isFunction(callback)) {
@@ -2099,7 +2126,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
                     .replace(cjsRequireRegExp, function (match, dep) {
                         deps.push(dep);
                     });
-                debugger
+                
                 //May be a CommonJS thing even without require calls, but still
                 //could use exports, and module. Avoid doing exports and module
                 //work though if it just needs require.
@@ -2149,7 +2176,8 @@ var requirejs, require, define;//只是向外暴露了这三个变量
         /*jslint evil: true */
         return eval(text);
     };
-
+    
+    //三 第三步 
     //Set up with config info.
     req(cfg);
 }(this, (typeof setTimeout === 'undefined' ? undefined : setTimeout)));
