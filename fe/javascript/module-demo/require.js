@@ -1426,9 +1426,9 @@ var requirejs, require, define;//只是向外暴露了这三个变量
                         callback.__requireJsBuild = true;
                     }
 
-                    //var util = require('./path/to/util'); 这种没有回调的require的时候，
+                    //deps === 'string'---》这种情况。var util = require('./path/to/util'); 这种没有回调的require的时候，
                     //会直接返回值
-                   // require(['jquery', 'backbone'], function($, Backbone){});这种有回调函数的require的时候，会执行intake
+                    // nextTick--这种情况： require(['jquery', 'backbone'], function($, Backbone){});这种有回调函数的require的时候，会执行intake
                     if (typeof deps === 'string') {
                         if (isFunction(callback)) {
                             //Invalid call
@@ -1488,7 +1488,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
 
                     return localRequire;
                 }
-                
+
                 mixin(localRequire, {
                     isBrowser: isBrowser,
 
@@ -1783,18 +1783,23 @@ var requirejs, require, define;//只是向外暴露了这三个变量
      * on a require that are not standardized), and to give a short
      * name for minification/local scope use.
      */
-
-     //多个require模块,就走几次||1次 req({})创建上下文 +||设置配置信息 req(cfg)
-     //每个require模块，有多个依赖
+    //1，req({})创建上下文第一次调用（context确定）
+    //2，设置配置信息 req(cfg)（）（不会创建新的上下文，context已经确定）
+    //3，多个require模块,就走几次||1次 ，每个require模块，有多个依赖（不会创建新的上下文，context已经确定）
+    //一般第五步（不会创建新的上下文，context已经确定）
     req = requirejs = function (deps, callback, errback, optional) {
 
         //Find the right context, use default
         var context, config,
             contextName = defContextName;
 
-        //传入用户的require.config的参数对象{baseUrl：‘’，paths：{a：‘’，b：‘’}，shim:{}}
+
         if (!isArray(deps) && typeof deps !== 'string') {
-            // deps =参数对象
+            //参数是对象的时候，只有req({})第一次和req(cfg)最后第二次走这
+
+            //传入用户的require.config的参数对象{baseUrl：‘’，paths：{a：‘’，b：‘’}，shim:{}}
+            //deps =参数对象
+            //这里做下参数的兼容（方法的重载，做优化）
             config = deps;
             if (isArray(callback)) {
                 // Adjust args if there are dependencies
@@ -1810,16 +1815,34 @@ var requirejs, require, define;//只是向外暴露了这三个变量
             contextName = config.context;
         }
 
+
+
         context = getOwn(contexts, contextName);
+        /**
+         * 第一次req({})  ----->   
+         *  config:{}  contextName:"_" context：false
+         * 第二次req(cfg)  -----> 
+         *  config:{baseUrl: "js/", deps: Array(1)}
+            context:{config: {…}, contextName: "_", registry: {…}, defined: {…}, urlFetched: {…}, …}
+            contextName:"_"
+            deps:[]
+            第三次？？
+         */
+        //这里很重要！！，只是在初始化req({})的时候执行一次！！，以后的require时候都不再执行
         if (!context) {
             context = contexts[contextName] = req.s.newContext(contextName);
         }
-
+        debugger
+        /**
+         * 这里第一 运行
+         * 第二  运行
+         * 
+         */
         if (config) {
             context.configure(config);
         }
-        
-       
+
+
         return context.require(deps, callback, errback);
     };
 
@@ -1830,7 +1853,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
 
     //四  第四步。我们一般先进行配置。baseUrl path shim 等...
     req.config = function (config) {
-        
+
         //走requirejs（）
         return req(config);
     };
@@ -1863,7 +1886,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
     };
 
     //Create default context.
-    
+
     //  第一步 创建上下文
     req({});
     debugger
@@ -2034,7 +2057,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
         });
         return interactiveScript;
     }
-    
+
     //二 第二步 入口
     //寻找data-main脚本属性，data-main它也可以调整baseUrl。
     if (isBrowser && !cfg.skipDataMain) {
@@ -2050,7 +2073,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
             if (dataMain) {
                 //Preserve dataMain in case it is a path (i.e. contains '?')
                 mainScript = dataMain;
-                
+
                 //Set final baseUrl if there is not already an explicit one,
                 //but only do so if the data-main value is not a loader plugin
                 //module ID.
@@ -2105,7 +2128,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
             callback = deps;
             deps = null;
         }
-        
+
         //If no name, and callback is a function, then figure out if it a
         //CommonJS thing with dependencies.
         if (!deps && isFunction(callback)) {
@@ -2126,7 +2149,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
                     .replace(cjsRequireRegExp, function (match, dep) {
                         deps.push(dep);
                     });
-                
+
                 //May be a CommonJS thing even without require calls, but still
                 //could use exports, and module. Avoid doing exports and module
                 //work though if it just needs require.
@@ -2176,7 +2199,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
         /*jslint evil: true */
         return eval(text);
     };
-    
+
     //三 第三步 
     //Set up with config info.
     req(cfg);
