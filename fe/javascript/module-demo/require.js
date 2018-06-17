@@ -513,6 +513,8 @@ var requirejs, require, define;//只是向外暴露了这三个变量
             };
         }
 
+        //根据依赖deps中，从全局变量registry中，获取模块的名字。
+        //没有就根据dep依赖，创建一个模块，并放到registry内
         function getModule(depMap) {
             var id = depMap.id,
                 mod = getOwn(registry, id);
@@ -1791,7 +1793,7 @@ var requirejs, require, define;//只是向外暴露了这三个变量
 
         //Find the right context, use default
         var context, config,
-            contextName = defContextName;
+            contextName = defContextName;//"_"
 
 
         if (!isArray(deps) && typeof deps !== 'string') {
