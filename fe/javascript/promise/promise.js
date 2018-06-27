@@ -5,11 +5,18 @@ let path = require('path');
  */
 class P {
     /**
-     * 
+     * promise：
+     * 1：保持状态
+     * 2：存多个回调函数
+     * promise.then(fn1,fn2)会被调用多次，使用resovle，reject标记为成功、失败
+     * 将多次的成功fn1函数、失败fn2函数，使用数组存一下
      * @param {*} fn  //一个函数（异步、同步）
      */
     constructor(fn) {
         this.__state = 'pending'
+
+        this.__onResolveFns=[]
+        this.__onRejectFns=[]
 
         //fn的函数参数
         //操作成功，调用resolve并传入value
