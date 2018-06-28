@@ -1,6 +1,70 @@
 # blog
 李可的个人博客
-
+```
+├─be
+│  ├─c#
+│  ├─java
+│  ├─mongo
+│  │  └─基础学习
+│  └─python
+│      ├─blog
+│      │  ├─controllers
+│      │  ├─models
+│      │  ├─test
+│      │  └─utils
+│      └─mongoengine
+└─fe
+    ├─blog-assets
+    │  └─module
+    ├─css
+    ├─javascript
+    │  ├─algorithm
+    │  │  ├─dynamic
+    │  │  ├─queue
+    │  │  ├─quick-sort
+    │  │  └─shuffle
+    │  ├─animation
+    │  │  ├─canvas
+    │  │  │  └─canvas模糊
+    │  │  ├─carton
+    │  │  │  └─bezeir
+    │  │  └─svg
+    │  ├─browser-optimistic
+    │  ├─framework
+    │  │  ├─angular
+    │  │  ├─knockout
+    │  │  └─requirejsProject
+    │  │      └─js
+    │  │          ├─app
+    │  │          ├─index
+    │  │          └─lib
+    │  ├─mobile-external
+    │  │  ├─上传裁切
+    │  │  ├─多手指的封装
+    │  │  └─常见问题汇总
+    │  │      ├─img
+    │  │      └─js
+    │  ├─module-demo
+    │  │  └─js
+    │  ├─other
+    │  ├─parttern
+    │  │  └─pub-sub
+    │  ├─promise
+    │  ├─unar
+    │  │  ├─dom
+    │  │  ├─examples
+    │  │  └─knowledge
+    │  │      ├─audio
+    │  │      ├─fragment
+    │  │      ├─js
+    │  │      ├─react-virtual-dom
+    │  │      ├─unar-virtual-dom
+    │  │      └─virtual-dom
+    │  └─xmind
+    └─ts
+        ├─src
+        └─typings
+```
 ## 动画
 1. [canvas：贝塞尔曲线及动画演示](https://github.com/lkdghzh/blog/tree/master/fe/javascript/animation/carton/bezeir)
 2. [svg：演示viewport,viewBox,preserveAspectRatio](https://github.com/lkdghzh/blog/blob/master/fe/javascript/animation/svg/preservrAspectRadioProgress.html)
