@@ -3,11 +3,11 @@
  */
 class Promise {
     /**
-     * promise
-     * @param {*} fn  //一个函数（异步、同步）
+     * then里面是micro的job ，这里使用setTimeout 0s 模拟
+     * @param {*} excutor  //这里就是同步代码excutor一个函数（异步、同步）
      */
-    constructor(fn) {
-        if (typeof fn !== 'function') {
+    constructor(excutor) {
+        if (typeof excutor !== 'function') {
             throw new TypeError("Promise Constructor's argument is not a function")
         }
         //1：保持状态
@@ -37,12 +37,14 @@ class Promise {
         //2：执行传入函数，
         //执行的时候，可能会出错,把错误也用reject返回出去
         try {
-            fn(resolve, reject)
+            //这里就是同步代码excutor
+            excutor(resolve, reject)
         } catch (e) {
             reject(e)
         }
 
     }
+    //这里的then 属于micro job，现在可以使用setTimeout模拟
     then(onFulfilled, onRejected) {
         var fn = undefined
         if (this.status === 'resolved') {
