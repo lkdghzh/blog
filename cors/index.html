@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>请求</title>
+</head>
+
+<body>
+    <fieldset>
+        <legend>开启项目</legend>
+    <pre>
+      cd cors
+      nodemon server1.js
+      nodemon server2.js
+    </pre>
+  </fieldset>
+  <fieldset>
+    <legend>cors</legend>
+    <pre>
+        打开localhost:3000 或者 127.0.0.1:3000，0.0.0.1:3000
+        1,简单请求
+        2,复杂请求 2次，预检测options请求
+        3,getResponseHeader  Access-Control-Expose-Headers
+      </pre>
+    <button id='corsError'>cors-error</button>
+    <button id='corsGet'>corsGet</button>
+    <button id='corsPut'>corsPut</button>
+    <button id='getResponseHeader'>corsPubAccess-Control-Expose-Headers</button>
+  </fieldset>
+  <fieldset>
+    <legend>cors cookie的设定和发送查看</legend>
+    <pre>
+      打开127.0.0.1:3000
+      1，setcookie，transcookie的时候，也需要allow-origin 前端和后端的credential
+      2，跨域设置cookie，上传cookie，设定和发送查看
+      3，Provisional headers are shown  解决方案： firefox， chrome:chrome://net-internals/#events 现在下载客户端分析
+    </pre>
+    <button id='setCookie'>corsSetCookie</button>
+    <button id='transfCookie'>corsTransformCookie</button>
+
+  </fieldset>
+  <fieldset>
+    <legend>cors cookie深入理解</legend>
+    <pre>
+        第一步，在host文件添加
+        127.0.0.1 a.com
+        127.0.0.1 b.com
+        127.0.0.1 b1.b.com
+        127.0.0.1 c.com
+
+        第二步，打开http://a.com:3000（a代表a网站，b代表b网站，c代表c网站）
+        1，server不指定domain  a请求b  设置，默认为b的cookie
+        2，server指定domain
+          2.1  a请求b，设置b的cookie
+          2.2  a请求b1.b,设置b1.b的cookie
+          2.2  a请求b1.b,设置b的cookie
+          2.1  a请求b,设置c的cookie
+      </pre>
+    <button id='absetnodomain'>a->b-setnodomain</button>
+    <button id='absetb'>a->b-setb</button>
+    <button id='ab1bsetb1b'>a-b1bsetb1b</button>
+    <button id='ab1bsetb'>a-b1bsetb</button>
+    <button id='absetc'>a->b-setc<span style="color:red;">x<span></button>
+  </fieldset>
+  <fieldset>
+    <legend>jsonp</legend>
+    <pre>
+        打开localhost:3000 或者 127.0.0.1:3000，0.0.0.1:3000
+        1，jsonp的原理
+        2，jsonp方法promise封装
+      </pre>
+    <button id='jsonpBtn1'>jsonp1</button>
+    <button id='jsonpBtn2'>jsonp2</button>
+  </fieldset>
+  <fieldset>
+    <legend>result</legend>
+    <p id='p'></p>
+  </fieldset>
+
+  <script>
+    corsError.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+        }
+      }
+      xhr.open('GET', 'http://localhost:4000/cors-err')
+      xhr.send()
+    }
+
+    corsGet.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+        }
+      }
+      xhr.open('GET', 'http://localhost:4000/cors-get?a=1&b=2')
+      xhr.send()
+    }
+
+    corsPut.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+        }
+      }
+      xhr.open('PUT', 'http://localhost:4000/cors-put')
+      xhr.send()
+    }
+    getResponseHeader.onclick=function(){
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.getResponseHeader('Server-Define')+this.responseText
+        }
+      }
+      xhr.open('PUT', 'http://localhost:4000/cors-put-get-response-header')
+      xhr.send()
+    }
+
+    setCookie.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+          p.innerHTML = p.innerHTML + 'js取document.cookie:' + (document.cookie || '<span style="color:red;">为空，没有设置成功</span>') + '<br/>'
+          p.innerHTML = p.innerHTML + '请去application查看'
+        }
+      }
+      xhr.withCredentials = true
+      xhr.open('POST', 'http://localhost:4000/cors-set-cookie')
+      xhr.send()
+    }
+
+    transfCookie.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+        }
+      }
+      xhr.withCredentials = true
+      xhr.open('POST', 'http://localhost:4000/cors-transf-cookie')
+      xhr.send()
+    }
+
+
+    absetnodomain.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+          p.innerHTML = p.innerHTML + '<br/>document.cookie:' + (document.cookie || '<span style="color:red;">为空，a.com没有设置成功</span>') + '去application查看<br/>'
+          p.innerHTML = p.innerHTML + '<a style="color:red;" target="__blank" href="http://b.com:3000">去b.com:3000查看<a>'
+        }
+      }
+      xhr.withCredentials = true
+      xhr.open('POST', 'http://b.com:4000/absetnodomain')
+      xhr.send()
+    }
+    absetb.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+          p.innerHTML = p.innerHTML + '<br/>document.cookie:' + (document.cookie || '<span style="color:red;">为空，a.com没有设置成功</span>') + '去application查看<br/>'
+          p.innerHTML = p.innerHTML + '<a style="color:red;" target="__blank" href="http://b.com:3000">去b.com:3000查看<a>'
+        }
+      }
+      xhr.withCredentials = true
+      xhr.open('POST', 'http://b.com:4000/absetb')
+      xhr.send()
+    }
+    ab1bsetb1b.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+          p.innerHTML = p.innerHTML + '<br/>document.cookie:' + (document.cookie || '<span style="color:red;">为空，a.com没有设置成功</span>') + '去application查看<br/>'
+          p.innerHTML = p.innerHTML + '<a style="color:red;" target="__blank" href="http://b.com:3000">去b.com:3000查看<a><br/>'
+          p.innerHTML = p.innerHTML + '<a style="color:red;" target="__blank" href="http://b1.b.com:3000">去b1.b.com:3000查看<a>'
+        }
+      }
+      xhr.withCredentials = true
+      xhr.open('POST', 'http://b1.b.com:4000/ab1bsetb1b')
+      xhr.send()
+    }
+    ab1bsetb.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+          p.innerHTML = p.innerHTML + '<br/>document.cookie:' + (document.cookie || '<span style="color:red;">为空，a.com没有设置成功</span>') + '去application查看<br/>'
+          p.innerHTML = p.innerHTML + '<a style="color:red;" target="__blank" href="http://b.com:3000">去b.com:3000查看<a>'
+          p.innerHTML = p.innerHTML + '<a style="color:red;" target="__blank" href="http://b1.b.com:3000">去b1.b.com:3000查看<a>'
+        }
+      }
+      xhr.withCredentials = true
+      xhr.open('POST', 'http://b1.b.com:4000/ab1bsetb')
+      xhr.send()
+    }
+    absetc.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+          p.innerHTML = p.innerHTML + 'js取document.cookie:' + (document.cookie || '<span style="color:red;">为空，没有设置成功</span>') + '去application查看<br/>'
+          p.innerHTML = p.innerHTML + '<a style="color:red;" target="__blank" href="http://c.com:3000">去c.com:3000查看<a>'
+        }
+      }
+      xhr.withCredentials = true
+      xhr.open('POST', 'http://b.com:4000/absetc')
+      xhr.send()
+    }
+
+
+    //需要后端把方法名组装好
+    function ccc(data) {
+      p.innerHTML = data
+    }
+    jsonpBtn1.onclick = function () {
+      const script = document.createElement('script');
+      script.src = 'http://localhost:4000/jsonp1?a=1&b=2'
+      document.body.appendChild(script)
+    }
+
+    //jsonp('url', {a:1,b:2}).then((data) => {})
+    function jsonp(url, args) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        window.ccc = function (data) {
+          resolve(data)
+          document.body.removeChild(script)
+        }
+        for (const key in args) {
+          url += key + `=${args[key]}&`
+        }
+        url += 'cb=ccc'
+        script.src = url
+        document.body.appendChild(script)
+      })
+
+    }
+
+    jsonpBtn2.onclick = function () {
+      jsonp('http://localhost:4000/jsonp2?', { a: 1, b: 2 }).then((data) => {
+        p.innerHTML = data
+      })
+    }
+  </script>
+</body>
+
+</html>
