@@ -15,20 +15,25 @@ cd cors
 nodemon server1.js    // 3000端口
 nodemon server2.js    // 4000端口
 ```
+
+## Chrome无法查看OPTIONS预检请求
+> 突然新版本chrome在network中无法查看OPTIONS请求，但可以在firefox等查看到。发现这是chrome浏览器的一个bug，解决方案如下
+
+> + 浏览器输入[chrome://flags/#out-of-blink-cors](chrome://flags/#out-of-blink-cors) 
+> + 然后设置out of blink 为disabled，
+> + 重启浏览器即可查看OPTIONS请求
+
+
+<image width="600" src ="https://user-images.githubusercontent.com/17950406/75606031-c5477900-5b23-11ea-8948-a5abb5b51c6d.jpg">
+
+[参考](https://stackoverflow.com/questions/57410051/chrome-not-showing-options-requests-in-network-tab)
+
 ## 简单请求和复杂请求（预检请求）
 > + 在发送请求出现跨域，会将请求分为在简单/复杂两类。
 > + 在 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS) 上可以看到分类条件。
 > + 每一次复杂请求时，会多产生一个OPTIONS 方法发起一个预检请求（preflight request）
-## ChromeNetwork无法查看OPTIONS预检请求解决方案
-1，浏览器输入 [地址](chrome://flags/#out-of-blink-cors) 然后设置out of blink 为disabled，重启浏览器即可查看OPTIONS请求
 
-2，使用firefox等可以查看
-
-<image width="600" src ="https://user-images.githubusercontent.com/17950406/75606031-c5477900-5b23-11ea-8948-a5abb5b51c6d.jpg">
-
-[问题参考](https://www.cnblogs.com/willingtolove/p/12350429.html)
-
-<image width="500" src ="https://user-images.githubusercontent.com/17950406/75606222-87e3eb00-5b25-11ea-9054-586b78ee42df.png">
+<image width="600" src ="https://user-images.githubusercontent.com/17950406/75606222-87e3eb00-5b25-11ea-9054-586b78ee42df.png">
 
 ## 相关代码
 ``` JS
@@ -39,36 +44,36 @@ xhr.open('GET', 'http://localhost:4000/cors-get?a=1&b=2')
 xhr.open('PUT', 'http://localhost:4000/cors-put')
 xhr.open('PUT', 'http://localhost:4000/cors-put-get-response-header')
 
-// 4000端口的服务
+// 4000端口的路由
 router
-  .get('/cors-err', async ctx => {
-    ctx.body = '/cors-error'
-  })
-  .get('/cors-get', async ctx => {
-    const { a, b } = ctx.query;
-    ctx.set('Access-Control-Allow-Origin', '*')
-    ctx.body = `简单请求，get -query ${a} ${b} -cors`
-  })
-  .options('/cors-put', async ctx => {
-    ctx.set('Access-Control-Allow-Origin', '*')
-    ctx.set('Access-Control-Allow-Methods', 'PUT')//PUT 必须大写，并且预检测为下次请求的类型
-    ctx.body = '非简单请求，OPTIONS cors'//返回不返回，没有需求，一般不返回
-  })
-  .put('/cors-put', async ctx => {
-    ctx.set('Access-Control-Allow-Origin', '*')
-    ctx.body = `非简单请求，OPTIONS-PUT cors`
-  })
-  .options('/cors-put-get-response-header', async ctx => {
-    ctx.set('Access-Control-Allow-Origin', '*')
-    ctx.set('Access-Control-Allow-Methods', 'PUT')//PUT 必须大写，并且预检测为下次请求的类型
-    ctx.body = ``
-  })
-  .put('/cors-put-get-response-header', async ctx => {
-    ctx.set('Access-Control-Allow-Origin', '*')
-    ctx.set('Server-Define','xxxxxxx')
-    ctx.set('Access-Control-Expose-Headers', 'Server-Define')
-    ctx.body = `cors-put-get-response-header`
-  })
+.get('/cors-err', async ctx => {
+  ctx.body = '/cors-error'
+})
+.get('/cors-get', async ctx => {
+  const { a, b } = ctx.query;
+  ctx.set('Access-Control-Allow-Origin', '*')
+  ctx.body = `简单请求，get -query ${a} ${b} -cors`
+})
+.options('/cors-put', async ctx => {
+  ctx.set('Access-Control-Allow-Origin', '*')
+  ctx.set('Access-Control-Allow-Methods', 'PUT')//PUT 必须大写，并且预检测为下次请求的类型
+  ctx.body = '非简单请求，OPTIONS cors'//返回不返回，没有需求，一般不返回
+})
+.put('/cors-put', async ctx => {
+  ctx.set('Access-Control-Allow-Origin', '*')
+  ctx.body = `非简单请求，OPTIONS-PUT cors`
+})
+.options('/cors-put-get-response-header', async ctx => {
+  ctx.set('Access-Control-Allow-Origin', '*')
+  ctx.set('Access-Control-Allow-Methods', 'PUT')//PUT 必须大写，并且预检测为下次请求的类型
+  ctx.body = ``
+})
+.put('/cors-put-get-response-header', async ctx => {
+  ctx.set('Access-Control-Allow-Origin', '*')
+  ctx.set('Server-Define','xxxxxxx')
+  ctx.set('Access-Control-Expose-Headers', 'Server-Define')
+  ctx.body = `cors-put-get-response-header`
+})
 ```
 
 
