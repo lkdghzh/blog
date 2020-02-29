@@ -20,13 +20,15 @@ nodemon server2.js    // 4000端口
 > + 在 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS) 上可以看到分类条件。
 > + 每一次复杂请求时，会多产生一个OPTIONS 方法发起一个预检请求（preflight request）
 ## ChromeNetwork无法查看OPTIONS预检请求解决方案
-1，浏览器输入 [chrome://flags/#out-of-blink-cors](chrome://flags/#out-of-blink-cors)，然后设置out of blink 为disabled，重启浏览器即可查看OPTIONS请求
+1，浏览器输入 [地址](chrome://flags/#out-of-blink-cors) 然后设置out of blink 为disabled，重启浏览器即可查看OPTIONS请求
+
 2，使用firefox等可以查看
+
 <image width="600" src ="https://user-images.githubusercontent.com/17950406/75606031-c5477900-5b23-11ea-8948-a5abb5b51c6d.jpg">
 
 [问题参考](https://www.cnblogs.com/willingtolove/p/12350429.html)
 
-<image width="500" src ="https://user-images.githubusercontent.com/17950406/75606034-c8426980-5b23-11ea-8425-0013c6c3c8d8.jpg">
+<image width="500" src ="https://user-images.githubusercontent.com/17950406/75606222-87e3eb00-5b25-11ea-9054-586b78ee42df.png">
 
 ## 相关代码
 ``` JS
