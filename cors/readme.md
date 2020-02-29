@@ -1,5 +1,7 @@
+查看文章，请预先打开 [示例代码](https://github.com/lkdghzh/blog/tree/master/cors) 之后，对比代码进行查看.
+
 这篇文章的目的是通过代码实践，进行学习如何运用HTTP头部字段，对浏览器请求访问控制，做到CORS。
-并验证在CORS时，学习到一下知识点。查看文章，请预先打开[示例代码](https://github.com/lkdghzh/blog/tree/master/cors)之后，进行查看
+并验证在CORS时，学习到一下知识点。
 + 简单请求
 + 复杂请求（预检请求）
 + 自定义响应头/xhr获取自定义响应头
