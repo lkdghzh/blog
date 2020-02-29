@@ -1,4 +1,6 @@
-查看文章，请预先打开 [示例代码](https://github.com/lkdghzh/blog/tree/master/cors) 之后，对比代码进行查看.
+查看文章，请预先打开 [示例代码](https://github.com/lkdghzh/blog/tree/master/cors) 之后，对比代码进行查看，疗效更好。:whale: :whale:
+这篇文章参考了 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)  
+ [stackoverflow](https://stackoverflow.com/questions/57410051/chrome-not-showing-options-requests-in-network-tab) [阮一峰](http://www.ruanyifeng.com/blog/2016/04/cors.html) 等相关文章
 
 这篇文章的目的是通过代码实践，进行学习如何运用HTTP头部字段，对浏览器请求访问控制，做到CORS。
 并验证在CORS时，学习到一下知识点。
