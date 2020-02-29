@@ -23,6 +23,7 @@
         2,复杂请求 2次，预检测options请求
         3,getResponseHeader  Access-Control-Expose-Headers
       </pre>
+    <button id='nocors'>nocors</button>
     <button id='corsError'>cors-error</button>
     <button id='corsGet'>corsGet</button>
     <button id='corsPut'>corsPut</button>
@@ -79,6 +80,16 @@
   </fieldset>
 
   <script>
+    nocors.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+        }
+      }
+      xhr.open('GET', 'http://localhost:3000/nocors')
+      xhr.send()
+    }
     corsError.onclick = function () {
       const xhr = new XMLHttpRequest()
       xhr.onreadystatechange = function (e) {
