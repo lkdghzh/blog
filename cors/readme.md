@@ -30,7 +30,7 @@ nodemon server2.js    // 4000端口
 > + 重启浏览器即可查看OPTIONS请求
 
 [参考](https://stackoverflow.com/questions/57410051/chrome-not-showing-options-requests-in-network-tab)
-<image width="600" src ="https://user-images.githubusercontent.com/17950406/75606031-c5477900-5b23-11ea-8948-a5abb5b51c6d.jpg">
+![chrome-options-bug](https://user-images.githubusercontent.com/17950406/75606031-c5477900-5b23-11ea-8948-a5abb5b51c6d.jpg)
 
 # CORS基础
 > 下面示例代码和截图，分别为`常规请求`、`CORS出错`、`CORS Get（简单请求）`、`CORS PUT（复杂请求存在预检请求）`、`设置/获取自定义响应头` 五种场景。
