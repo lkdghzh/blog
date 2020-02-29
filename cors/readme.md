@@ -77,17 +77,17 @@ router
 ```
 ![simple-complex](https://user-images.githubusercontent.com/17950406/75606222-87e3eb00-5b25-11ea-9054-586b78ee42df.png)
 
-## 简单请求和复杂请求（预检请求）
+## 1.简单请求和复杂请求（预检请求）
 > + 在发送请求出现跨域，会将请求分为在简单/复杂两类。在 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS) 上可以看到分类条件。
 > + 每一次复杂请求时，会多产生一个OPTIONS 方法发起一个预检请求（preflight request）
 
 
-2.设置自定义和获取自定义响应头
-CORS难点【草稿】
-1.CORS时cookie携带与设置
+## 2.设置自定义和获取自定义响应头
+# CORS难点【草稿】
+## 1.CORS时cookie携带与设置
 与domain的关系
-2.多级域名时的实践
-CORS在实际生产的应用场景列举【草稿】
+## 2.多级域名时的实践
+# CORS在实际生产的应用场景列举【草稿】
 
 <!-- # 跨域
 [维基](https://en.wikipedia.org/wiki/XMLHttpRequest)
