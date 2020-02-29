@@ -8,7 +8,6 @@ const app = new Koa()
 
 router.get('/', async ctx => {
   const ABPath=path.join(__dirname,'index.html')
-  console.log(ABPath)
   ctx.type='html'
   ctx.body=fs.createReadStream(ABPath)
 })
