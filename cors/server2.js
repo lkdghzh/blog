@@ -36,14 +36,13 @@ router
   })
 router
   .post('/cors-set-cookie', async ctx => {
-    ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')//http://127.0.0.1:3000 不能在后面拼接
+    ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')//多个来源的话，可以根据请求的域名设置这个响应头
     ctx.set('Access-Control-Allow-Credentials', true)
-
     ctx.cookies.set('ck', 'like', { httpOnly: false })//, { maxAge: 10 * 60 * 1000,path:'/',domain:'localhost'}
-    ctx.body = `已经返回了 Set-Cookie 头信息 ck=like <br/> <b>注意</b> chrome的responseHead 无法查看 Set-Cookie，请在firefox中查看<br/>`
+    ctx.body = `已经返回了 Set-Cookie 头信息 ck=like <br/>`
   })
   .post('/cors-transf-cookie', async ctx => {
-    ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')
+    ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000') //当跨域携带cookie时，Access-Control-Allow-Origin不能设置为 *
     ctx.set('Access-Control-Allow-Credentials', true)
     let ckval = ctx.cookies.get('ck')
     ctx.body = `后台取到了前台传过来的cookie 键为ck，值为 ${ckval}`
@@ -51,14 +50,26 @@ router
 router.post('/absetnodomain', async ctx => {
   ctx.set('Access-Control-Allow-Origin', 'http://a.com:3000 ')
   ctx.set('Access-Control-Allow-Credentials', true)
-  ctx.cookies.set('absetnodomain', 'absetnodomain', { httpOnly: false, maxAge: 10 * 60 * 1000, })
+  ctx.cookies.set('absetnodomain', 'absetnodomain', {httpOnly: false, maxAge: 10 * 60 * 1000, })
   ctx.body = `/absetnodomain`
+})
+router.post('/abseta', async ctx => {
+  ctx.set('Access-Control-Allow-Origin', 'http://a.com:3000 ')
+  ctx.set('Access-Control-Allow-Credentials', true)
+  ctx.cookies.set('abseta', 'abseta', { httpOnly: false, domain: 'a.com', maxAge: 10 * 60 * 1000, })
+  ctx.body = `/abseta`
 })
 router.post('/absetb', async ctx => {
   ctx.set('Access-Control-Allow-Origin', 'http://a.com:3000 ')
   ctx.set('Access-Control-Allow-Credentials', true)
   ctx.cookies.set('absetb', 'absetb', { httpOnly: false, domain: 'b.com', maxAge: 10 * 60 * 1000, })
   ctx.body = `/absetb`
+})
+router.post('/absetc', async ctx => {
+  ctx.set('Access-Control-Allow-Origin', 'http://a.com:3000 ')
+  ctx.set('Access-Control-Allow-Credentials', true)
+  ctx.cookies.set('absetb', 'absetb', { httpOnly: false, domain: 'c.com', maxAge: 10 * 60 * 1000, })
+  ctx.body = `/absetc`
 })
 router.post('/ab1bsetb1b', async ctx => {
   ctx.set('Access-Control-Allow-Origin', 'http://a.com:3000 ')
@@ -72,12 +83,7 @@ router.post('/ab1bsetb', async ctx => {
   ctx.cookies.set('ab1bsetb', 'ab1bsetb', { httpOnly: false, domain: 'b.com', maxAge: 10 * 60 * 1000, })
   ctx.body = `/ab1bsetb`
 })
-router.post('/absetc', async ctx => {
-  ctx.set('Access-Control-Allow-Origin', 'http://a.com:3000 ')
-  ctx.set('Access-Control-Allow-Credentials', true)
-  ctx.cookies.set('absetb', 'absetb', { httpOnly: false, domain: 'c.com', maxAge: 10 * 60 * 1000, })
-  ctx.body = `/absetc`
-})
+
 
 router
   .get('/jsonp1', async ctx => {
