@@ -32,10 +32,12 @@
   <fieldset>
     <legend>cors cookie的设定和发送查看</legend>
     <pre>
-      打开127.0.0.1:3000
-      1，setcookie，transcookie的时候，也需要allow-origin 前端和后端的credential
-      2，跨域设置cookie，上传cookie，设定和发送查看
-      3，Provisional headers are shown  解决方案： firefox， chrome:chrome://net-internals/#events 现在下载客户端分析
+      打开localhost:3000,进行测试
+      1，前端xhr设置withCredential
+      2，后端响应：Access-Control-Allow-Credentials为 true 
+      结论：
+      1,cookie和端口没有关系,localhost:3000/localhost:4000都是localhost
+      2,此时设置Access-Control-Allow-Origin 不能为 *，需要指定。
     </pre>
     <button id='setCookie'>corsSetCookie</button>
     <button id='transfCookie'>corsTransformCookie</button>
@@ -59,6 +61,7 @@
           2.1  a请求b,设置c的cookie
       </pre>
     <button id='absetnodomain'>a->b-setnodomain</button>
+    <button id='abseta'>a->b-seta</button>
     <button id='absetb'>a->b-setb</button>
     <button id='ab1bsetb1b'>a-b1bsetb1b</button>
     <button id='ab1bsetb'>a-b1bsetb</button>
@@ -171,6 +174,18 @@
       }
       xhr.withCredentials = true
       xhr.open('POST', 'http://b.com:4000/absetnodomain')
+      xhr.send()
+    }
+    abseta.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+          p.innerHTML = p.innerHTML + '<br/>document.cookie:' + (document.cookie || '<span style="color:red;">为空，a.com没有设置成功</span>') + '去application查看<br/>'
+        }
+      }
+      xhr.withCredentials = true
+      xhr.open('POST', 'http://b.com:4000/abseta')
       xhr.send()
     }
     absetb.onclick = function () {
