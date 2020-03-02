@@ -65,6 +65,12 @@ router.post('/absetb', async ctx => {
   ctx.cookies.set('absetb', 'absetb', { httpOnly: false, domain: 'b.com', maxAge: 10 * 60 * 1000, })
   ctx.body = `/absetb`
 })
+router.post('/absetc', async ctx => {
+  ctx.set('Access-Control-Allow-Origin', 'http://a.com:3000 ')
+  ctx.set('Access-Control-Allow-Credentials', true)
+  ctx.cookies.set('absetb', 'absetb', { httpOnly: false, domain: 'c.com', maxAge: 10 * 60 * 1000, })
+  ctx.body = `/absetc`
+})
 router.post('/ab1bsetb1b', async ctx => {
   ctx.set('Access-Control-Allow-Origin', 'http://a.com:3000 ')
   ctx.set('Access-Control-Allow-Credentials', true)
@@ -77,12 +83,7 @@ router.post('/ab1bsetb', async ctx => {
   ctx.cookies.set('ab1bsetb', 'ab1bsetb', { httpOnly: false, domain: 'b.com', maxAge: 10 * 60 * 1000, })
   ctx.body = `/ab1bsetb`
 })
-router.post('/absetc', async ctx => {
-  ctx.set('Access-Control-Allow-Origin', 'http://a.com:3000 ')
-  ctx.set('Access-Control-Allow-Credentials', true)
-  ctx.cookies.set('absetb', 'absetb', { httpOnly: false, domain: 'c.com', maxAge: 10 * 60 * 1000, })
-  ctx.body = `/absetc`
-})
+
 
 router
   .get('/jsonp1', async ctx => {

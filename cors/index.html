@@ -63,9 +63,9 @@
     <button id='absetnodomain'>a->b-setnodomain</button>
     <button id='abseta'>a->b-seta</button>
     <button id='absetb'>a->b-setb</button>
+    <button id='absetc'>a->b-setc<span style="color:red;">x<span></button>
     <button id='ab1bsetb1b'>a-b1bsetb1b</button>
     <button id='ab1bsetb'>a-b1bsetb</button>
-    <button id='absetc'>a->b-setc<span style="color:red;">x<span></button>
   </fieldset>
   <fieldset>
     <legend>jsonp</legend>
@@ -201,6 +201,19 @@
       xhr.open('POST', 'http://b.com:4000/absetb')
       xhr.send()
     }
+    absetc.onclick = function () {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        if (this.readyState == 4 && this.status == 200) {
+          p.innerHTML = this.responseText
+          p.innerHTML = p.innerHTML + 'js取document.cookie:' + (document.cookie || '<span style="color:red;">为空，没有设置成功</span>') + '去application查看<br/>'
+          p.innerHTML = p.innerHTML + '<a style="color:red;" target="__blank" href="http://c.com:3000">去c.com:3000查看<a>'
+        }
+      }
+      xhr.withCredentials = true
+      xhr.open('POST', 'http://b.com:4000/absetc')
+      xhr.send()
+    }
     ab1bsetb1b.onclick = function () {
       const xhr = new XMLHttpRequest()
       xhr.onreadystatechange = function (e) {
@@ -229,19 +242,7 @@
       xhr.open('POST', 'http://b1.b.com:4000/ab1bsetb')
       xhr.send()
     }
-    absetc.onclick = function () {
-      const xhr = new XMLHttpRequest()
-      xhr.onreadystatechange = function (e) {
-        if (this.readyState == 4 && this.status == 200) {
-          p.innerHTML = this.responseText
-          p.innerHTML = p.innerHTML + 'js取document.cookie:' + (document.cookie || '<span style="color:red;">为空，没有设置成功</span>') + '去application查看<br/>'
-          p.innerHTML = p.innerHTML + '<a style="color:red;" target="__blank" href="http://c.com:3000">去c.com:3000查看<a>'
-        }
-      }
-      xhr.withCredentials = true
-      xhr.open('POST', 'http://b.com:4000/absetc')
-      xhr.send()
-    }
+
 
 
     //需要后端把方法名组装好
