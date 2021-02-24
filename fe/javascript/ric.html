@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>requestIdelCallback</title>
+</head>
+
+<body>
+  <div id="ui">0</div>
+  <div>执行<span id="test">0</span></div>
+  <button onclick="mytest()">常规执行计算任务</button>
+  <button onclick="startRequestIdleCallback()">在requestIdleCallback中执行计算任务</button>
+  <script>
+    const sleep = (ms = 2000) => {
+      var start = Date.now()
+      while (Date.now() - start <= ms) { }
+    }
+    // 任务队列
+    let task1 = [
+      function () {
+        console.time('第一个任务')
+        sleep(2000)
+        document.getElementById('test').innerHTML = 1
+        console.timeEnd('第一个任务')
+      },
+      function () {
+        console.time("第二个任务")
+        sleep(2000)
+        document.getElementById('test').innerHTML = 2
+        console.timeEnd("第二个任务")
+      },
+      function () {
+        console.time("第三个任务")
+        sleep(2000)
+        document.getElementById('test').innerHTML = 3
+        console.timeEnd("第三个任务")
+      },
+    ];
+    let task2 = [
+      function () {
+        console.time('第一个任务')
+        sleep(10)
+        document.getElementById('test').innerHTML = 1
+        console.timeEnd('第一个任务')
+      },
+      function () {
+        console.time("第二个任务")
+        sleep(10)
+        document.getElementById('test').innerHTML = 2
+        console.timeEnd("第二个任务")
+      },
+      function () {
+        console.time("第三个任务")
+        sleep(10)
+        document.getElementById('test').innerHTML = 3
+        console.timeEnd("第三个任务")
+      },
+    ];
+    setInterval(() => {
+      document.getElementById('ui').innerHTML = parseInt(document.getElementById('ui').innerHTML) + 1
+    }, 100)
+    //执行mytest文件会影响上面动态dom的渲染
+    function mytest() {
+      work1(task1)
+    }
+
+    //将js计算任务放在requestIdleCallback中运算
+    function startRequestIdleCallback() {
+      requestIdleCallback(myNonEssentialWork);//  { timeout: 2000 }
+    }
+
+    var frameCount = 0
+    function myNonEssentialWork(deadline) {
+      console.log(deadline, `当前第${++frameCount}帧剩余${deadline.timeRemaining()}ms`)
+      // 如果帧内有富余的时间，或者超时
+      while ((deadline.timeRemaining() > 0 || deadline.didTimeout) && task2.length > 0) {
+        work2(task2);
+      }
+      //开启下一个空闲时间的回调函数
+      if (task2.length > 0) { requestIdleCallback(myNonEssentialWork); }
+    }
+    // ​
+    function work1(tasks) {
+      tasks.shift()();
+      if (task1.length > 0) {
+        work1(task1)
+      }
+    }
+    function work2(tasks) {
+      tasks.shift()();
+    }
+
+    var rafCount = 0
+    const raf = () => {
+      requestAnimationFrame(() => {
+        console.log(++rafCount)
+        raf()
+      })
+    }
+    raf()
+
+  </script>
+</body>
+
+</html>
