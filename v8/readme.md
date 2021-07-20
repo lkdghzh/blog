@@ -1,6 +1,10 @@
 # 克隆v8
 > 项目大 778M <br>
 > https://github.com/v8/v8.git
+
+2
+3
+4
 ```
 git -c filter.lfs.smudge= -c filter.lfs.required=false -c diff.mnemonicprefix=false -c core.quotepath=false clone --branch master https://github.com/v8/v8.git D:\\chromeV8
 Cloning into 'D:\\chromeV8'...
