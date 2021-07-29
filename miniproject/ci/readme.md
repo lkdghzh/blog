@@ -1,0 +1,1 @@
+通过miniprogram-ci脚本，构建npm
