@@ -1,0 +1,22 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "李可的个人博客\r ## 动画\r 1. [canvas：贝塞尔曲线及动画演示](https://github.com/lkdghzh/blog/tree/master/fe/javascript/animation/carton/bezeir)\r 2. [svg：演示viewport,viewBox,preserveAspectRatio](https://github.com/lkdghzh/blog/blob/master/fe/javascript/animation/svg/preservrAspectRadioProgress.html)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lkdghzh/blog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lkdghzh/blog/issues"
+  },
+  "homepage": "https://github.com/lkdghzh/blog#readme",
+  "dependencies": {
+    "async": "^3.2.1"
+  }
+}
