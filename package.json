@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/lkdghzh/blog#readme",
   "dependencies": {
+    "acorn": "^8.5.0",
     "async": "^3.2.1"
+  },
+  "devDependencies": {
+    "miniprogram-automator": "^0.10.0"
   }
 }

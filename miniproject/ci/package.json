@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "miniprogram-ci": "^1.4.13"
+    "miniprogram-ci": "^1.6.1"
   }
 }
